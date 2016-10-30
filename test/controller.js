@@ -1,5 +1,5 @@
 module.exports = [{
-  urls: ['/index', '/'],
+  urls: ['/index', '/', '/be/ok'],
   routers: {
     methods: ['get', 'post', 'bad'],
     get: function (req, res) {

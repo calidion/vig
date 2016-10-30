@@ -16,7 +16,6 @@ describe('vig', function () {
       .expect(200)
       .end(function (err, res) {
         assert(!err);
-        console.log(res.text);
         assert(res.text === 'get');
         done();
       });
@@ -28,7 +27,6 @@ describe('vig', function () {
       .expect(200)
       .end(function (err, res) {
         assert(!err);
-        console.log(res.text);
         assert(res.text === 'post');
         done();
       });
@@ -40,7 +38,6 @@ describe('vig', function () {
       .expect(200)
       .end(function (err, res) {
         assert(!err);
-        console.log(res.text);
         assert(res.text === 'get');
         done();
       });
@@ -52,7 +49,17 @@ describe('vig', function () {
       .expect(200)
       .end(function (err, res) {
         assert(!err);
-        console.log(res.text);
+        assert(res.text === 'post');
+        done();
+      });
+  });
+
+  it('should post /be/ok', function (done) {
+    request(app)
+      .post('/be/ok')
+      .expect(200)
+      .end(function (err, res) {
+        assert(!err);
         assert(res.text === 'post');
         done();
       });
