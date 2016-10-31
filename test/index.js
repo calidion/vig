@@ -3,11 +3,15 @@
 var assert = require('assert');
 var vig = require('../lib');
 var request = require('supertest');
-var Express = require('express');
-var controller = require('./controller');
-var app = new Express();
+var express = require('express');
+var routersController = require('./routersController');
+var policiesController = require('./policiesController');
+var app = express();
 
-vig.addController(app, controller);
+app.use(vig.policies.use);
+vig.addController(app, routersController);
+vig.addController(app, policiesController);
+
 
 describe('vig', function () {
   it('should get /', function (done) {
