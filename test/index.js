@@ -12,7 +12,6 @@ app.use(vig.policies.use);
 vig.addController(app, routersController);
 vig.addController(app, policiesController);
 
-
 describe('vig', function () {
   it('should get /', function (done) {
     request(app)
