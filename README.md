@@ -38,6 +38,7 @@ Apache-2.0 © [calidion]()
 # Web基本的业务模型内容
 
 对于现在常见的Web模型，他通常包括如下的内容：
+
 1. 请求与返回（Request & Response）
 
 2. 前端与后端（Frontend & Backend）
