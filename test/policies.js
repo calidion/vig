@@ -21,9 +21,9 @@ app.use(session({
 }));
 app.use(vig.policies.use);
 
-vig.addController(app, policiesController);
+vig.addHandlers(app, policiesController);
 
-describe('vig', function () {
+describe('vig #policies', function () {
   it('should get prevent all', function (done) {
     request(app)
       .get('/prevent/all')

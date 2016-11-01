@@ -9,10 +9,10 @@ var policiesController = require('./policiesController');
 var app = express();
 
 app.use(vig.policies.use);
-vig.addController(app, routersController);
-vig.addController(app, policiesController);
+vig.addHandlers(app, routersController);
+vig.addHandlers(app, policiesController);
 
-describe('vig', function () {
+describe('vig #routers', function () {
   it('should get /', function (done) {
     request(app)
       .get('/')

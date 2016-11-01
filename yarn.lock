@@ -533,6 +533,31 @@ error-ex@^1.2.0:
   dependencies:
     is-arrayish "^0.2.1"
 
+errorable:
+  version "0.4.0"
+  resolved "http://registry.npm.taobao.org/errorable/download/errorable-0.4.0.tgz#214bdab66a6bd2d185eea470c3fef12597d38bbb"
+
+errorable-admin@0.0.1:
+  version "0.0.1"
+  resolved "http://registry.npm.taobao.org/errorable-admin/download/errorable-admin-0.0.1.tgz#d027cca4d5806e2b7dbcf6064245e0dc7f671197"
+
+errorable-common:
+  version "0.1.0"
+  resolved "http://registry.npm.taobao.org/errorable-common/download/errorable-common-0.1.0.tgz#264275cb46bdd4345aed7d721c2b4780e1e45754"
+  dependencies:
+    errorable-admin "0.0.1"
+
+errorable-express:
+  version "0.0.4"
+  resolved "http://registry.npm.taobao.org/errorable-express/download/errorable-express-0.0.4.tgz#8792889f2a8579d147d1f6193999f734643aa279"
+  dependencies:
+    errorable "^0.3.1"
+    lodash "^4.1.0"
+
+errorable@^0.3.1:
+  version "0.3.1"
+  resolved "http://registry.npm.taobao.org/errorable/download/errorable-0.3.1.tgz#1a17b8d99071ba99e7c7dcef32a120f8573eff6b"
+
 es5-ext@^0.10.7, es5-ext@^0.10.8, es5-ext@~0.10.11, es5-ext@~0.10.2, es5-ext@~0.10.7:
   version "0.10.12"
   resolved "http://registry.npm.taobao.org/es5-ext/download/es5-ext-0.10.12.tgz#aa84641d4db76b62abba5e45fd805ecbab140047"
@@ -1876,6 +1901,10 @@ lodash@^4.0.0, lodash@^4.3.0:
   version "4.16.4"
   resolved "http://registry.npm.taobao.org/lodash/download/lodash-4.16.4.tgz#01ce306b9bad1319f2a5528674f88297aeb70127"
 
+lodash@^4.1.0:
+  version "4.16.5"
+  resolved "http://registry.npm.taobao.org/lodash/download/lodash-4.16.5.tgz#77d88feac548009b1a5c4ca7b49ac431ce346ae8"
+
 lodash@~1.0.1:
   version "1.0.2"
   resolved "http://registry.npm.taobao.org/lodash/download/lodash-1.0.2.tgz#8f57560c83b59fc270bd3d561b690043430e2551"
@@ -2059,6 +2088,12 @@ natural-compare@^1.4.0:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "http://registry.npm.taobao.org/negotiator/download/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
+
+node-form-validator:
+  version "1.1.0"
+  resolved "http://registry.npm.taobao.org/node-form-validator/download/node-form-validator-1.1.0.tgz#d1ef66d70b4ad8b76e1188aab3bd5005ca8ed357"
+  dependencies:
+    validator "^5.1.0"
 
 node-uuid@~1.4.7:
   version "1.4.7"
@@ -2955,6 +2990,10 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "~1.0.0"
     spdx-expression-parse "~1.0.0"
+
+validator@^5.1.0:
+  version "5.7.0"
+  resolved "http://registry.npm.taobao.org/validator/download/validator-5.7.0.tgz#7a87a58146b695ac486071141c0c49d67da05e5c"
 
 vary@~1.1.0:
   version "1.1.0"
