@@ -9,12 +9,14 @@ var vig = require('../lib');
 var request = require('supertest');
 var express = require('express');
 var errorsHandlers = require('./errorsHandlers');
-var app = express();
-
-vig.addErrors(app, errors);
-vig.addHandlers(app, errorsHandlers);
+var app;
 
 describe('vig #errors', function () {
+  before(function () {
+    app = express();
+    vig.errorize(app, errors);
+    vig.addHandlers(app, errorsHandlers);
+  });
   it('should get /', function (done) {
     request(app)
       .get('/')

@@ -1,23 +1,20 @@
 'use strict';
-
 var assert = require('assert');
 var vig = require('../lib');
 var request = require('supertest');
 var express = require('express');
-var routersController = require('./routersController');
-var policiesController = require('./policiesController');
+var validationsHandlers = require('./validationsHandlers');
 var app;
 
-describe('vig #routers', function () {
+describe('vig #validations', function () {
   before(function () {
     app = express();
-    app.use(vig.policies.use);
-    vig.addHandlers(app, routersController);
-    vig.addHandlers(app, policiesController);
+    vig.validize(app);
+    vig.addHandlers(app, validationsHandlers);
   });
-  it('should get /', function (done) {
+  it('should get /validations', function (done) {
     request(app)
-      .get('/')
+      .get('/validations')
       .expect(200)
       .end(function (err, res) {
         assert(!err);
@@ -25,48 +22,48 @@ describe('vig #routers', function () {
         done();
       });
   });
-
-  it('should post /', function (done) {
+  it('should post /validations', function (done) {
     request(app)
-      .post('/')
+      .post('/validations')
+      .expect(403)
+      .end(function (err, res) {
+        assert(!err);
+        assert(res.text === 'Access Denied!');
+        done();
+      });
+  });
+
+  it('should post /validations/2', function (done) {
+    request(app)
+      .get('/validations/2')
+      .expect(403)
+      .end(function (err, res) {
+        assert(!err);
+        assert(res.text === 'Access Denied!');
+        done();
+      });
+  });
+  it('should post /validations/2', function (done) {
+    request(app)
+      .post('/validations/2')
       .expect(200)
       .end(function (err, res) {
+        console.log(err);
         assert(!err);
         assert(res.text === 'post');
         done();
       });
   });
 
-  it('should get /index', function (done) {
+  it('should post /validations/3', function (done) {
     request(app)
-      .get('/index')
-      .expect(200)
+      .post('/validations/3')
+      .expect(404)
       .end(function (err, res) {
         assert(!err);
-        assert(res.text === 'get');
-        done();
-      });
-  });
-
-  it('should post /index', function (done) {
-    request(app)
-      .post('/index')
-      .expect(200)
-      .end(function (err, res) {
-        assert(!err);
-        assert(res.text === 'post');
-        done();
-      });
-  });
-
-  it('should post /be/ok', function (done) {
-    request(app)
-      .post('/be/ok')
-      .expect(200)
-      .end(function (err, res) {
-        assert(!err);
-        assert(res.text === 'post');
+        assert(res.text);
         done();
       });
   });
 });
+

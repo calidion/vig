@@ -11,8 +11,8 @@ module.exports = [{
   },
   validations: {
     methods: ['all'],
-    all: function (req, res) {
-      res.send('validations all');
+    all: function (req, res, next) {
+      next(true);
     }
   },
   events: {

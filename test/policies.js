@@ -7,23 +7,26 @@ var express = require('express');
 var policiesController = require('./policiesController');
 var session = require('express-session');
 var cookies;
-var app = express();
-app.set('trust proxy', 1); // trust first proxy
-
-app.use(session({
-  name: 'vig',
-  secret: 'secret oososos',
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    secure: false
-  }
-}));
-app.use(vig.policies.use);
-
-vig.addHandlers(app, policiesController);
+var app;
 
 describe('vig #policies', function () {
+  before(function () {
+    app = express();
+    app.set('trust proxy', 1); // trust first proxy
+    app.use(session({
+      name: 'vig',
+      secret: 'secret oososos',
+      resave: false,
+      saveUninitialized: true,
+      cookie: {
+        secure: false
+      }
+    }));
+
+    vig.policize(app);
+
+    vig.addHandlers(app, policiesController);
+  });
   it('should get prevent all', function (done) {
     request(app)
       .get('/prevent/all')
