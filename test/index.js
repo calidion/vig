@@ -4,16 +4,16 @@ var assert = require('assert');
 var vig = require('../lib');
 var request = require('supertest');
 var express = require('express');
-var routersController = require('./routersController');
-var policiesController = require('./policiesController');
+var routersHandler = require('./routersHandler');
+var policiesHandler = require('./policiesHandler');
 var app;
 
 describe('vig #routers', function () {
   before(function () {
     app = express();
-    app.use(vig.policies.use);
-    vig.addHandlers(app, routersController);
-    vig.addHandlers(app, policiesController);
+    vig.init(app);
+    vig.addHandlers(app, routersHandler);
+    vig.addHandlers(app, policiesHandler);
   });
   it('should get /', function (done) {
     request(app)

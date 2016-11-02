@@ -1,10 +1,22 @@
 # vig [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+
+## 介绍
+
 > a new web framework, inspired by sailsjs
+
+> vig是一个受sailsjs启发的框架，目标是将Web的常规业务功能标准化。
+> 集中精力做Web中的C端，即将Web的MVC业务模型拆分开，将C端细化。
+> 不再提供对M端的直接支持能力，
+> 但是默认会采用balderdash的waterline进行测试，
+> HTML模板会采用Mozilla的nunjucks进行测试
+
+
 
 ## Installation
 
 ```sh
 $ npm install --save vig
+$ yarn add vig
 ```
 
 ## Usage
@@ -13,6 +25,9 @@ $ npm install --save vig
 var vig = require('vig');
 
 ```
+
+
+
 ## License
 
 Apache-2.0 © [calidion]()
@@ -35,32 +50,53 @@ Apache-2.0 © [calidion]()
 而MVC理论并不是一个精细的理论。
 所以我们在这里会将MVC精细化，整理出一个更加符合Web的框架理论或者原型。
 
-# Web基本的业务模型内容
+# Web基本的业务模型内容与vig的完成目标与进度
 
 对于现在常见的Web模型，他通常包括如下的内容：
-1. 请求与返回（Request & Response）
 
-2. 前端与后端（Frontend & Backend）
+1. 请求与返回（Request & Response） 
+
+ [由基础Web框架提供]
+
+2. 前端与后端（Frontend & Backend） 
+
+ [vig只关心后端，将会提供传统的HTML模板能力与API提供能力，其它的前端功能不会再提供]
 
 3. 数据库抽象与业务逻辑的连接（Database Design & Business Logic analystics）
 
+[vig不]
+
 4. 安全策略与权限管理（Security & Privileges）
+
+[已经完成]
 
 5. 共享用户与单点登录（User Sharing & Autchenication)
 
 6. 配置动态化与自动化( Configuration & Automation）
 
-7. 标准化接口（API Standardization）
+7. 标准化接口（API Standardization）   
+
+[基于errorable-express提供标准输出API]
 
 8. 模块化与独立化，可分布式化（Modulization，Indepency， Distribution）
 
-9. 错误返回（Error Response)
+9. 错误返回（Error Response) 
+
+[已经完成]
 
 10. 文件上传与云传输（Cloud File Distribution）
 
-11. 数据输入的过滤与校验(Input Data Filtering and Validation)
+11. 数据输入的过滤与校验(Input Data Filtering and Validation)  
+
+[已经完成]
 
 12. 将控制器、模型、业务、库、路由更方便的进行标准化。
+
+13. HTML页面模板
+
+[由第三方提供，vig只提供接入方法]
+
+14. 接入socket.io，提供WebSocket的能力
 
 所以我们在设计这个框架时，将会着重关注以上的几点。  
 并努力的将这些核心内容接口化，标准化，从而方便迁移与升级。

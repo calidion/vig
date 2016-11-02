@@ -9,7 +9,7 @@ var app;
 describe('vig #validations', function () {
   before(function () {
     app = express();
-    vig.validize(app);
+    vig.init(app);
     vig.addHandlers(app, validationsHandlers);
   });
   it('should get /validations', function (done) {
@@ -48,7 +48,6 @@ describe('vig #validations', function () {
       .post('/validations/2')
       .expect(200)
       .end(function (err, res) {
-        console.log(err);
         assert(!err);
         assert(res.text === 'post');
         done();
