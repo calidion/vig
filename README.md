@@ -21,12 +21,102 @@ $ yarn add vig
 
 ## Usage
 
+
+
+## 生成错误
+
 ```js
-var vig = require('vig');
+// errors.js
+var common = require('errorable-common');
+var errorable = require('errorable');
+var Generator = errorable.Generator;
+var errors = new Generator(common, 'zh-CN').errors;
+module.exports = errors;
 
 ```
 
+## 设定路由及处理函数
 
+```js
+// handlers.js
+module.exports = [{
+  urls: ['/'],
+  /**
+   * 路由处理定义，只要熟悉nodejs的req, res都知道如何处理了
+   */
+  // @方式一
+  routers: {
+    methods: ['get', 'post', 'bad'],
+    get: function (req, res) {
+      res.errorize(res.errors.Success);
+    },
+    post: function (req, res) {
+      res.restify(res.errors.Failure);
+    }
+  },
+  // @方式二
+  routers: {
+    methods: ['all'],
+    all: function (req, res) {
+      res.errorize(res.errors.Success);
+    }
+  },
+  /**
+   * 策略定义，成功调用next(true),失败调用next(false);
+   */
+  policies: {
+    methods: ['get', 'post'],
+    get: function (req, res, next) {
+      next(true);
+    },
+    post: function (req, res, next) {
+      next(true);
+    }
+  },
+  /**
+   * 检验条件定义，如果需要校验调用next(true),如果不需要校验调用next(false);
+   */
+  conditions: {
+    get: function (req, res, next) {
+      next(true);
+    }
+  },
+  /**
+   * 检验规则，未来会直接使用node-form-validator让这个过程更加的自动化避免手写
+   */
+  validations: {
+    get: function (req, res, next) {
+      next(true);
+    },
+    post: function (req, res, next) {
+      next(false);
+    }
+  }，
+  /**
+   * 事件定义，无URL无关，可以在任何一个Handler里定义
+   */
+  events: {
+    names: ['@event1', '@event2', 'bad'],
+    handlers: {
+      '@event1': function (next) {
+        next('@event1');
+      },
+      '@event2': function (next) {
+        next('@event2');
+      }
+    }
+  },
+}];
+
+```
+
+## 调用vig框架
+
+```js
+var vig = require('vig');
+    vig.init(app, errors);
+    vig.addHandlers(app, handlers);
+```
 
 ## License
 
