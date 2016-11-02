@@ -54,49 +54,28 @@ Apache-2.0 © [calidion]()
 
 对于现在常见的Web模型，他通常包括如下的内容：
 
-1. 请求与返回（Request & Response） 
-
- [由基础Web框架提供]
-
+1. 请求与返回（Request & Response）  
+[由基础Web框架提供]  
 2. 前端与后端（Frontend & Backend） 
-
- [vig只关心后端，将会提供传统的HTML模板能力与API提供能力，其它的前端功能不会再提供]
-
-3. 数据库抽象与业务逻辑的连接（Database Design & Business Logic analystics）
-
-[vig不]
-
-4. 安全策略与权限管理（Security & Privileges）
-
-[已经完成]
-
-5. 共享用户与单点登录（User Sharing & Autchenication)
-
-6. 配置动态化与自动化( Configuration & Automation）
-
-7. 标准化接口（API Standardization）   
-
-[基于errorable-express提供标准输出API]
-
-8. 模块化与独立化，可分布式化（Modulization，Indepency， Distribution）
-
-9. 错误返回（Error Response) 
-
-[已经完成]
-
-10. 文件上传与云传输（Cloud File Distribution）
-
+[vig只关心后端，将会提供传统的HTML模板能力与API提供能力，其它的前端功能不会再提供]
+3. 数据库抽象与业务逻辑的连接（Database Design & Business Logic analystics）  
+[vig不提供直接的M层支持]  
+4. 安全策略与权限管理（Security & Privileges）  
+[已经完成]  
+5. 共享用户与单点登录（User Sharing & Autchenication)  
+6. 配置动态化与自动化( Configuration & Automation）  
+7. 标准化接口（API Standardization）  
+[基于errorable-express提供标准输出API]  
+8. 模块化与独立化，可分布式化（Modulization，Indepency， Distribution）  
+9. 错误返回（Error Response)  
+[已经完成]  
+10. 文件上传与云传输（Cloud File Distribution）  
 11. 数据输入的过滤与校验(Input Data Filtering and Validation)  
-
-[已经完成]
-
-12. 将控制器、模型、业务、库、路由更方便的进行标准化。
-
-13. HTML页面模板
-
-[由第三方提供，vig只提供接入方法]
-
-14. 接入socket.io，提供WebSocket的能力
+[已经完成]  
+12. 将控制器、模型、业务、库、路由更方便的进行标准化。  
+13. HTML页面模板  
+[由第三方提供，vig只提供接入方法]  
+14. 接入socket.io，提供WebSocket的能力  
 
 所以我们在设计这个框架时，将会着重关注以上的几点。  
 并努力的将这些核心内容接口化，标准化，从而方便迁移与升级。
