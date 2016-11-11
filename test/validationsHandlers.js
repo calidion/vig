@@ -44,6 +44,34 @@ module.exports = [{
   validations: {
     get: function (req, res, next) {
       next(false);
+    },
+    post: {
+      query: {
+        username: {
+          type: 'string',
+          required: true,
+          maxLength: 30,
+          minLength: 20
+        },
+        password: {
+          type: 'string',
+          required: true,
+          minLength: 6,
+          maxLength: 30
+        }
+      },
+      params: {
+        id: {
+          type: 'int',
+          required: true,
+        }
+      },
+      body: {
+        value: {
+          type: 'int',
+          required: true,
+        }
+      }
     }
   }
 }];
