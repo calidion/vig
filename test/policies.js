@@ -4,7 +4,7 @@ var assert = require('assert');
 var vig = require('../lib');
 var request = require('supertest');
 var express = require('express');
-var policiesController = require('./policiesController');
+var policiesHandler = require('./policiesHandler');
 var session = require('express-session');
 var cookies;
 var app;
@@ -22,10 +22,8 @@ describe('vig #policies', function () {
         secure: false
       }
     }));
-
-    vig.policize(app);
-
-    vig.addHandlers(app, policiesController);
+    vig.init(app);
+    vig.addHandlers(app, policiesHandler);
   });
   it('should get prevent all', function (done) {
     request(app)

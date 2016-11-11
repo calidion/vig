@@ -1,18 +1,123 @@
 # vig [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+
+## 介绍
+
 > a new web framework, inspired by sailsjs
+
+> vig是一个受sailsjs启发的框架，目标是将Web的常规业务功能标准化。
+> 集中精力做Web中的C端，即将Web的MVC业务模型拆分开，将C端细化。
+> 不再提供对M端的直接支持能力，
+> 但是默认会采用balderdash的waterline进行测试，
+> HTML模板会采用Mozilla的nunjucks进行测试
+
+
 
 ## Installation
 
 ```sh
 $ npm install --save vig
+$ yarn add vig
 ```
 
 ## Usage
 
+
+
+## 生成错误
+
 ```js
-var vig = require('vig');
+// errors.js
+var common = require('errorable-common');
+var errorable = require('errorable');
+var Generator = errorable.Generator;
+var errors = new Generator(common, 'zh-CN').errors;
+module.exports = errors;
 
 ```
+
+## 设定路由及处理函数
+
+```js
+// handlers.js
+module.exports = [{
+  urls: ['/'],
+  /**
+   * 路由处理定义，只要熟悉nodejs的req, res都知道如何处理了
+   */
+  // @方式一
+  routers: {
+    methods: ['get', 'post', 'bad'],
+    get: function (req, res) {
+      res.errorize(res.errors.Success);
+    },
+    post: function (req, res) {
+      res.restify(res.errors.Failure);
+    }
+  },
+  // @方式二
+  routers: {
+    methods: ['all'],
+    all: function (req, res) {
+      res.errorize(res.errors.Success);
+    }
+  },
+  /**
+   * 策略定义，成功调用next(true),失败调用next(false);
+   */
+  policies: {
+    methods: ['get', 'post'],
+    get: function (req, res, next) {
+      next(true);
+    },
+    post: function (req, res, next) {
+      next(true);
+    }
+  },
+  /**
+   * 检验条件定义，如果需要校验调用next(true),如果不需要校验调用next(false);
+   */
+  conditions: {
+    get: function (req, res, next) {
+      next(true);
+    }
+  },
+  /**
+   * 检验规则，未来会直接使用node-form-validator让这个过程更加的自动化避免手写
+   */
+  validations: {
+    get: function (req, res, next) {
+      next(true);
+    },
+    post: function (req, res, next) {
+      next(false);
+    }
+  }，
+  /**
+   * 事件定义，无URL无关，可以在任何一个Handler里定义
+   */
+  events: {
+    names: ['@event1', '@event2', 'bad'],
+    handlers: {
+      '@event1': function (next) {
+        next('@event1');
+      },
+      '@event2': function (next) {
+        next('@event2');
+      }
+    }
+  },
+}];
+
+```
+
+## 调用vig框架
+
+```js
+var vig = require('vig');
+    vig.init(app, errors);
+    vig.addHandlers(app, handlers);
+```
+
 ## License
 
 Apache-2.0 © [calidion]()
@@ -35,33 +140,32 @@ Apache-2.0 © [calidion]()
 而MVC理论并不是一个精细的理论。
 所以我们在这里会将MVC精细化，整理出一个更加符合Web的框架理论或者原型。
 
-# Web基本的业务模型内容
+# Web基本的业务模型内容与vig的完成目标与进度
 
 对于现在常见的Web模型，他通常包括如下的内容：
 
-1. 请求与返回（Request & Response）
-
-2. 前端与后端（Frontend & Backend）
-
-3. 数据库抽象与业务逻辑的连接（Database Design & Business Logic analystics）
-
-4. 安全策略与权限管理（Security & Privileges）
-
-5. 共享用户与单点登录（User Sharing & Autchenication)
-
-6. 配置动态化与自动化( Configuration & Automation）
-
-7. 标准化接口（API Standardization）
-
-8. 模块化与独立化，可分布式化（Modulization，Indepency， Distribution）
-
-9. 错误返回（Error Response)
-
-10. 文件上传与云传输（Cloud File Distribution）
-
-11. 数据输入的过滤与校验(Input Data Filtering and Validation)
-
-12. 将控制器、模型、业务、库、路由更方便的进行标准化。
+1. 请求与返回（Request & Response）  
+[由基础Web框架提供]  
+2. 前端与后端（Frontend & Backend） 
+[vig只关心后端，将会提供传统的HTML模板能力与API提供能力，其它的前端功能不会再提供]
+3. 数据库抽象与业务逻辑的连接（Database Design & Business Logic analystics）  
+[vig不提供直接的M层支持]  
+4. 安全策略与权限管理（Security & Privileges）  
+[已经完成]  
+5. 共享用户与单点登录（User Sharing & Autchenication)  
+6. 配置动态化与自动化( Configuration & Automation）  
+7. 标准化接口（API Standardization）  
+[基于errorable-express提供标准输出API]  
+8. 模块化与独立化，可分布式化（Modulization，Indepency， Distribution）  
+9. 错误返回（Error Response)  
+[已经完成]  
+10. 文件上传与云传输（Cloud File Distribution）  
+11. 数据输入的过滤与校验(Input Data Filtering and Validation)  
+[已经完成]  
+12. 将控制器、模型、业务、库、路由更方便的进行标准化。  
+13. HTML页面模板  
+[由第三方提供，vig只提供接入方法]  
+14. 接入socket.io，提供WebSocket的能力  
 
 所以我们在设计这个框架时，将会着重关注以上的几点。  
 并努力的将这些核心内容接口化，标准化，从而方便迁移与升级。

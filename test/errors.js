@@ -14,12 +14,12 @@ var app;
 describe('vig #errors', function () {
   before(function () {
     app = express();
-    vig.errorize(app, errors);
+    vig.init(app, errors);
     vig.addHandlers(app, errorsHandlers);
   });
-  it('should get /', function (done) {
+  it('should get /errors', function (done) {
     request(app)
-      .get('/')
+      .get('/errors')
       .expect(200)
       .end(function (err, res) {
         assert(!err);
@@ -27,9 +27,9 @@ describe('vig #errors', function () {
         done();
       });
   });
-  it('should get /', function (done) {
+  it('should get /errors', function (done) {
     request(app)
-      .post('/')
+      .post('/errors')
       .expect(200)
       .end(function (err, res) {
         assert(!err);

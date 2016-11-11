@@ -3,7 +3,7 @@ module.exports = [{
   routers: {
     methods: ['get', 'post', 'bad'],
     get: function (req, res) {
-      res.send('get');
+      res.send('/prevent/all get');
     },
     post: function (req, res) {
       res.send('post');
@@ -27,8 +27,11 @@ module.exports = [{
     }
   },
   policies: {
-    methods: ['all'],
-    all: function (req, res, next) {
+    methods: ['get', 'post'],
+    get: function (req, res, next) {
+      next(true);
+    },
+    post: function (req, res, next) {
       next(true);
     }
   }
