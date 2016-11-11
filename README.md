@@ -82,14 +82,39 @@ module.exports = [{
     }
   },
   /**
-   * 检验规则，未来会直接使用node-form-validator让这个过程更加的自动化避免手写
+   * 检验规则，即可添加函数自己编写，可以直接对query, params, body进行规则编写.
    */
   validations: {
     get: function (req, res, next) {
       next(true);
     },
-    post: function (req, res, next) {
-      next(false);
+    post: {
+      query: {
+        username: {
+          type: 'string',
+          required: true,
+          maxLength: 30,
+          minLength: 2
+        },
+        password: {
+          type: 'string',
+          required: true,
+          minLength: 6,
+          maxLength: 30
+        }
+      },
+      params: {
+        id: {
+          type: 'int',
+          required: true
+        }
+      },
+      body: {
+        value: {
+          type: 'int',
+          required: true
+        }
+      }
     }
   }，
   /**
