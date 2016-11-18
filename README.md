@@ -197,6 +197,37 @@ vig.models.init(config, options,
 这样你的orm功能就可以使用了。
 详细的模型的使用方法参考[waterline](https://github.com/balderdashy/waterline-docs)
 
+## 文件上传与云上传
+
+文件上传使用的是skipper。
+文件的云上传使用的是file-cloud-uploader。
+
+使用req.file调用skipper。
+使用req.cloud调用的是file-cloud-uploader。
+比如提交一个字段名为txt的文件，代码如下：
+```js
+    app.post('/file/upload', function (req, res) {
+      req.cloud('txt', {
+        type: 'disk',
+        config: {
+          dir: path.resolve(__dirname, './uploaded/'),
+          base: 'http://localhost'
+        }
+      }).then(function (files) {
+        res.send(String(files.length));
+      });
+    });
+```
+1. req.cloud(filedName, options)
+2. req.cloud返回文件数组的Promise
+3. 通过
+```js
+var file = files[i];
+var ulr = file.url;
+```
+来获取文件访问信息。
+
+
 
 ## License
 
@@ -240,6 +271,7 @@ Apache-2.0 © [calidion]()
 9. 错误返回（Error Response)  
 [已经完成]  
 10. 文件上传与云传输（Cloud File Distribution）  
+[已经完成]
 11. 数据输入的过滤与校验(Input Data Filtering and Validation)  
 [已经完成]  
 12. 将控制器、模型、业务、库、路由更方便的进行标准化。  
