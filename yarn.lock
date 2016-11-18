@@ -207,6 +207,21 @@ bluebird@3.2.1:
   version "3.2.1"
   resolved "http://registry.npm.taobao.org/bluebird/download/bluebird-3.2.1.tgz#3cecf3504904c30ce3e79c170877e893a11910fd"
 
+body-parser:
+  version "1.15.2"
+  resolved "http://registry.npm.taobao.org/body-parser/download/body-parser-1.15.2.tgz#d7578cf4f1d11d5f6ea804cef35dc7a7ff6dae67"
+  dependencies:
+    bytes "2.4.0"
+    content-type "~1.0.2"
+    debug "~2.2.0"
+    depd "~1.1.0"
+    http-errors "~1.5.0"
+    iconv-lite "0.4.13"
+    on-finished "~2.3.0"
+    qs "6.2.0"
+    raw-body "~2.1.7"
+    type-is "~1.6.13"
+
 body-parser@1.15.1:
   version "1.15.1"
   resolved "http://registry.npm.taobao.org/body-parser/download/body-parser-1.15.1.tgz#9bceef0669b8f8b943f0ad8ce5d95716bd740fd2"
@@ -2609,7 +2624,7 @@ range-parser@~1.2.0:
   version "1.2.0"
   resolved "http://registry.npm.taobao.org/range-parser/download/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
 
-raw-body@~2.1.6:
+raw-body@~2.1.6, raw-body@~2.1.7:
   version "2.1.7"
   resolved "http://registry.npm.taobao.org/raw-body/download/raw-body-2.1.7.tgz#adfeace2e4fb3098058014d08c072dcc59758774"
   dependencies:
