@@ -14,16 +14,13 @@ describe('vig #events', function () {
   });
   it('should handle /events', function (done) {
     vig.events.send('@event1', function (data) {
-      console.log(data);
       assert(data === '@event1');
       done();
     });
   });
   it('should get /events', function (done) {
     vig.events.send('@event2', function (data) {
-      console.log(data);
       assert(data === '@event2');
-
       done();
     });
   });

@@ -1,6 +1,6 @@
 {
   "name": "vig",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "a new web framework, inspired by sailsjs",
   "homepage": "",
   "author": {
@@ -54,6 +54,7 @@
     "chalk": "^1.1.3",
     "errorable-express": "^0.0.4",
     "node-form-validator": "^1.1.0",
-    "waterline": "^0.11.6"
+    "waterline": "^0.11.6",
+    "skipper": "^0.7.0"
   }
 }
