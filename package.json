@@ -54,8 +54,9 @@
     "body-parser": "^1.15.2",
     "chalk": "^1.1.3",
     "errorable-express": "^0.0.4",
+    "lodash": "^4.17.2",
     "node-form-validator": "^1.1.0",
-    "path-to-regexp": "^1.7.0",
+    "path-to-regexp": "^0.1.7",
     "skipper": "^0.7.0",
     "waterline": "^0.11.6"
   }
