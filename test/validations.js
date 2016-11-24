@@ -45,7 +45,7 @@ describe('vig #validations', function () {
       .expect(403)
       .end(function (err, res) {
         assert(!err);
-        assert(res.text === 'Access Denied!');
+        assert(res.text === 'Access Denied Due to Failure to conditions');
         done();
       });
   });
@@ -68,7 +68,7 @@ describe('vig #validations', function () {
       .expect(403)
       .end(function (err, res) {
         assert(!err);
-        assert(res.text === 'Access Denied!');
+        assert(res.text === 'Access Denied Due to Failure to validations');
         done();
       });
   });
@@ -93,7 +93,7 @@ describe('vig #validations', function () {
       .expect(403)
       .end(function (err, res) {
         assert(!err);
-        assert(res.text === 'Access Denied!');
+        assert(res.text === 'Access Denied Due to Failure to validations');
         done();
       });
   });

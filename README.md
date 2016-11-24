@@ -40,13 +40,14 @@ module.exports = errors;
 ```js
 // handlers.js
 module.exports = [{
-  urls: ['/'],
+  prefix: '/prefix',  // 最后不能接'/'
+  urls: ['/', '/:id', '/user/:id'],   // 必须以'/'开头
+
   /**
    * 路由处理定义，只要熟悉nodejs的req, res都知道如何处理了
    */
   // @方式一
   routers: {
-    methods: ['get', 'post', 'bad'],
     get: function (req, res) {
       res.errorize(res.errors.Success);
     },
@@ -56,7 +57,6 @@ module.exports = [{
   },
   // @方式二
   routers: {
-    methods: ['all'],
     all: function (req, res) {
       res.errorize(res.errors.Success);
     }
@@ -65,7 +65,6 @@ module.exports = [{
    * 策略定义，成功调用next(true),失败调用next(false);
    */
   policies: {
-    methods: ['get', 'post'],
     get: function (req, res, next) {
       next(true);
     },
@@ -79,6 +78,20 @@ module.exports = [{
   conditions: {
     get: function (req, res, next) {
       next(true);
+    }
+  },
+  /**
+   * 失败统一处理机制
+   */
+  failures: {
+    validation: function(error, req, res) {
+      // res.status(403).send('Access Denied');
+    },
+    condition: function(error, req, res) {
+      // res.status(403).send('Access Denied');
+    },
+    policy: function(error, req, res) {
+
     }
   },
   /**

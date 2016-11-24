@@ -41,6 +41,14 @@ module.exports = [{
       next(true);
     }
   },
+  failures: {
+    validation: function (error, req, res) {
+      res.status(403).send('Access Denied Due to Failure to validations');
+    },
+    condition: function (error, req, res) {
+      res.status(403).send('Access Denied Due to Failure to conditions');
+    }
+  },
   validations: {
     get: function (req, res, next) {
       next(false);

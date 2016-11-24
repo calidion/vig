@@ -23,7 +23,6 @@ describe('vig #prefix', function () {
       .post('/prefix/100')
       .expect(200)
       .end(function (err, res) {
-        console.log(err);
         assert(!err);
         assert(res.text === 'prefix100');
         done();
