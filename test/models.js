@@ -4,8 +4,16 @@ var assert = require('assert');
 var vig = require('../lib');
 var path = require('path');
 var sailsMemoryAdapter = require('sails-memory');
+var request = require('supertest');
+var express = require('express');
+var app;
 
 describe('vig #models', function () {
+  before(function () {
+    app = express();
+    vig.normalize(app);
+    vig.init(app);
+  });
   it('should init dir', function () {
     var dir = path.resolve(__dirname, './models/');
     vig.models.addDir(dir);
@@ -52,5 +60,20 @@ describe('vig #models', function () {
         done();
       });
   });
-});
+  it('should get test req.models', function (done) {
+    app.use('/models/assert', function (req, res) {
+      assert(req.models.Pet);
+      assert(req.models.User);
+      res.send('ok');
+    });
 
+    request(app)
+      .post('/models/assert')
+      .expect(200)
+      .end(function (err, res) {
+        assert(!err);
+        assert(res.text === 'ok');
+        done();
+      });
+  });
+});
