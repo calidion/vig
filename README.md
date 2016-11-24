@@ -143,6 +143,92 @@ var vig = require('vig');
     vig.addHandlers(app, handlers);
 ```
 
+## 基于waterline的ORM技术
+
+### 添加orm目录
+vig的models放在指定的目录，需要手动转入目录告诉vig，然后调用vig.models.addDir添加。
+代码如下：
+
+```js
+var path = require('path');
+var dir = path.resolve(__dirname, './models/');
+vig.models.addDir(dir);
+```
+### 编写一个model
+详细使用请查看waterline的文档。
+```js
+// User.js
+module.exports = {
+  identity: 'user',  // 需要唯一
+  attributes: {      // 所有的字段
+    firstName: 'string',
+    lastName: 'string',
+  }
+};
+```
+
+### 初始化orm,必须在指定dir之后才能生效
+
+```js
+var config = {
+  adapters: {
+    memory: sailsMemoryAdapter
+  },
+  connections: {
+    default: {
+      adapter: 'memory'
+    }
+  }
+};
+var options = {
+  connection: 'default'
+};
+vig.models.init(config, options,
+  function (error, models) {
+    if (error) {
+      throw error;
+    }
+    // models.User.find()
+  });
+```
+上面的`models`就是定义的全部ORM模型。
+这时你可以通过`models.User`来访问他。
+`User`是去掉了`.js`的文件名。
+这样你的orm功能就可以使用了。
+详细的模型的使用方法参考[waterline](https://github.com/balderdashy/waterline-docs)
+
+## 文件上传与云上传
+
+文件上传使用的是skipper。
+文件的云上传使用的是file-cloud-uploader。
+
+使用req.file调用skipper。
+使用req.cloud调用的是file-cloud-uploader。
+比如提交一个字段名为txt的文件，代码如下：
+```js
+    app.post('/file/upload', function (req, res) {
+      req.cloud('txt', {
+        type: 'disk',
+        config: {
+          dir: path.resolve(__dirname, './uploaded/'),
+          base: 'http://localhost'
+        }
+      }).then(function (files) {
+        res.send(String(files.length));
+      });
+    });
+```
+1. req.cloud(filedName, options)
+2. req.cloud返回文件数组的Promise
+3. 通过
+```js
+var file = files[i];
+var ulr = file.url;
+```
+来获取文件访问信息。
+
+
+
 ## License
 
 Apache-2.0 © [calidion]()
@@ -174,7 +260,7 @@ Apache-2.0 © [calidion]()
 2. 前端与后端（Frontend & Backend） 
 [vig只关心后端，将会提供传统的HTML模板能力与API提供能力，其它的前端功能不会再提供]
 3. 数据库抽象与业务逻辑的连接（Database Design & Business Logic analystics）  
-[vig不提供直接的M层支持]  
+[vig不提供直接的M层支持, 但是基于waterline，提供了优秀的ORM机制]
 4. 安全策略与权限管理（Security & Privileges）  
 [已经完成]  
 5. 共享用户与单点登录（User Sharing & Autchenication)  
@@ -185,6 +271,7 @@ Apache-2.0 © [calidion]()
 9. 错误返回（Error Response)  
 [已经完成]  
 10. 文件上传与云传输（Cloud File Distribution）  
+[已经完成]
 11. 数据输入的过滤与校验(Input Data Filtering and Validation)  
 [已经完成]  
 12. 将控制器、模型、业务、库、路由更方便的进行标准化。  
