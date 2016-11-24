@@ -82,7 +82,10 @@ describe('vig #validations', function () {
       .expect(200)
       .end(function (err, res) {
         assert(!err);
-        assert.deepEqual(JSON.parse(res.text), {value:100});
+        assert.deepEqual(JSON.parse(res.text),
+          {
+            value: 100
+          });
         done();
       });
   });
@@ -104,7 +107,11 @@ describe('vig #validations', function () {
       .expect(200)
       .end(function (err, res) {
         assert(!err);
-        assert.deepEqual(JSON.parse(res.text), { username:'sdfsf', password: '32323123'});
+        assert.deepEqual(JSON.parse(res.text),
+          {
+            username: 'sdfsf',
+            password: '32323123'
+          });
         done();
       });
   });
