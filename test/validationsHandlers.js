@@ -30,7 +30,11 @@ module.exports = [{
       res.send('get');
     },
     post: function (req, res) {
-      res.send('post');
+      if (req.extracted) {
+        res.json(req.extracted);
+      } else {
+        res.send('post');
+      }
     }
   },
   conditions: {
