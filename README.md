@@ -2,28 +2,46 @@
 
 ## 介绍
 
-> a new web framework, inspired by sailsjs
+> A web logic focused web framework, inspired by sails.  
+> modular, pluggable,reenterable and integratable.  
 
-> vig是一个受sailsjs启发的框架，目标是将Web的常规业务功能标准化。
-> 集中精力做Web中的C端，即将Web的MVC业务模型拆分开，将C端细化。
-> 不再提供对M端的直接支持能力，
-> 但是默认会采用balderdash的waterline进行测试，
-> HTML模板会采用Mozilla的nunjucks进行测试
+> 一个基于专注于web逻辑的框架，受sailsjs启发  
+> 可模块化，可插件化，可重入，可集成  
+
+> vig是一个受sailsjs启发的框架，目标是将Web的常规业务功能标准化。  
+> 集中精力做Web中的C端，即将Web的MVC业务模型拆分开，将C端细化。  
+> 不会再重复造服务器的轮子，  
+> 服务器默认采用最流行，最符合Web的逻辑的web框架express  
+> ORM默认采用waterline（balderdash出品）  
+> HTML模板会采用强大的nunjucks（Mozilla出品） 
 
 
+## 关于async/await支持的几点说明
 
-## Installation
+vig/express对async/await的支持依赖于用户的开发环境本身与框架无关。  
+async/await无法实现对事件的支持,所以不是万能的，回调函数是不可能消失的。  
+http请求本身是一种事件，所以对于http请求的处理应该是基于事件。  
+所以在使用vig/express框架时需要注意事件与IO回调的区别。  
+
+下面再将事件与常规的IO调用的差别说明一下。
+1、IO的调用本身也是事件。  
+2、IO调用本身也是可以不定期的，比如网络IO。  
+3、对于时间与任务明确的IO调用，推荐async/awati，比如数据库访问，文件访问等。  
+4、对于不明确的事件应该使用回调，比如网络IO，用户的IO事件，如键盘事件，鼠标事件等。  
+5、async/await无法取代回调函数  
+
+## 安装
 
 ```sh
 $ npm install --save vig
 $ yarn add vig
 ```
 
-## Usage
+## 使用
 
 
 
-## 生成错误
+### 生成错误
 
 ```js
 // errors.js
@@ -35,7 +53,7 @@ module.exports = errors;
 
 ```
 
-## 设定路由及处理函数
+### 设定路由及处理函数
 
 ```js
 // handlers.js
@@ -96,12 +114,15 @@ module.exports = [{
   },
   /**
    * 检验规则，即可添加函数自己编写，可以直接对query, params, body进行规则编写.
+   * 一个handler只能有一种数据格式，暂时不支持文件检验
    */
   validations: {
     get: function (req, res, next) {
       next(true);
     },
     post: {
+      required: ['query'],  // 指定必须有内容，并且必须匹配的属性,
+                            // 默认validations的属性并不是强制必须传输的
       query: {
         username: {
           type: 'string',
@@ -148,7 +169,7 @@ module.exports = [{
 
 ```
 
-## 调用vig框架
+### 调用vig框架
 
 ```js
 var vig = require('vig');
@@ -210,7 +231,7 @@ vig.models.init(config, options,
 这样你的orm功能就可以使用了。
 详细的模型的使用方法参考[waterline](https://github.com/balderdashy/waterline-docs)
 
-## 文件上传与云上传
+### 文件上传与云上传
 
 文件上传使用的是skipper。
 文件的云上传使用的是file-cloud-uploader。

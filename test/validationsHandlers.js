@@ -110,4 +110,79 @@ module.exports = [{
       }
     }
   }
+}, {
+  urls: ['/post/:id'],
+  routers: {
+    methods: ['get', 'post'],
+    get: function (req, res) {
+      res.send('get');
+    },
+    post: function (req, res) {
+      res.send('post');
+    }
+  },
+  validations: {
+    get: function (req, res, next) {
+      next(false);
+    },
+    post: {
+      required: ['body'],
+      body: {
+        data: {
+          type: 'int',
+          required: true
+        }
+      }
+    }
+  }
+}, {
+  urls: ['/unded/:id'],
+  routers: {
+    methods: ['get', 'post'],
+    get: function (req, res) {
+      res.send('get');
+    },
+    post: function (req, res) {
+      res.send('post');
+    }
+  },
+  validations: {
+    get: function (req, res, next) {
+      next(false);
+    },
+    post: {
+      required: {},
+      body: {
+        data: {
+          type: 'int',
+          required: true
+        }
+      }
+    }
+  }
+}, {
+  urls: ['/nag/:id'],
+  routers: {
+    methods: ['get', 'post'],
+    get: function (req, res) {
+      res.send('get');
+    },
+    post: function (req, res) {
+      res.send('post');
+    }
+  },
+  validations: {
+    get: function (req, res, next) {
+      next(false);
+    },
+    post: {
+      required: [],
+      body: {
+        data: {
+          type: 'int',
+          required: true
+        }
+      }
+    }
+  }
 }];

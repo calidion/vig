@@ -84,7 +84,9 @@ describe('vig #validations', function () {
         assert(!err);
         assert.deepEqual(JSON.parse(res.text),
           {
-            value: 100
+            body: {
+              value: 100
+            }
           });
         done();
       });
@@ -109,8 +111,10 @@ describe('vig #validations', function () {
         assert(!err);
         assert.deepEqual(JSON.parse(res.text),
           {
-            username: 'sdfsf',
-            password: '32323123'
+            query: {
+              username: 'sdfsf',
+              password: '32323123'
+            }
           });
         done();
       });
@@ -145,6 +149,36 @@ describe('vig #validations', function () {
       .end(function (err, res) {
         assert(!err);
         assert(res.text === 'Access Denied!');
+        done();
+      });
+  });
+  it('should post /post/:id', function (done) {
+    request(app)
+      .post('/post/abcd')
+      .expect(403)
+      .end(function (err, res) {
+        assert(!err);
+        assert(res.text === 'Access Denied!');
+        done();
+      });
+  });
+  it('should post /unded/:id', function (done) {
+    request(app)
+      .post('/unded/abcd')
+      .expect(200)
+      .end(function (err, res) {
+        assert(!err);
+        assert(res.text === 'post');
+        done();
+      });
+  });
+  it('should post /nag/:id', function (done) {
+    request(app)
+      .post('/nag/abcd')
+      .expect(200)
+      .end(function (err, res) {
+        assert(!err);
+        assert(res.text === 'post');
         done();
       });
   });
