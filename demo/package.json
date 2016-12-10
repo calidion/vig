@@ -1,0 +1,11 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "vig框架的目标是快速的完成Web业务的开发，同时提升模块化水平。目标听起来很完美，如果无法付之行动，那么就是没有意义的。 所以在这个系列文章中，我们将会陆续介绍vig框架的使用。 这一节我们介绍如何使用vig做一个最简单的hello world服务器。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
