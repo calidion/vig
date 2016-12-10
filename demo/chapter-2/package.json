@@ -1,0 +1,11 @@
+{
+  "name": "chapter-2",
+  "version": "1.0.0",
+  "description": "上一讲我们讲到了vig的url机制里的： 1、别名机制 2、前缀机制",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
