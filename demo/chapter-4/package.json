@@ -1,0 +1,15 @@
+{
+  "name": "chapter-4",
+  "version": "1.0.0",
+  "description": "上一讲我们讲到了数据校验的基本规则与提取方法，但是我们只讲到了int类型的校验。 这一讲我们再详细的讲解vig可以校验那些主要的数据类型。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "vig": "^0.7.3"
+  }
+}
