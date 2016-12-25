@@ -23,7 +23,7 @@ module.exports = {
   },
   failures: {
     validation: function (err, req, res, next) {
-      res.send('id validation falied!\n');
+      res.send(JSON.stringify(err) + '\n');
     }
   }
 };

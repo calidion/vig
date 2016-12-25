@@ -57,7 +57,7 @@
     "errorable-express": "^0.0.4",
     "file-cloud-uploader": "0.0.5",
     "lodash": "^4.17.2",
-    "node-form-validator": "^1.2.0",
+    "node-form-validator": "^1.3.0",
     "path-to-regexp": "^0.1.7",
     "skipper": "^0.7.0",
     "waterline": "^0.11.6"
