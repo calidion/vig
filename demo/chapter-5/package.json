@@ -1,0 +1,15 @@
+{
+  "name": "chapter-5",
+  "version": "1.0.0",
+  "description": "上一讲我们讲到了几个重要的类型与检测方法，这一讲，我们继续介绍常用用的数据类型的校验。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "vig": "^0.7.4"
+  }
+}
