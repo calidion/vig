@@ -24,5 +24,13 @@ describe('vig #events', function () {
       done();
     });
   });
+
+  it('should enable on events', function (done) {
+    vig.events.on('hello', function (data) {
+      assert(data === 'world');
+      done();
+    });
+    vig.events.send('hello', 'world');
+  });
 });
 
