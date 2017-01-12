@@ -1,0 +1,16 @@
+{
+  "name": "chapter-6",
+  "version": "1.0.0",
+  "description": "上面几讲我们讲了vig对数据的操作，这一讲我们来讲一下vig对数据库操作的支持。 目前vig是基于waterline这个orm库来实现对数据库的操作的。 原因是他足够简单易用，方便书写，代码清晰。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "sails-mongo": "^0.12.2",
+    "sails-mysql": "^0.11.5",
+    "vig": "^0.7.4"
+  }
+}
