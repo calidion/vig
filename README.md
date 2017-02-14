@@ -16,6 +16,24 @@
 > HTML模板会采用强大的nunjucks（Mozilla出品） 
 
 
+## 教程
+[第一章 最简服务器创建与URL路由（别名与前缀）机制](./demo/chapter-1)   
+
+[第二章 vig的http方法机制详解](./demo/chapter-2)  
+
+[第三章 输入数据的校验与提取](./demo/chapter-3)  
+
+[第四章 输入数据的校验与提取（二）](./demo/chapter-4)  
+
+[第五章 输入数据的校验与提取（三）](./demo/chapter-5)  
+
+[第六章 基于waterline操作数据库与模型](./demo/chapter-6)  
+
+[第七章 在vig中进行错误处理](./demo/chapter-7)   
+
+[第八章 在vig中进行文件处理](./demo/chapter-8)    
+
+
 ## 关于async/await支持的几点说明
 
 vig/express对async/await的支持依赖于用户的开发环境本身与框架无关。  
