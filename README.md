@@ -17,21 +17,28 @@
 
 
 ## 教程
-[第一章 最简服务器创建与URL路由（别名与前缀）机制](./demo/chapter-1)   
 
-[第二章 vig的http方法机制详解](./demo/chapter-2)  
+[第一章 最简服务器创建](./demo/chapter-1)   
 
-[第三章 输入数据的校验与提取](./demo/chapter-3)  
+[第二章 URL路由（别名与前缀）机制](./demo/chapter-1)   
 
-[第四章 输入数据的校验与提取（二）](./demo/chapter-4)  
+[第三章 vig的http方法机制详解](./demo/chapter-2)  
 
-[第五章 输入数据的校验与提取（三）](./demo/chapter-5)  
+[第四章 输入数据的校验与提取](./demo/chapter-3)  
 
-[第六章 基于waterline操作数据库与模型](./demo/chapter-6)  
+[第五章 输入数据的校验与提取（二）](./demo/chapter-4)  
 
-[第七章 在vig中进行错误处理](./demo/chapter-7)   
+[第六章 输入数据的校验与提取（三）](./demo/chapter-5)  
 
-[第八章 在vig中进行文件处理](./demo/chapter-8)    
+[第七章 基于waterline操作数据库与模型](./demo/chapter-6)  
+
+[第八章 在vig中进行错误处理](./demo/chapter-7)   
+
+[第九章 在vig中进行文件处理（未完成）](./demo/chapter-8)    
+
+[第九章 应用权限机制（未完成）](./demo/chapter-9)    
+
+[第九章 错误处理机制（未完成）](./demo/chapter-10)    
 
 
 ## 关于async/await支持的几点说明
