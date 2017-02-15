@@ -16,6 +16,50 @@
 > HTML模板会采用强大的nunjucks（Mozilla出品） 
 
 
+## 快速上手
+
+1、创建一个test.js文件
+
+```sh
+vi test.js
+```
+
+2、添加如下代码
+
+```js
+var app = require('express')();
+var vig = require('vig');
+vig.init(app);
+vig.addHandler(app, {
+  prefix: '/demo',
+  urls: ['/', '/hello'],
+  routers: {
+    get: function (req, res) {
+      res.send('Hello world!');
+    }
+  }
+});
+
+app.listen(10000, function () {
+  console.log('server running on http://localhost:1000');
+});
+```
+
+3、执行
+
+```sh
+npm install --save vig
+npm install --save express
+```
+
+4、运行
+
+```
+node test
+```
+
+
+
 ## 教程
 
 [第一章 最简服务器创建](./demo/chapter-1)   
