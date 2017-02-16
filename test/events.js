@@ -2,16 +2,10 @@
 
 var assert = require('assert');
 var vig = require('../lib');
-var express = require('express');
 var eventsHandlers = require('./eventsHandlers');
-var app;
+vig.events.add(eventsHandlers);
 
 describe('vig #events', function () {
-  before(function () {
-    app = express();
-    vig.init(app);
-    vig.addHandlers(app, eventsHandlers);
-  });
   it('should handle /events', function (done) {
     vig.events.send('@event1', function (data) {
       assert(data === '@event1');
@@ -26,11 +20,33 @@ describe('vig #events', function () {
   });
 
   it('should enable on events', function (done) {
+    var passed = false;
     vig.events.on('hello', function (data) {
       assert(data === 'world');
-      done();
+      console.log('on hello');
+      console.log(passed);
+      if (passed === false) {
+        console.log('inside');
+        passed = true;
+        vig.events.send('hello', 'world');
+      } else {
+        console.log('inside 1');
+        done();
+      }
     });
     vig.events.send('hello', 'world');
+  });
+
+  it('should enable once events', function (done) {
+    var res;
+    vig.events.once('hello1', function (data) {
+      assert(data === 'world');
+      let res = vig.events.send('hello1', 'world');
+      assert(!res);
+      done();
+    });
+    res = vig.events.send('hello1', 'world');
+    assert(res);
   });
 });
 
