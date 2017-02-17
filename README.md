@@ -65,7 +65,7 @@ vig.addHandler(app, {
 });
 
 app.listen(10000, function () {
-  console.log('server running on http://localhost:1000');
+  console.log('server running on http://localhost:10000');
 });
 ```
 
@@ -102,9 +102,9 @@ node test
 
 [第九章 在vig中进行文件处理（未完成）](./demo/chapter-8)    
 
-[第九章 应用权限机制（未完成）](./demo/chapter-9)    
+[第十章 应用权限机制（未完成）](./demo/chapter-9)    
 
-[第九章 错误处理机制（未完成）](./demo/chapter-10)    
+[第十一章 错误处理机制（未完成）](./demo/chapter-10)    
 
 
 ## 关于async/await支持的几点说明
