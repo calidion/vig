@@ -37,8 +37,8 @@ describe('vig #events', function () {
     var res;
     vig.events.once('hello1', function (data) {
       assert(data === 'world');
-      let res = vig.events.send('hello1', 'world');
-      assert(!res);
+      var res1 = vig.events.send('hello1', 'world');
+      assert(!res1);
       done();
     });
     res = vig.events.send('hello1', 'world');
