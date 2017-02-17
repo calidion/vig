@@ -13,13 +13,14 @@ describe('vig #errors', function () {
   before(function () {
     app = express();
     var generator = new vig.Errors();
-    generator.add(path.resolve(__dirname + '/errorsHandlers'));
-    generator.add(path.resolve(__dirname + '/errors/vig.js'));
-    generator.add(path.resolve(__dirname + '/aaa.js'));
+    generator.add(path.join(__dirname, '/errorsHandlers'));
+    generator.add(path.join(__dirname, '/errors/vig.js'));
+    generator.add(path.join(__dirname, '/aaa.js'));
     errors = generator.generate();
     vig.init(app, errors);
     vig.addHandlers(app, errorsHandlers);
   });
+
   it('should get /errors', function (done) {
     request(app)
       .get('/errors')
@@ -30,6 +31,7 @@ describe('vig #errors', function () {
         done();
       });
   });
+
   it('should get /errors', function (done) {
     request(app)
       .post('/errors')
@@ -51,6 +53,5 @@ describe('vig #errors', function () {
         done();
       });
   });
-
 });
 
