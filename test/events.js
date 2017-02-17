@@ -23,14 +23,10 @@ describe('vig #events', function () {
     var passed = false;
     vig.events.on('hello', function (data) {
       assert(data === 'world');
-      console.log('on hello');
-      console.log(passed);
       if (passed === false) {
-        console.log('inside');
         passed = true;
         vig.events.send('hello', 'world');
       } else {
-        console.log('inside 1');
         done();
       }
     });

@@ -29,7 +29,6 @@ describe('vig #handlers', function () {
       .post('/nomethod/100')
       .expect(200)
       .end(function (err, res) {
-        console.log(err, res.text);
         assert(!err);
         assert(res.text === 'nomethod100');
         done();

@@ -1,8 +1,6 @@
 'use strict';
-var common = require('errorable-common');
-var errorable = require('errorable');
-var Generator = errorable.Generator;
-var errors = new Generator(common, 'zh-CN').errors;
+var path = require('path');
+var errors;
 
 var assert = require('assert');
 var vig = require('../lib');
@@ -14,6 +12,11 @@ var app;
 describe('vig #errors', function () {
   before(function () {
     app = express();
+    var generator = new vig.Errors();
+    generator.add(path.resolve(__dirname + '/errorsHandlers'));
+    generator.add(path.resolve(__dirname + '/errors/vig.js'));
+    generator.add(path.resolve(__dirname + '/aaa.js'));
+    errors = generator.generate();
     vig.init(app, errors);
     vig.addHandlers(app, errorsHandlers);
   });
@@ -37,5 +40,17 @@ describe('vig #errors', function () {
         done();
       });
   });
+
+  it('should put vig /errors', function (done) {
+    request(app)
+      .put('/errors')
+      .expect(200)
+      .end(function (err, res) {
+        assert(!err);
+        assert.deepEqual(res.body, errors.VigTestError.restify());
+        done();
+      });
+  });
+
 });
 

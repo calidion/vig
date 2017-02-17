@@ -7,6 +7,9 @@ module.exports = [{
     },
     post: function (req, res) {
       res.restify(res.errors.Failure);
+    },
+    put: function (req, res) {
+      res.restify(res.errors.VigTestError);
     }
   }
 }];
