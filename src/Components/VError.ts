@@ -29,11 +29,8 @@ export class VError {
   }
   getFile(file: string): Object {
     if (fs.existsSync(file)) {
-      try {
-        return JSON.parse(String(fs.readFileSync(file)));
-      } catch (e) {
-        return null;
-      }
+      var json = require(file);
+      return json;
     }
   }
   generate(locale: string = 'zh-CN', filesOnly = true): Object {
