@@ -3,3 +3,4 @@ coverage
 .tmp/
 test/uploaded
 .DS_Store
+dest
