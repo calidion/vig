@@ -15,13 +15,56 @@ var ts = require("gulp-typescript");
 var tsProject = ts.createProject("tsconfig.json");
 
 gulp.task("tsc", ['tslint'], function () {
-  return tsProject.src()
-    .pipe(tsProject())
-    .js.pipe(gulp.dest("dest"));
+  return gulp.src('src/**/*.ts')
+    .pipe(ts({
+      "module": "commonjs",
+      "allowJs": true,
+      "target": "es5",
+      "noImplicitAny": true
+    }))
+    .pipe(gulp.dest('dest/src'));
 });
 
+gulp.task("tstestc", ['tsc'], function () {
+  return gulp.src('tstest/**/*.test.ts')
+    .pipe(ts({
+      "module": "commonjs",
+      "allowJs": true,
+      "target": "es5",
+      "noImplicitAny": true
+    }))
+    .pipe(gulp.dest('dest/tstest'));
+});
+
+gulp.task('pre-tstest', function () {
+  return gulp.src('dest/src/**/*.js')
+    .pipe(excludeGitignore())
+    .pipe(istanbul({
+      includeUntested: true
+    }))
+    .pipe(istanbul.hookRequire());
+});
+
+
+gulp.task("tstest", ['tstestc', 'pre-tstest'], function () {
+  var mochaErr;
+
+  gulp.src('dest/tstest/**/*.test.js')
+    .pipe(plumber())
+    .pipe(mocha({ reporter: 'spec' }))
+    .on('error', function (err) {
+      mochaErr = err;
+      throw err;
+    })
+    .pipe(istanbul.writeReports())
+    .on('end', function () {
+      cb(mochaErr);
+    });
+});
+
+
 gulp.task("tslint", () =>
-  gulp.src(['src/**/*.ts', 'test/**/*.test.ts'])
+  gulp.src(['src/**/*.ts', 'tstest/**/*.test.ts'])
     .pipe(tslint({
       formatter: "verbose"
     }))
