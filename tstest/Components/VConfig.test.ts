@@ -5,8 +5,9 @@ import * as assert from 'assert';
 import * as path from 'path';
 import * as fs from 'fs';
 
+var componentPath = path.resolve(__dirname, '../../../test/');
+var objPath = path.resolve(__dirname, '../../../test/configs');
 const config = new VConfig();
-var componentPath = path.resolve(__dirname, '../../../test/config');
 
 describe('VConfig', () => {
   it('should new VConfig', () => {
@@ -14,8 +15,13 @@ describe('VConfig', () => {
   });
 
   it('should load', () => {
-    var data: any = config.load(componentPath);
-    console.log(data);
+    var data: any = config.load(objPath);
+    assert(data && data.test && data.test.a === '1');
+  })
+
+  it('should load', () => {
+    var route = new VConfig(componentPath);
+    var data: any = route.load();
     assert(data && data.test && data.test.a === '1');
   })
 });

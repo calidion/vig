@@ -28,5 +28,6 @@ describe('VError', () => {
     assert(errors && errors.VigTestError);
     errors = error.generate('', false);
     assert(errors && errors.VigTestError);
+    error.filter();
   })
 });

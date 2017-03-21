@@ -9,9 +9,8 @@ import { Generator } from 'errorable';
 import { VBase } from './VBase';
 
 export class VConfig extends VBase {
-  defaultPath = 'config';
-  filters = {}
-  constructor() {
-    super()
+  defaultPath = 'configs';
+  constructor(path = __dirname) {
+    super(path)
   }
 }

@@ -27,7 +27,11 @@ export class VBase {
   // nameless. merged by object
   protected nameless = false;
 
-  constructor(path = __dirname) {
+  protected filterEnabled = false;
+
+  protected filters: Array<String> = [];
+
+  constructor(path: string) {
     this.basePath = path;
   }
 
@@ -76,14 +80,35 @@ export class VBase {
     return data;
   }
 
+  filter() {
+    if (!this.filterEnabled) {
+      console.warn('Filter is not enabled!');
+      return;
+    }
+    this.files = this.files.map(file => {
+      return this._filter(file);
+    });
+  }
+
+  protected _filter(file: string) {
+    const name = path.basename(file, path.extname(file))
+    if (this.filters.indexOf(name) !== -1) {
+      return file
+    }
+    console.warn('File filtered :' + file);
+    return null;
+  }
+
   load(dir = '', data = {}) {
     const allowedExtensions = ['.js', '.ts', '.json'];
     if (!dir) {
+      console.log(this.basePath, this.defaultPath);
       dir = path.resolve(this.basePath, this.defaultPath);
-    } else {
-      if (!fs.existsSync(dir)) {
-        return null;
-      }
+      console.log(dir);
+    }
+    if (!fs.existsSync(dir)) {
+      console.error('Directory:[' + dir + '] not exists!');
+      return null;
     }
 
     let files = fs.readdirSync(dir);
@@ -92,10 +117,15 @@ export class VBase {
       let stat = fs.statSync(absPath);
       // ignore directories
       if (stat && stat.isDirectory()) {
+        console.log('Directory:' + absPath + ' is ignored!');
         return;
       }
       // read from only valid extensions
       if (allowedExtensions.indexOf(path.extname(file)) === -1) {
+        console.log('File:' + absPath + ' is ignored!');
+        return;
+      }
+      if (this.filterEnabled && !this._filter(absPath)) {
         return;
       }
       this.files.push(absPath);
