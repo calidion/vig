@@ -6,43 +6,22 @@
 import * as fs from 'fs';
 import * as _ from 'lodash';
 import { Generator } from 'errorable';
+import { VBase } from './VBase';
 
-export class VError {
-  files: Array<string> = []
-  locale = 'zh-CN'
-  errors = {}
+export class VError extends VBase {
+    defaultPath = 'errors'
+    locale = 'zh-CN'
 
-  constructor() {
-
-  }
-  reset() {
-    this.errors = {};
-    this.files = [];
-  }
-  addFile(file: string = '') {
-    if (fs.existsSync(file)) {
-      this.files.push(file);
+    constructor(basePath = __dirname) {
+        super(basePath)
+        this.nameless = true;
     }
-  }
-  extends(errors: Object) {
-    this.errors = _.merge(this.errors, errors);
-  }
-  getFile(file: string): Object {
-    if (fs.existsSync(file)) {
-      var json = require(file);
-      return json;
+    generate(locale: string = 'zh-CN', filesOnly = true): Object {
+        var errors = super.generate();
+        if (!filesOnly) {
+            errors = _.merge(errors, this.data);
+        }
+        var generator = new Generator(errors, locale);
+        return generator.errors;
     }
-  }
-  generate(locale: string = 'zh-CN', filesOnly = true): Object {
-    var errors = {};
-    for (var i = 0; i < this.files.length; i++) {
-      var error = this.getFile(this.files[i]);
-      errors = _.merge(errors, error);
-    }
-    if (!filesOnly) {
-      errors = _.merge(errors, this.errors);
-    }
-    var generator = new Generator(errors, locale);
-    return generator.errors;
-  }
 }
