@@ -13,4 +13,7 @@ export class VConfig extends VBase {
   constructor(path = __dirname) {
     super(path)
   }
+  isType(item:any):Boolean {
+    return item instanceof Object;
+  }
 }

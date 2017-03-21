@@ -35,9 +35,12 @@ export class VRouter extends VBase {
     'trace',
     'unlock',
     'unsubscribe'];
-    
+
   constructor(path = __dirname) {
     super(path)
     this.filterEnabled = true;
+  }
+  isType(item: any): Boolean {
+    return item instanceof Function;
   }
 }

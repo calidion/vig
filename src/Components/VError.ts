@@ -16,6 +16,9 @@ export class VError extends VBase {
         super(basePath)
         this.nameless = true;
     }
+    isType(item: any): Boolean {
+        return item instanceof Object;
+    }
     generate(locale: string = 'zh-CN', filesOnly = true): Object {
         var errors = super.generate();
         if (!filesOnly) {

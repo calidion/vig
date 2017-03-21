@@ -11,7 +11,7 @@ import * as _ from 'lodash';
  * Base class for all Components
  */
 
-export class VBase {
+export abstract class VBase {
   // default path where components can read definitions from
   protected defaultPath = ''
   // Component base directory
@@ -30,6 +30,8 @@ export class VBase {
   protected filterEnabled = false;
 
   protected filters: Array<String> = [];
+
+  protected abstract isType(item: any): Boolean;
 
   constructor(path: string) {
     this.basePath = path;
@@ -102,9 +104,7 @@ export class VBase {
   load(dir = '', data = {}) {
     const allowedExtensions = ['.js', '.ts', '.json'];
     if (!dir) {
-      console.log(this.basePath, this.defaultPath);
       dir = path.resolve(this.basePath, this.defaultPath);
-      console.log(dir);
     }
     if (!fs.existsSync(dir)) {
       console.error('Directory:[' + dir + '] not exists!');
@@ -117,21 +117,26 @@ export class VBase {
       let stat = fs.statSync(absPath);
       // ignore directories
       if (stat && stat.isDirectory()) {
-        console.log('Directory:' + absPath + ' is ignored!');
+        console.warn('Directory:' + absPath + ' is ignored!');
         return;
       }
       // read from only valid extensions
       if (allowedExtensions.indexOf(path.extname(file)) === -1) {
-        console.log('File:' + absPath + ' is ignored!');
+        console.warn('File:' + absPath + ' is ignored!');
         return;
       }
       if (this.filterEnabled && !this._filter(absPath)) {
         return;
       }
+      const loaded = require(absPath);
+      if (!this.isType(loaded)) {
+        console.warn('Type is not match!');
+        return;
+      }
       this.files.push(absPath);
-      const json = require(absPath);
+
       const name = path.basename(absPath, path.extname(absPath))
-      data = this.extends(name, json, data);
+      data = this.extends(name, loaded, data);
     });
     return data;
   }
