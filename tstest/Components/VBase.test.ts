@@ -36,7 +36,7 @@ describe('VBase', () => {
 
   it('should get File bases', () => {
     var file = path.resolve(__dirname, '../../../test/errors/vig.js');
-    var json: Object = base.getFile(file);
+    var json: any = base.getFile(file);
     assert(Object.keys(json['Vig']).length !== 0);
     var file1 = path.resolve(__dirname, '../../../test/errors/vig1.js');
     var json1 = base.getFile(file1);

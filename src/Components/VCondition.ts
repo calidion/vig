@@ -4,8 +4,8 @@
  */
 import { VHTTPBase } from './VHTTPBase';
 
-export class VMiddleware extends VHTTPBase {
-  defaultPath = 'middlewares';
+export class VCondition extends VHTTPBase {
+  defaultPath = 'conditions';
   constructor(path = __dirname) {
     super(path)
   }
