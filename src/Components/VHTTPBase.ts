@@ -12,6 +12,7 @@ export class VHTTPBase extends VBase {
     this.filterEnabled = true;
     this.filters = HTTP.methods;
   }
+
   isType(item: any): Boolean {
     return item instanceof Function;
   }

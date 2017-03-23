@@ -6,8 +6,8 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 const router = new VMiddleware();
-var componentPath = path.resolve(__dirname, '../../../test/component/');
-var objPath = path.resolve(__dirname, '../../../test/component/conditions');
+var componentPath = path.resolve(__dirname, '../../../tstest/component/');
+var objPath = path.resolve(__dirname, '../../../tstest/component/conditions');
 
 describe('VMiddleware', () => {
   it('should new VMiddleware', () => {

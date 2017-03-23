@@ -6,8 +6,8 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 const router = new VPolicy();
-var componentPath = path.resolve(__dirname, '../../../test/component/');
-var objPath = path.resolve(__dirname, '../../../test/component/policies');
+var componentPath = path.resolve(__dirname, '../../../tstest/component/');
+var objPath = path.resolve(__dirname, '../../../tstest/component/policies');
 
 describe('VPolicy', () => {
   it('should new VPolicy', () => {

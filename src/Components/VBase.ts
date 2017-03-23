@@ -37,6 +37,22 @@ export abstract class VBase {
     this.basePath = path;
   }
 
+  map(method) {
+    return this.data[method || 'all'];
+  }
+
+  toMethods() {
+    var json = {
+      methods: []
+    };
+
+    for (var key in this.data) {
+      json.methods.push(key);
+      json[key] = this.data[key];
+    }
+    return json;
+  }
+
   get() {
     return this.data;
   }
@@ -99,6 +115,9 @@ export abstract class VBase {
     }
     console.warn('File filtered :' + file);
     return null;
+  }
+  loadOn() {
+    this.data = this.load();
   }
 
   load(dir = '', data = {}) {

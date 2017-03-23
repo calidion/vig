@@ -7,7 +7,6 @@ import * as fs from 'fs';
 
 const error = new VError();
 
-
 describe('VError', () => {
   it('should new VError', () => {
     assert(error);

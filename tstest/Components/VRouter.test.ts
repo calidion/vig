@@ -6,8 +6,8 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 const router = new VRouter();
-var componentPath = path.resolve(__dirname, '../../../test/component');
-var objPath = path.resolve(__dirname, '../../../test/component/routers');
+var componentPath = path.resolve(__dirname, '../../../tstest/component');
+var objPath = path.resolve(__dirname, '../../../tstest/component/routers');
 
 describe('VRouter', () => {
   it('should new VRouter', () => {
