@@ -20,7 +20,7 @@ describe('VService', () => {
     console.log(handler.toJSON());
     const service = new VService();
     service.addHandler(handler);
-    var json = service.toJSON();
+    var json = service.toHandlers();
     console.log(json);
     assert(json);
   });

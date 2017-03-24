@@ -11,7 +11,7 @@ export class VService {
     this.handlers.push(handler);
   }
 
-  toJSON() {
+  toHandlers() {
     var handlers = [];
     for (let i = 0; i < this.handlers.length; i++) {
       handlers.push(this.handlers[i].toJSON());

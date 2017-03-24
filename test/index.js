@@ -70,3 +70,32 @@ describe('vig #routers', function () {
       });
   });
 });
+
+describe('VService', function () {
+  var path = require('path');
+  var componentPath = path.resolve(__dirname, './component/');
+
+  var handler = new vig.VHandler(
+    ['/url'],
+    componentPath,
+    '/prefix'
+  );
+  var service = new vig.VService();
+  service.addHandler(handler);
+  before(function () {
+    app = express();
+    vig.init(app);
+    vig.addHandlers(app, service.toHandlers());
+  });
+
+  it('should get ', function (done) {
+    request(app)
+      .get('/prefix/url')
+      .expect(200)
+      .end(function (err, res) {
+        assert(!err);
+        assert(res.text === 'get');
+        done();
+      });
+  });
+});
