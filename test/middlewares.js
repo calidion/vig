@@ -8,7 +8,6 @@ var assert = require('assert');
 var vig = require('../lib');
 var request = require('supertest');
 var express = require('express');
-// var middlewaresHandlers = require('./middlewaresHandlers');
 var path = require('path');
 var componentPath = path.resolve(__dirname, './component.middleware/');
 var componentPath1 = path.resolve(__dirname, './component.middleware.all/');

@@ -8,7 +8,18 @@ var assert = require('assert');
 var vig = require('../lib');
 var request = require('supertest');
 var express = require('express');
-var nomethodHandlers = require('./nomethodHandlers');
+
+var path = require('path');
+
+var componentPath = path.resolve(__dirname, './component.nomethod/');
+
+var service = new vig.VService();
+service.addHandler(new vig.VHandler(
+  ['/:id', '/hello/:id'],
+  componentPath,
+  '/nomethod'
+));
+
 var app;
 
 describe('vig #nomethod', function () {
@@ -16,7 +27,7 @@ describe('vig #nomethod', function () {
     app = express();
     vig.normalize(app);
     vig.init(app, errors);
-    vig.addHandlers(app, nomethodHandlers);
+    vig.addHandlers(app, service.toHandlers());
   });
   it('should get /nomethod/:id', function (done) {
     request(app)
