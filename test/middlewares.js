@@ -8,7 +8,24 @@ var assert = require('assert');
 var vig = require('../lib');
 var request = require('supertest');
 var express = require('express');
-var middlewaresHandlers = require('./middlewaresHandlers');
+// var middlewaresHandlers = require('./middlewaresHandlers');
+var path = require('path');
+var componentPath = path.resolve(__dirname, './component.middleware/');
+var componentPath1 = path.resolve(__dirname, './component.middleware.all/');
+
+var service = new vig.VService();
+service.addHandler(new vig.VHandler(
+  ['/'],
+  componentPath,
+  '/middlewares'
+));
+
+service.addHandler(new vig.VHandler(
+  ['/all'],
+  componentPath1,
+  '/middlewares'
+));
+
 var app;
 
 describe('vig #middlewares', function () {
@@ -16,7 +33,7 @@ describe('vig #middlewares', function () {
     app = express();
     vig.normalize(app);
     vig.init(app, errors);
-    vig.addHandlers(app, middlewaresHandlers);
+    vig.addHandlers(app, service.toHandlers());
   });
   it('should get /middlewares', function (done) {
     request(app)

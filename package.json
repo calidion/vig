@@ -1,6 +1,6 @@
 {
   "name": "vig",
-  "version": "0.7.7",
+  "version": "0.8.0-alpha",
   "description": "a new web framework, inspired by sailsjs",
   "homepage": "",
   "author": {
