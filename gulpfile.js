@@ -120,7 +120,7 @@ gulp.task('watch', function () {
     gulp.watch(['lib/**/*.js', 'test/**'], ['test']);
 });
 
-gulp.task('coveralls', ['test'], function () {
+gulp.task('coveralls', function () {
     if (!process.env.CI) {
         return;
     }
@@ -130,5 +130,5 @@ gulp.task('coveralls', ['test'], function () {
 });
 
 gulp.task('prepublish', ['nsp']);
-gulp.task('default', ['clean', 'tsc', 'static', 'test', 'coveralls']);
+gulp.task('default', ['static', 'test', 'coveralls']);
 gulp.task('ts', ['tstest']);
