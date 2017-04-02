@@ -4,7 +4,6 @@ var path = require('path');
 var assert = require('assert');
 
 var vig = require('../lib');
-var Handler = require('../lib/handlers');
 var app;
 var request = require('supertest');
 
@@ -13,10 +12,6 @@ describe('vig #handlers', function () {
     app = express();
     vig.normalize(app);
     vig.init(app);
-  });
-  it('should init a handle', function () {
-    var handler = new Handler(vig, app);
-    handler.add();
   });
 
   it('should include handles', function () {
