@@ -45,19 +45,19 @@ describe('vig #uploaders', function () {
       });
   });
 
-  it('should test onError', function (done) {
-    var onError = vig.uploaders._onError(null, function (err) {
-      assert(err === 100);
-      done();
-    });
-    onError(100);
-  });
-  it('should test onUploader', function (done) {
-    var onUpload = vig.uploaders._onUpload(null, function (err) {
-      assert(err === 100);
-      done();
-    });
-    onUpload(100);
-  });
+  // it('should test onError', function (done) {
+  //   var onError = vig.uploaders._onError(null, function (err) {
+  //     assert(err === 100);
+  //     done();
+  //   });
+  //   onError(100);
+  // });
+  // it('should test onUploader', function (done) {
+  //   var onUpload = vig.uploaders._onUpload(null, function (err) {
+  //     assert(err === 100);
+  //     done();
+  //   });
+  //   onUpload(100);
+  // });
 });
 
