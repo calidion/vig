@@ -16,6 +16,10 @@ export class VError extends VBase {
     this.nameless = true;
   }
 
+  set(data) {
+    this.data = data;
+  }
+
   isType(item: any): Boolean {
     return item instanceof Object;
   }
