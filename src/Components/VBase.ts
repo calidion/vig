@@ -56,6 +56,9 @@ export abstract class VBase {
   get() {
     return this.data;
   }
+    set(data) {
+    this.data = data;
+  }
 
   getFiles() {
     return this.files;

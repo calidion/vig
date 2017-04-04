@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as async from 'async';
 
 import { HTTP } from './HTTP';
 
@@ -9,14 +10,14 @@ export class VHandler {
   protected path: String;
   protected prefix = "";
 
-  protected config: VBase;
-  protected condition: VBase;
-  protected error: VBase;
-  protected middleware: VBase;
-  protected policy: VBase;
-  protected router: VBase;
-  protected validator: VBase;
-  protected fallback: VBase;
+  protected config: VConfig;
+  protected condition: VCondition;
+  protected error: VError;
+  protected middleware: VMiddleware;
+  protected policy: VPolicy;
+  protected router: VRouter;
+  protected validator: VValidator;
+  protected fallback: VFallback;
 
   constructor(urls: Array<String>, path: string, prefix = "") {
     if (!urls || urls.length <= 0) {
@@ -33,7 +34,7 @@ export class VHandler {
     this.prefix = prefix;
 
     this.config = new VConfig(path);
-    this.condition = new VConfig(path);
+    this.condition = new VCondition(path);
     this.error = new VError(path);
     this.middleware = new VMiddleware(path);
     this.policy = new VPolicy(path);
@@ -46,6 +47,25 @@ export class VHandler {
       this[key].loadOn();
     }
   }
+
+  attach(app) {
+    let urls = [];
+    for (var i = 0; i < this.urls.length; i++) {
+      var url = this.prefix + this.urls[i];
+      app.use(url, (req, res) => {
+        this.run(req, res);
+      });
+    }
+  }
+
+  run(req, res) {
+    this.router.process(req, res, function(error) {
+      if (error) {
+        res.status(404).send('Not Found!');
+      }
+    });
+  }
+
   toJSON() {
     var json: any = {};
     json.prefix = this.prefix;

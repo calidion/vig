@@ -16,4 +16,20 @@ export class VHTTPBase extends VBase {
   isType(item: any): Boolean {
     return item instanceof Function;
   }
+
+  public check(req) {
+    let method = req.method.toLowerCase();
+    return this.data[method] || this.data['all'];
+  }
+
+  public process(req, res, next = null) {
+    let handler = this.check(req);
+    console.log(handler);
+    if (handler) {
+      return handler(req, res, next);
+    }
+    if (next instanceof Function) {
+      next(true)
+    }
+  }
 }
