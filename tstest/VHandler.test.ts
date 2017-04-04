@@ -15,17 +15,9 @@ var componentPath = path.resolve(__dirname, '../../tstest/component/');
 
 describe('VHandler', () => {
   it('should new VHandler', () => {
-    var passed = false;
-    try {
-      const handler = new VHandler(null, null);
-      var json = handler.toJSON();
-      assert(json);
-    } catch (e) {
-      assert(e.message === 'urls MUST be specified.');
-      passed = true;
-    }
-    assert(passed);
-
+    const handler = new VHandler(null, __dirname);
+    var json = handler.toJSON();
+    assert(json);
   });
 
   it('should new VHandler', () => {
@@ -87,6 +79,7 @@ describe('VHandler', () => {
     handler.attach(app);
     request(app).put('/send/xxx').
       expect(404, function (err, res) {
+        console.log(err, res.text);
         assert(!err);
         assert(res.text === 'Not Found!');
         done()

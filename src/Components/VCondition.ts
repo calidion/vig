@@ -8,5 +8,6 @@ export class VCondition extends VHTTPBase {
   defaultPath = 'conditions';
   constructor(path = __dirname) {
     super(path)
+    this.failurable = true;
   }
 }

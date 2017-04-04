@@ -8,6 +8,6 @@ export class VFallback extends VHTTPBase {
   defaultPath = 'fallbacks';
   constructor(path = __dirname) {
     super(path)
-    this.filters = ['condition', 'validation','policy', 'validator']
+    this.filters = ['condition', 'validation', 'policy', 'validator']
   }
 }

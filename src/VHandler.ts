@@ -20,16 +20,13 @@ export class VHandler {
   protected fallback: VFallback;
 
   constructor(urls: Array<String>, path: string, prefix = "") {
-    if (!urls || urls.length <= 0) {
-      throw new Error('urls MUST be specified.')
-    }
     if (!path) {
       throw new Error('path MUST be specified.')
     }
     if (!fs.existsSync(path)) {
       throw new Error('path MUST exist.')
     }
-    this.urls = urls;
+    this.urls = urls || [];
     this.path = path;
     this.prefix = prefix;
 
@@ -46,13 +43,47 @@ export class VHandler {
       var key = data[i];
       this[key].loadOn();
     }
+    this.updateFallbacks();
+  }
+
+  set(config) {
+    var keys = {
+      condition: 'conditions',
+      middleware: 'middlewares',
+      router: 'routers',
+      policy: 'policies',
+      validator: 'validations',
+      fallback: 'failures'
+    };
+    for (var key in keys) {
+      if (config[keys[key]]) {
+        this[key].set(config[keys[key]]);
+      } else {
+        this[key].set({});
+      }
+    }
+    this.updateFallbacks();
+  }
+
+  updateFallbacks() {
+    var keys = {
+      validation: 'validator'
+    };
+    var fallbacks = this.fallback.get();
+    for (var key in fallbacks) {
+      if (fallbacks[key]) {
+        var keyOne = this[keys[key]] || this[key];
+        keyOne.setFailureHandler(fallbacks[key]);
+      }
+    }
   }
 
   attach(app) {
+    var handler = this;
     let urls = [];
     for (var i = 0; i < this.urls.length; i++) {
       var url = this.prefix + this.urls[i];
-      app.use(url, (req, res) => {
+      app.all(url, (req, res) => {
         this.run(req, res);
       });
     }
@@ -65,14 +96,18 @@ export class VHandler {
         this.validator.process(req, res, () => {
           this.policy.process(req, res, () => {
             this.router.process(req, res, (error) => {
-              if (error) {
-                res.status(404).send('Not Found!');
-              }
+              this.notFound(error, req, res);
             });
           });
         });
       });
     });
+  }
+
+  notFound(error, req, res) {
+              if (error) {
+                res.status(404).send('Not Found!');
+              }
   }
 
   toJSON() {

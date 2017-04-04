@@ -12,19 +12,6 @@ var path = require('path');
 var componentPath = path.resolve(__dirname, './component.middleware/');
 var componentPath1 = path.resolve(__dirname, './component.middleware.all/');
 
-var service = new vig.VService();
-service.addHandler(new vig.VHandler(
-  ['/'],
-  componentPath,
-  '/middlewares'
-));
-
-service.addHandler(new vig.VHandler(
-  ['/all'],
-  componentPath1,
-  '/middlewares'
-));
-
 var app;
 
 describe('vig #middlewares', function () {
@@ -32,9 +19,16 @@ describe('vig #middlewares', function () {
     app = express();
     vig.normalize(app);
     vig.init(app, errors);
-    vig.addHandlers(app, service.toHandlers());
+    // vig.addHandlers(app, service.toHandlers());
   });
   it('should get /middlewares', function (done) {
+    var handler = new vig.VHandler(
+      ['/'],
+      componentPath,
+      '/middlewares'
+    );
+    handler.attach(app);
+
     request(app)
       .get('/middlewares')
       .expect(200)
@@ -45,6 +39,12 @@ describe('vig #middlewares', function () {
       });
   });
   it('should get /middlewares', function (done) {
+    var handler = new vig.VHandler(
+      ['/all'],
+      componentPath1,
+      '/middlewares'
+    );
+    handler.attach(app);
     request(app)
       .get('/middlewares/all')
       .expect(200)

@@ -23,8 +23,8 @@ export abstract class VBase {
   protected files: Array<string> = [];
 
   // data types:
-  // named. named by filename
-  // nameless. merged by object
+  // named:       named by filename
+  // nameless:    merged by object
   protected nameless = false;
 
   protected filterEnabled = false;
@@ -56,7 +56,8 @@ export abstract class VBase {
   get() {
     return this.data;
   }
-    set(data) {
+
+  set(data) {
     this.data = data;
   }
 
@@ -142,7 +143,7 @@ export abstract class VBase {
         console.warn('Directory:' + absPath + ' is ignored!');
         return;
       }
-      // read from only valid extensions
+      // read from valid extensions only
       if (allowedExtensions.indexOf(path.extname(file)) === -1) {
         console.warn('File:' + absPath + ' is ignored!');
         return;

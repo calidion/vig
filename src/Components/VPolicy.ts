@@ -8,5 +8,6 @@ export class VPolicy extends VHTTPBase {
   defaultPath = 'policies';
   constructor(path = __dirname) {
     super(path)
+    this.failurable = true;
   }
 }

@@ -45,7 +45,6 @@ describe('VError', () => {
   });
 
   it('should generate errors', () => {
-
     assert(errors && errors.VigTestError);
   })
 
