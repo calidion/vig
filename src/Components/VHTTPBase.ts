@@ -24,8 +24,7 @@ export class VHTTPBase extends VBase {
 
   public process(req, res, next = null) {
     let handler = this.check(req);
-    console.log(handler);
-    if (handler) {
+    if (handler instanceof Function) {
       return handler(req, res, next);
     }
     if (next instanceof Function) {

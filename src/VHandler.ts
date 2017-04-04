@@ -59,10 +59,19 @@ export class VHandler {
   }
 
   run(req, res) {
-    this.router.process(req, res, function(error) {
-      if (error) {
-        res.status(404).send('Not Found!');
-      }
+    // Middlewares should not be failed
+    this.middleware.process(req, res, () => {
+      this.condition.process(req, res, () => {
+        this.validator.process(req, res, () => {
+          this.policy.process(req, res, () => {
+            this.router.process(req, res, (error) => {
+              if (error) {
+                res.status(404).send('Not Found!');
+              }
+            });
+          });
+        });
+      });
     });
   }
 
