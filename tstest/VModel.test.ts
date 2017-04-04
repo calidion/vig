@@ -1,25 +1,22 @@
-'use strict';
+import 'mocha';
+import { VModel } from '../src';
 var assert = require('assert');
-
-var vig = require('../lib');
 var path = require('path');
 var sailsMemoryAdapter = require('sails-memory');
 var request = require('supertest');
 var express = require('express');
 var app;
 
-describe('vig #models', function () {
+var componentPath = path.resolve(__dirname, '../../tstest/component/');
+
+const model = new VModel(componentPath);
+
+describe('VModel', function () {
   before(function () {
     app = express();
-    vig.normalize(app);
-    vig.init(app);
-  });
-  it('should init dir', function () {
-    var dir = path.resolve(__dirname, './models/');
-    vig.models.addDir(dir);
   });
   it('should init models', function (done) {
-    vig.models.init({
+    model.init({
       adapters: {
         memory: sailsMemoryAdapter
       },
@@ -33,16 +30,18 @@ describe('vig #models', function () {
         connection: 'default'
       },
       function (error, models) {
+        console.log(error, models);
         assert(!error);
         assert(models);
         assert(models.User);
         assert(models.Pet);
+        model.attach(app, models);
         done();
       });
   });
 
   it('should init models again', function (done) {
-    vig.models.init({
+    model.init({
       adapters: {
         memory: sailsMemoryAdapter
       },

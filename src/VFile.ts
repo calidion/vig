@@ -1,7 +1,5 @@
 import * as uploader from 'file-cloud-uploader';
 import * as async from 'async';
-// var fileCloudUploader = require('file-cloud-uploader');
-// var async = require('async');
 
 export class VFile {
   name
@@ -20,7 +18,10 @@ export class VFile {
           this._isError(err, resolve, () => {
             var cloudFiles = [];
             async.each(files, (file, cb) => {
-              uploader(options.type, file.fd, options.config, (data) => {
+              uploader(options.type, 
+              file.fd, 
+              options.config, 
+              (data) => {
                 cloudFiles.push(data);
                 cb();
               });

@@ -8,4 +8,4 @@ export * from './VMiddleware';
 export * from './VPolicy';
 export * from './VRouter';
 export * from './VFallback';
-// import {VModel} from './VModel';
+export * from './VModel';
