@@ -1,5 +1,6 @@
 import * as uploader from 'file-cloud-uploader';
 import * as async from 'async';
+import * as skipper from 'skipper';
 
 export class VFile {
   name
@@ -18,13 +19,13 @@ export class VFile {
           this._isError(err, resolve, () => {
             var cloudFiles = [];
             async.each(files, (file, cb) => {
-              uploader(options.type, 
-              file.fd, 
-              options.config, 
-              (data) => {
-                cloudFiles.push(data);
-                cb();
-              });
+              uploader(options.type,
+                file.fd,
+                options.config,
+                (data) => {
+                  cloudFiles.push(data);
+                  cb();
+                });
             }, (err) => {
               this._isError(err, reject, () => {
                 resolve(cloudFiles);
@@ -35,9 +36,14 @@ export class VFile {
       });
     };
   }
+  attach(app) {
+    app.use(skipper());
+    app.use(this.use());
+  }
   use() {
-    return (req, res, next) => {
-      req.cloud = this.cloud(req);
+    var self = this;
+    return function(req, res, next) {
+      req.cloud = self.cloud(req);
       next();
     }
   }

@@ -3,20 +3,16 @@ var express = require('express');
 var path = require('path');
 var assert = require('assert');
 
-var vig = require('../lib');
-var app;
+import { VHandler, VService } from '../src';
+var service = new VService();
+var app = express();
 var request = require('supertest');
 
-describe('vig #handlers', function () {
-  before(function () {
-    app = express();
-    vig.normalize(app);
-    vig.init(app);
-  });
 
+describe('vig #handlers', function () {
   it('should include handles', function () {
-    vig.include(path.resolve(__filename), ['nomethodHandlers', 'nourlsHandlers']);
-    vig.enable(app);
+    service.include(app, path.resolve(__dirname, '../../test/nomethodHandlers'));
+    service.include(app, path.resolve(__dirname, '../../test/nourlsHandlers'));
   });
 
   it('should get /nomethod/:id', function (done) {
@@ -24,6 +20,7 @@ describe('vig #handlers', function () {
       .post('/nomethod/100')
       .expect(200)
       .end(function (err, res) {
+        console.log(err, res.text);
         assert(!err);
         assert(res.text === 'nomethod100');
         done();

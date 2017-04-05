@@ -94,6 +94,7 @@ export class VHandler {
     this.middleware.process(req, res, () => {
       this.condition.process(req, res, () => {
         this.validator.process(req, res, () => {
+          console.log('inside validator');
           this.policy.process(req, res, () => {
             this.router.process(req, res, (error) => {
               this.notFound(error, req, res);
@@ -105,9 +106,9 @@ export class VHandler {
   }
 
   notFound(error, req, res) {
-              if (error) {
-                res.status(404).send('Not Found!');
-              }
+    if (error) {
+      res.status(404).send('Not Found!');
+    }
   }
 
   toJSON() {

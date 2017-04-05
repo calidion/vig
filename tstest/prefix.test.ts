@@ -5,18 +5,16 @@ var Generator = errorable.Generator;
 var errors = new Generator(common, 'zh-CN').errors;
 
 var assert = require('assert');
-var vig = require('../lib');
 var request = require('supertest');
 var express = require('express');
-var prefixHandlers = require('./prefixHandlers');
-var app;
+var path = require('path');
+import { VHandler, VService } from '../src';
+var service = new VService();
+var app = express();
 
 describe('vig #prefix', function () {
   before(function () {
-    app = express();
-    vig.normalize(app);
-    vig.init(app, errors);
-    vig.addHandlers(app, prefixHandlers);
+    service.include(app, path.resolve(__dirname, '../../test/prefixHandlers'));
   });
   it('should get /prefix/:id', function (done) {
     request(app)

@@ -1,19 +1,18 @@
 'use strict';
 
 var assert = require('assert');
-var vig = require('../lib');
 var request = require('supertest');
 var express = require('express');
-var routersHandler = require('./routersHandler');
-var policiesHandler = require('./policiesHandler');
-var app;
+
+var path = require('path');
+import { VHandler, VService } from '../src';
+var service = new VService();
+var app = express();
 
 describe('vig #routers', function () {
   before(function () {
-    app = express();
-    vig.init(app);
-    vig.addHandlers(app, routersHandler);
-    vig.addHandlers(app, policiesHandler);
+    service.include(app, path.resolve(__dirname, '../../test/routersHandler'));
+    service.include(app, path.resolve(__dirname, '../../test/policiesHandler'));
   });
   it('should get /', function (done) {
     request(app)
@@ -66,35 +65,6 @@ describe('vig #routers', function () {
       .end(function (err, res) {
         assert(!err);
         assert(res.text === 'post');
-        done();
-      });
-  });
-});
-
-describe('VService', function () {
-  var path = require('path');
-  var componentPath = path.resolve(__dirname, './component/');
-
-  var handler = new vig.VHandler(
-    ['/url'],
-    componentPath,
-    '/prefix'
-  );
-  var service = new vig.VService();
-  service.addHandler(handler);
-  before(function () {
-    app = express();
-    vig.init(app);
-    vig.addHandlers(app, service.toHandlers());
-  });
-
-  it('should get ', function (done) {
-    request(app)
-      .get('/prefix/url')
-      .expect(200)
-      .end(function (err, res) {
-        assert(!err);
-        assert(res.text === 'get');
         done();
       });
   });

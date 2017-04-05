@@ -58,6 +58,7 @@ export class VHTTPBase extends VBase {
         return next();
       }
       if (cb) {
+        console.log('inside none next');
         cb(info, req, res);
       } else {
         this.onAuthorFailed(info, req, res);

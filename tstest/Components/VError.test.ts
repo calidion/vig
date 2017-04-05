@@ -5,16 +5,22 @@ import * as assert from 'assert';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import * as vig from '../../../lib/'
 import * as express from 'express';
 import * as request from 'supertest';
 import * as common from 'errorable-common';
 
 import * as errorsHandlers from '../../../test/errorsHandlers';
 
+
+import * errorize from 'errorable-express';
+var path = require('path');
+import { VHandler, VService } from '../../src';
+var service = new VService();
+var app = express();
+
 const error = new VError();
 
-var errors, app;
+var errors;
 
 describe('VError', () => {
 
@@ -24,8 +30,9 @@ describe('VError', () => {
     error.set(common);
     error.addFile(file);
     errors = error.generate(null, true);
-    vig.init(app, errors);
-    vig.addHandlers(app, errorsHandlers);
+    app.use(errorize(errors));
+    service.attach(app);
+    service.addHandlers(app, errorsHandlers);
   });
 
   it('should get /errors', function (done) {

@@ -5,19 +5,17 @@ var Generator = errorable.Generator;
 var errors = new Generator(common, 'zh-CN').errors;
 
 var assert = require('assert');
-var vig = require('../lib');
 var request = require('supertest');
 var express = require('express');
-var validationsHandlers = require('./validationsHandlers');
-var app;
+
+var path = require('path');
+import { VHandler, VService } from '../src';
+var service = new VService();
+var app = express();
+service.attach(app);
+service.include(app, path.resolve(__dirname, '../../test/validationsHandlers'));
 
 describe('vig #validations', function () {
-  before(function () {
-    app = express();
-    vig.normalize(app);
-    vig.init(app, errors);
-    vig.addHandlers(app, validationsHandlers);
-  });
   it('should get /validations', function (done) {
     request(app)
       .get('/validations')
@@ -39,7 +37,7 @@ describe('vig #validations', function () {
       });
   });
 
-  it('should post /validations/2', function (done) {
+  it('should post /validations/2 1', function (done) {
     request(app)
       .get('/validations/2')
       .expect(403)
@@ -49,17 +47,19 @@ describe('vig #validations', function () {
         done();
       });
   });
-  it('should post /validations/2', function (done) {
+  it('should post /validations/2 2', function (done) {
     request(app)
       .post('/validations/2')
-      .expect(200)
+      .expect(403)
       .end(function (err, res) {
+        console.log(err, res.text);
+
         assert(!err);
-        assert(res.text === 'post');
+        assert(res.text === 'Access Denied Due to Failure to validations');
         done();
       });
   });
-  it('should post /validations/2', function (done) {
+  it('should post /validations/2 3', function (done) {
     request(app)
       .post('/validations/2')
       .send({
@@ -67,13 +67,15 @@ describe('vig #validations', function () {
       })
       .expect(403)
       .end(function (err, res) {
+        console.log(err, res.text);
+
         assert(!err);
         assert(res.text === 'Access Denied Due to Failure to validations');
         done();
       });
   });
 
-  it('should post /validations/2', function (done) {
+  it('should post /validations/2 4', function (done) {
     request(app)
       .post('/validations/2')
       .send({
@@ -81,6 +83,7 @@ describe('vig #validations', function () {
       })
       .expect(200)
       .end(function (err, res) {
+        console.log(err, res.text);
         assert(!err);
         assert.deepEqual(JSON.parse(res.text),
           {
@@ -107,13 +110,20 @@ describe('vig #validations', function () {
     request(app)
       .post('/validations/2?username=sdfsf&password=32323123')
       .expect(200)
+      .send({
+        value: 100
+      })
       .end(function (err, res) {
+        console.log(err, res.text);
         assert(!err);
         assert.deepEqual(JSON.parse(res.text),
           {
             query: {
               username: 'sdfsf',
               password: '32323123'
+            },
+            body: {
+              value: 100
             }
           });
         done();

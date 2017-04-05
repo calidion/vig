@@ -58,6 +58,7 @@ module.exports = [{
       next(false);
     },
     post: {
+      required: ['body'],
       query: {
         username: {
           type: 'string',

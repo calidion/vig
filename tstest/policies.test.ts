@@ -1,18 +1,18 @@
 'use strict';
 
 var assert = require('assert');
-var vig = require('../lib');
 var request = require('supertest');
 var express = require('express');
-var policiesHandler = require('./policiesHandler');
 var session = require('express-session');
 var cookies;
-var app;
+
+var path = require('path');
+import { VHandler, VService } from '../src';
+var service = new VService();
+var app = express();
 
 describe('vig #policies', function () {
   before(function () {
-    app = express();
-    app.set('trust proxy', 1); // trust first proxy
     app.use(session({
       name: 'vig',
       secret: 'secret oososos',
@@ -22,8 +22,7 @@ describe('vig #policies', function () {
         secure: false
       }
     }));
-    vig.init(app);
-    vig.addHandlers(app, policiesHandler);
+    service.include(app, path.resolve(__dirname, '../../test/policiesHandler'));
   });
   it('should get prevent all', function (done) {
     request(app)

@@ -7,18 +7,13 @@ import * as assert from 'assert';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import * as vig from '../../lib/';
-
 const file = new VFile();
 var app;
 
 describe('VFile', () => {
   before(function () {
     app = express();
-    app.set('trust proxy', 1); // trust first proxy
-    vig.init(app);
-
-    app.use(file.use());
+    file.attach(app);
     app.post('/file/upload', function (req, res) {
       req.cloud('txt', {
         type: 'disk',
