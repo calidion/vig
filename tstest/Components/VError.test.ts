@@ -1,5 +1,4 @@
 import 'mocha';
-import { VError } from '../../src/Components/VError';
 
 import * as assert from 'assert';
 import * as path from 'path';
@@ -14,7 +13,7 @@ import * as errorsHandlers from '../../../test/errorsHandlers';
 
 import * errorize from 'errorable-express';
 var path = require('path');
-import { VHandler, VService } from '../../src';
+import { VHandler, VService, VError } from '../../../lib/';
 var service = new VService();
 var app = express();
 
@@ -40,7 +39,6 @@ describe('VError', () => {
       .get('/errors')
       .expect(200)
       .end(function (err, res) {
-        console.log(err, res.text);
         assert(!err);
         assert.deepEqual(res.body, errors.Success.restify());
         done();

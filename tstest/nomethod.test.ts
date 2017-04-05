@@ -10,7 +10,7 @@ var express = require('express');
 
 var path = require('path');
 
-import { VEvent, VService, VHandler } from '../src';
+import { VEvent, VService, VHandler } from '../../lib';
 
 var componentPath = path.resolve(__dirname, '../../test/component.nomethod/');
 

@@ -1,5 +1,5 @@
 import 'mocha';
-import { VFile } from '../src';
+import { VFile } from '../../lib';
 
 import * as express from 'express';
 import * as request from 'supertest';

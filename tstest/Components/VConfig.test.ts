@@ -1,5 +1,5 @@
 import 'mocha';
-import { VConfig } from '../../src/Components/VConfig';
+import { VConfig } from '../../../lib/Components/VConfig';
 
 import * as assert from 'assert';
 import * as path from 'path';

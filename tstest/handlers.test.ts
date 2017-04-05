@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var assert = require('assert');
 
-import { VHandler, VService } from '../src';
+import { VHandler, VService } from '../../lib';
 var service = new VService();
 var app = express();
 var request = require('supertest');
@@ -20,7 +20,6 @@ describe('vig #handlers', function () {
       .post('/nomethod/100')
       .expect(200)
       .end(function (err, res) {
-        console.log(err, res.text);
         assert(!err);
         assert(res.text === 'nomethod100');
         done();

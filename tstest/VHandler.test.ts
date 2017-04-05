@@ -1,5 +1,5 @@
 import 'mocha';
-import { VHandler } from '../src';
+import { VHandler } from '../../lib';
 
 import * as assert from 'assert';
 import * as path from 'path';
@@ -55,12 +55,10 @@ describe('VHandler', () => {
       componentPath,
       '/send');
     var json = handler.toJSON();
-    console.log(json);
     assert(json);
     handler.attach(app);
     request(app).get('/send/xxx').
       expect(200, function (err, res) {
-        console.log(err, res);
         assert(res.text === 'get');
         done()
       });
@@ -74,12 +72,10 @@ describe('VHandler', () => {
       componentPath,
       '/send');
     var json = handler.toJSON();
-    console.log(json);
     assert(json);
     handler.attach(app);
     request(app).put('/send/xxx').
       expect(404, function (err, res) {
-        console.log(err, res.text);
         assert(!err);
         assert(res.text === 'Not Found!');
         done()

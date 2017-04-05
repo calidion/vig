@@ -1,5 +1,5 @@
 import 'mocha';
-import { VModel } from '../src';
+import { VModel } from '../../lib';
 var assert = require('assert');
 var path = require('path');
 var sailsMemoryAdapter = require('sails-memory');
@@ -30,7 +30,6 @@ describe('VModel', function () {
         connection: 'default'
       },
       function (error, models) {
-        console.log(error, models);
         assert(!error);
         assert(models);
         assert(models.User);

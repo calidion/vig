@@ -9,7 +9,7 @@ var request = require('supertest');
 var express = require('express');
 
 var path = require('path');
-import { VHandler, VService } from '../src';
+import { VHandler, VService } from '../../lib';
 var service = new VService();
 var app = express();
 service.attach(app);
@@ -52,8 +52,6 @@ describe('vig #validations', function () {
       .post('/validations/2')
       .expect(403)
       .end(function (err, res) {
-        console.log(err, res.text);
-
         assert(!err);
         assert(res.text === 'Access Denied Due to Failure to validations');
         done();
@@ -67,8 +65,6 @@ describe('vig #validations', function () {
       })
       .expect(403)
       .end(function (err, res) {
-        console.log(err, res.text);
-
         assert(!err);
         assert(res.text === 'Access Denied Due to Failure to validations');
         done();
@@ -83,7 +79,6 @@ describe('vig #validations', function () {
       })
       .expect(200)
       .end(function (err, res) {
-        console.log(err, res.text);
         assert(!err);
         assert.deepEqual(JSON.parse(res.text),
           {
@@ -114,7 +109,6 @@ describe('vig #validations', function () {
         value: 100
       })
       .end(function (err, res) {
-        console.log(err, res.text);
         assert(!err);
         assert.deepEqual(JSON.parse(res.text),
           {

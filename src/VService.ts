@@ -38,15 +38,6 @@ export class VService {
     handler.attach(app);
     this.handlers.push(handler);
   }
-
-  toHandlers() {
-    var handlers = [];
-    for (let i = 0; i < this.handlers.length; i++) {
-      handlers.push(this.handlers[i].toJSON());
-    }
-    return handlers;
-  }
-
   attach(app) {
     // parse raw xml data
     app.use(bodyParser.raw({
@@ -57,7 +48,7 @@ export class VService {
     app.use(bodyParser.urlencoded({
       extended: true
     }));
-    
+
     // to support JSON-encoded bodies
     app.use(bodyParser.json());
   }

@@ -8,7 +8,7 @@ var assert = require('assert');
 var request = require('supertest');
 var express = require('express');
 var path = require('path');
-import { VHandler, VService } from '../src';
+import { VHandler, VService } from '../../lib';
 var service = new VService();
 var app = express();
 

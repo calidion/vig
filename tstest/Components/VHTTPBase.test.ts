@@ -1,5 +1,5 @@
 import 'mocha';
-import { VHTTPBase } from '../../src/Components/VHTTPBase';
+import { VHTTPBase } from '../../../lib/Components/VHTTPBase';
 
 import * as assert from 'assert';
 import * as path from 'path';

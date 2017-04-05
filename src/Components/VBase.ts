@@ -37,10 +37,6 @@ export abstract class VBase {
     this.basePath = path;
   }
 
-  map(method) {
-    return this.data[method || 'all'];
-  }
-
   toMethods() {
     var json = {
       methods: []

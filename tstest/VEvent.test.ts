@@ -1,5 +1,5 @@
 import 'mocha';
-import { VEvent } from '../src';
+import { VEvent } from '../../lib';
 
 import * as assert from 'assert';
 import * as path from 'path';

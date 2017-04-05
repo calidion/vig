@@ -10,7 +10,7 @@ var express = require('express');
 var path = require('path');
 var componentPath = path.resolve(__dirname, '../../test/component.middleware/');
 var componentPath1 = path.resolve(__dirname, '../../test/component.middleware.all/');
-import { VEvent, VService, VHandler } from '../src';
+import { VEvent, VService, VHandler } from '../../lib';
 
 var app;
 var service = new VService();

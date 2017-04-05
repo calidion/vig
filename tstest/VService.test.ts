@@ -1,6 +1,6 @@
 import 'mocha';
 
-import { VHandler, VService } from '../src';
+import { VHandler, VService } from '../../lib';
 
 import * as assert from 'assert';
 import * as path from 'path';
@@ -29,7 +29,6 @@ describe('VService', () => {
       .get('/prefix/url')
       .expect(200)
       .end(function (err, res) {
-        console.log(err, res.text);
         assert(!err);
         assert(res.text === 'get');
         done();

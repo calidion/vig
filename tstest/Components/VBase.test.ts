@@ -1,5 +1,5 @@
 import 'mocha';
-import { VBase } from '../../src/Components/VBase';
+import { VBase } from '../../../lib/Components/VBase';
 
 import * as assert from 'assert';
 import * as path from 'path';

@@ -1,5 +1,5 @@
 import 'mocha';
-import { VMiddleware } from '../../src/Components/VMiddleware';
+import { VMiddleware } from '../../../lib/Components/VMiddleware';
 
 import * as assert from 'assert';
 import * as path from 'path';

@@ -1,5 +1,5 @@
 import 'mocha';
-import { VRouter } from '../../src/Components/VRouter';
+import { VRouter } from '../../../lib/Components/VRouter';
 
 import * as assert from 'assert';
 import * as path from 'path';
@@ -22,7 +22,6 @@ describe('VRouter', () => {
   it('should load', () => {
     var router = new VRouter(componentPath);
     var data: any = router.load();
-    console.log(data);
     assert(data && data.get && data.post && !data.fuck);
     router.filter();
   })

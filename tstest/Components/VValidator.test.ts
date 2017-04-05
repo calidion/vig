@@ -1,5 +1,5 @@
 import 'mocha';
-import { VValidator } from '../../src/Components/VValidator';
+import { VValidator } from '../../../lib/Components/VValidator';
 
 import * as assert from 'assert';
 import * as path from 'path';
@@ -16,14 +16,12 @@ describe('VValidator', () => {
 
   it('should load', () => {
     var data: any = config.load(objPath);
-    console.log(data);
     assert(data && data.get && data.post && data.put);
   })
 
   it('should load', () => {
     var route = new VValidator(componentPath);
     var data: any = route.load();
-    console.log(data);
     assert(data && data.get && data.post && data.put);
   })
 });

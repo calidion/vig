@@ -7,7 +7,7 @@ var session = require('express-session');
 var cookies;
 
 var path = require('path');
-import { VHandler, VService } from '../src';
+import { VHandler, VService } from '../../lib';
 var service = new VService();
 var app = express();
 

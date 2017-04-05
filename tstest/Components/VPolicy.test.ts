@@ -1,5 +1,5 @@
 import 'mocha';
-import { VPolicy } from '../../src/Components/VPolicy';
+import { VPolicy } from '../../../lib/Components/VPolicy';
 
 import * as assert from 'assert';
 import * as path from 'path';
