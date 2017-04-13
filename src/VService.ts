@@ -45,7 +45,7 @@ export class VService {
 
     // parse application/x-www-form-urlencoded
     app.use(bodyParser.urlencoded({
-      extended: true
+      extended: false
     }));
 
     // to support JSON-encoded bodies
