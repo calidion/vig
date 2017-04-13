@@ -95,8 +95,8 @@ export class VHandler {
     // Middlewares should not be failed
     this.middleware.process(req, res, () => {
       this.condition.process(req, res, () => {
-        this.validator.process(req, res, () => {
-          this.policy.process(req, res, () => {
+        this.policy.process(req, res, () => {
+          this.validator.process(req, res, () => {
             this.router.process(req, res, (error) => {
               this.notFound(error, req, res);
             });
