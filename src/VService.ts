@@ -28,7 +28,6 @@ export class VService {
         __dirname,
         item.prefix
       );
-      console.log(item);
       handler.set(item);
       handler.attach(app);
     }
@@ -52,6 +51,8 @@ export class VService {
     // to support JSON-encoded bodies
     app.use(bodyParser.json());
   }
+
+  
 
   addHandlers(app, handlers) {
     for (var i = 0; i < handlers.length; i++) {

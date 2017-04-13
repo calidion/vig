@@ -13,6 +13,8 @@ import * as request from 'supertest';
 
 var componentPath = path.resolve(__dirname, '../../tstest/component/');
 
+var componentPathNoFailure = path.resolve(__dirname, '../../tstest/component.nofailure/');
+
 describe('VHandler', () => {
   it('should new VHandler', () => {
     const handler = new VHandler(null, __dirname);
@@ -78,6 +80,24 @@ describe('VHandler', () => {
       expect(404, function (err, res) {
         assert(!err);
         assert(res.text === 'Not Found!');
+        done()
+      });
+  });
+
+    it('should new VHandler', (done) => {
+    const handler = new VHandler(
+      [
+        '/xxxx'
+      ],
+      componentPathNoFailure,
+      '/send');
+    var json = handler.toJSON();
+    assert(json);
+    handler.attach(app);
+    request(app).get('/send/xxxx').
+      expect(200, function (err, res) {
+        assert(!err);
+        assert(res.text === 'get');
         done()
       });
   });

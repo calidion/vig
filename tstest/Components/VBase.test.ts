@@ -58,9 +58,8 @@ describe('VBase', () => {
     }, base);
     assert.notDeepEqual(bases, bases1);
   })
-
+  
   it('should load wrong dir', () => {
-    var bases = base.load('sdfsfdsdf');
-    assert(bases === null);
+    assert(!base.load('sdfsfdsdf'));
   })
 });

@@ -62,6 +62,56 @@ describe('VError', () => {
     errors = error.generate('', false);
     assert(errors && errors.VigTestError);
     error.filter();
+    error.addDir(path.resolve(__dirname, '../../../test/'));
   })
+
+   it('should merge', () => {
+    var error = new VError(path.resolve(__dirname, '../../../test/'));
+    var data: any = error.merge({
+      Send: {
+        Me: {
+        messages: {
+          'zh-CN': 'Vig测试错误!',
+          'en-US': 'Vig Test Error!'
+        }
+        }
+      }
+    });
+    var errors = error.generate('', false);
+
+    assert(errors && errors.SendMe);
+  }) 
+
+     it('should merge errors', (done) => {
+    var error = new VError(path.resolve(__dirname, '../../../test/'));
+    var data: any = error.merge({
+      Send: {
+        Me: {
+        messages: {
+          'zh-CN': 'Vig测试错误!',
+          'en-US': 'Vig Test Error!'
+        }
+        }
+      }
+    });
+
+    error.attach(app);
+
+    var errors = error.generate('', false);
+
+    app.all('/merged/errors', function(req, res) {
+      console.log(res.errors);
+      res.errorize(res.errors.SendMe);
+    });
+
+    request(app)
+      .get('/merged/errors')
+      .expect(200)
+      .end(function (err, res) {
+        assert(!err);
+        assert.deepEqual(res.body, errors.SendMe.restify());
+        done();
+      });
+  }) 
 
 });

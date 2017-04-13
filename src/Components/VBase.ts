@@ -116,47 +116,82 @@ export abstract class VBase {
     console.warn('File filtered :' + file);
     return null;
   }
+
   loadOn() {
     this.data = this.load();
   }
 
-  load(dir = '', data = {}) {
-    const allowedExtensions = ['.js', '.ts', '.json'];
+  parseDir(dir = '') {
     if (!dir) {
       dir = path.resolve(this.basePath, this.defaultPath);
     }
     if (!fs.existsSync(dir)) {
       console.error('Directory:[' + dir + '] not exists!');
-      return null;
+      return false;
     }
+    return dir;
+  }
 
-    let files = fs.readdirSync(dir);
-    files.forEach((file) => {
-      let absPath = path.resolve(dir, file);
-      let stat = fs.statSync(absPath);
-      // ignore directories
-      if (stat && stat.isDirectory()) {
-        console.warn('Directory:' + absPath + ' is ignored!');
-        return;
-      }
-      // read from valid extensions only
-      if (allowedExtensions.indexOf(path.extname(file)) === -1) {
-        console.warn('File:' + absPath + ' is ignored!');
-        return;
-      }
-      if (this.filterEnabled && !this._filter(absPath)) {
-        return;
-      }
-      const loaded = require(absPath);
-      if (!this.isType(loaded)) {
-        console.warn('Type is not match!');
-        return;
-      }
-      this.files.push(absPath);
+  parseFile(dir, file) {
+    let absPath = path.resolve(dir, file);
+    let stat = fs.statSync(absPath);
+    // ignore directories
+    if (stat && stat.isDirectory()) {
+      console.warn('Directory:' + absPath + ' is ignored!');
+      return false;
+    }
+    // read from valid extensions only
+    const allowedExtensions = ['.js', '.ts', '.json'];
+    if (allowedExtensions.indexOf(path.extname(file)) === -1) {
+      console.warn('File:' + absPath + ' is ignored!');
+      return false;
+    }
+    if (this.filterEnabled && !this._filter(absPath)) {
+      return false;
+    }
+    const loaded = require(absPath);
+    if (!this.isType(loaded)) {
+      console.warn('Type is not match!');
+      return false;
+    }
+    return { path: absPath, loaded: loaded };
+  }
 
-      const name = path.basename(absPath, path.extname(absPath))
-      data = this.extends(name, loaded, data);
+  dirReader(dir, iterator) {
+    dir = this.parseDir(dir);
+    if (dir) {
+      let files = fs.readdirSync(dir);
+      files.forEach((file) => {
+        return iterator(dir, file);
+      });
+      this.files = this.files.filter(function (value, index, self) {
+        return self.indexOf(value) === index;
+      });
+    }
+    return dir;
+  }
+
+  addDir(dir) {
+    this.dirReader(dir, (realDir, file) => {
+      let parsed = this.parseFile(realDir, file);
+      if (!parsed) {
+        return;
+      }
+      this.files.push(parsed.path);
     });
-    return data;
+  }
+
+  load(dir: any = '', data = {}) {
+    if (this.dirReader(dir, (realDir, file) => {
+      let parsed = this.parseFile(realDir, file);
+      if (!parsed) {
+        return;
+      }
+      this.files.push(parsed.path);
+      const name = path.basename(parsed.path, path.extname(parsed.path))
+      data = this.extends(name, parsed.loaded, data);
+    })) {
+      return data;
+    }
   }
 };
