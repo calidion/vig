@@ -35,11 +35,8 @@ export class VError extends VBase {
   }
 
   attach(app) {
-    console.log(this.data);
     var errors = this.generate(this.locale, false);
-    console.log(errors);
     app.use((req, res, next) => {
-      console.log('inside attach');
       res.errors = errors;
       next();
     });

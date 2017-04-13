@@ -73,7 +73,9 @@ export class VHandler {
     for (var key in fallbacks) {
       if (fallbacks[key]) {
         var keyOne = this[keys[key]] || this[key];
-        keyOne.setFailureHandler(fallbacks[key]);
+        if (keyOne) {
+          keyOne.setFailureHandler(fallbacks[key]);
+        }
       }
     }
   }

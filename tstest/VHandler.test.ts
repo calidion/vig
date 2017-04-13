@@ -83,22 +83,4 @@ describe('VHandler', () => {
         done()
       });
   });
-
-    it('should new VHandler', (done) => {
-    const handler = new VHandler(
-      [
-        '/xxxx'
-      ],
-      componentPathNoFailure,
-      '/send');
-    var json = handler.toJSON();
-    assert(json);
-    handler.attach(app);
-    request(app).get('/send/xxxx').
-      expect(200, function (err, res) {
-        assert(!err);
-        assert(res.text === 'get');
-        done()
-      });
-  });
 });
