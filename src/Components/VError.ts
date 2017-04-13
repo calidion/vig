@@ -6,6 +6,7 @@
 import * as _ from 'lodash';
 import { Generator } from 'errorable';
 import { VBase } from './VBase';
+import * as errorize from 'errorable-express';
 
 export class VError extends VBase {
   defaultPath = 'errors'
@@ -36,10 +37,7 @@ export class VError extends VBase {
 
   attach(app) {
     var errors = this.generate(this.locale, false);
-    app.use((req, res, next) => {
-      res.errors = errors;
-      next();
-    });
+    app.use(errorize(errors));
   }
 
 }
