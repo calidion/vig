@@ -24,29 +24,15 @@ describe('VHandler', () => {
 
   it('should new VHandler', () => {
     var passed = false;
-    try {
-      const handler = new VHandler(['/abc'], null);
-      var json = handler.toJSON();
-      assert(json);
-    } catch (e) {
-      assert(e.message === 'path MUST be specified.')
-      passed = true;
-    }
-    assert(passed);
+    const handler = new VHandler(['/abc'], null);
+    var json = handler.toJSON();
+    assert(json);
   });
 
   it('should new VHandler', () => {
-    var passed = false;
-
-    try {
-      const handler = new VHandler(['/abc'], 'null');
-      var json = handler.toJSON();
-      assert(json);
-    } catch (e) {
-      assert(e.message === 'path MUST exist.')
-      passed = true;
-    }
-    assert(passed);
+    const handler = new VHandler(['/abc'], 'null');
+    var json = handler.toJSON();
+    assert(json);
   });
 
   it('should new VHandler', (done) => {

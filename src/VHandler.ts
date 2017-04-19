@@ -19,13 +19,7 @@ export class VHandler {
   protected validator: VValidator;
   protected fallback: VFallback;
 
-  constructor(urls: Array<String>, path: string, prefix = "") {
-    if (!path) {
-      throw new Error('path MUST be specified.')
-    }
-    if (!fs.existsSync(path)) {
-      throw new Error('path MUST exist.')
-    }
+  constructor(urls: Array<String>, path: string = "", prefix = "") {
     this.urls = urls || [];
     this.path = path;
     this.prefix = prefix;
@@ -94,8 +88,8 @@ export class VHandler {
   run(req, res) {
     // Middlewares should not be failed
     this.middleware.process(req, res, () => {
-      this.condition.process(req, res, () => {
-        this.policy.process(req, res, () => {
+      this.policy.process(req, res, () => {
+        this.condition.process(req, res, () => {
           this.validator.process(req, res, () => {
             this.router.process(req, res, (error) => {
               this.notFound(error, req, res);

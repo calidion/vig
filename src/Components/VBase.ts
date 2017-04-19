@@ -122,6 +122,9 @@ export abstract class VBase {
   }
 
   parseDir(dir = '') {
+    if (!this.basePath) {
+      return false;
+    }
     if (!dir) {
       dir = path.resolve(this.basePath, this.defaultPath);
     }
