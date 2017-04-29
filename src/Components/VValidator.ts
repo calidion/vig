@@ -38,13 +38,10 @@ export class VValidator extends VHTTPBase {
   public process(req, res, next) {
     const handler = this.check(req);
     if (handler instanceof Function) {
-      if (this.failurable) {
-        const failure = this.getFailure();
-        return handler(req, res, this.onPassed(
-          req, res, next, failure
-        ));
-      }
-      return handler(req, res, next);
+      const failure = this.getFailure();
+      return handler(req, res, this.onPassed(
+        req, res, next, failure
+      ));
     }
     if (handler && handler instanceof Object) {
       return this.processObject(handler, req, res, next);

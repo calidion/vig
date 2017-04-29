@@ -10,6 +10,10 @@ const config = require('./data/fixtures/events');
 const event = new VEvent();
 event.add(config);
 
+const once = require('./data/fixtures/events.once');
+
+event.add(once, false);
+
 describe('VEvent', () => {
   it('should new VEvent', () => {
     const event = new VEvent();
@@ -22,6 +26,32 @@ describe('VEvent', () => {
       done();
     });
   });
+
+  it('should handle /events again', function (done) {
+    var visited = false;
+    event.send('@event1', function (data) {
+      visited = true;
+    });
+    setTimeout(() => {
+      assert(!visited);
+      done();
+    }, 30);
+  });
+
+  it('should handle event', function (done) {
+    event.send('@eventonce1', function (data) {
+      assert(data === '@eventonce1');
+      done();
+    });
+  });
+
+  it('should handle event again', function (done) {
+    event.send('@eventonce1', function (data) {
+      assert(data === '@eventonce1');
+      done();
+    });
+  });
+
   it('should get /events', function (done) {
     event.send('@event2', function (data) {
       assert(data === '@event2');
