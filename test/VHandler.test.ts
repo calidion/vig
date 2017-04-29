@@ -69,4 +69,30 @@ describe('VHandler', () => {
         done()
       });
   });
+
+  it('should new VHandler', (done) => {
+    let visited = false;
+    let handler = new VHandler(
+      [
+        '/xxx'
+      ],
+      componentPath,
+      '/send');
+    handler.setUrls(['/send/xxx111'])
+    handler.setPrefix('/prefix');
+    handler.update('router', {
+      put: function (req, res) {
+        visited = true;
+        res.send('put');
+      }
+    });
+    handler.attach(app);
+    request(app).put('/prefix/send/xxx111').
+      end(function (err, res) {
+        assert(!err);
+        assert(visited);
+        assert(res.text === 'put');
+        done()
+      });
+  });
 });

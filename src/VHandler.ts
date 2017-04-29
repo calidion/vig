@@ -19,7 +19,7 @@ export class VHandler {
   protected validator: VValidator;
   protected fallback: VFallback;
 
-  constructor(urls: string[], path: string = "", prefix = "") {
+  constructor(urls: string[] = null, path: string = "", prefix = "") {
     this.urls = urls || [];
     this.path = path;
     this.prefix = prefix;
@@ -38,6 +38,20 @@ export class VHandler {
       this[key].loadOn();
     }
     this.updateFallbacks();
+  }
+
+  public setUrls(urls) {
+    this.urls = urls;
+  }
+
+  public setPrefix(prefix) {
+    this.prefix = prefix;
+  }
+
+  public update(k, v) {
+    if (this[k]) {
+      this[k].set(v);
+    }
   }
 
   public set(config) {

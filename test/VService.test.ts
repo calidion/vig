@@ -25,7 +25,8 @@ describe('VService', () => {
     service.addHandler(app, handler);
   });
   it('should get ', function (done) {
-    request(app)
+    var req = request(app);
+    req
       .get('/prefix/url')
       .expect(200)
       .end(function (err, res) {

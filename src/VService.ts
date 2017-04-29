@@ -27,9 +27,8 @@ export class VService {
         item.prefix
       );
       handler.set(item);
-      handler.attach(app);
+      this.addHandler(app, handler);
     }
-    this.handlers.push(handler);
   }
   public addHandler(app, handler: VHandler) {
     handler.attach(app);
@@ -58,7 +57,7 @@ export class VService {
         handlers[i].prefix
       );
       handler.set(handlers[i]);
-      handler.attach(app);
+      this.addHandler(app, handler);
     }
   }
 }
