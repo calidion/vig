@@ -1,7 +1,7 @@
-node_modules
-coverage
-.tmp/
-test/uploaded
-.DS_Store
-dest
+coverage/
+node_modules/
+npm-debug.log
+.nyc_output
+.tmp
+.vscode
 lib

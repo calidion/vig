@@ -3,29 +3,31 @@
  * Apache 2.0 Licensed
  */
 
-import { VHTTPBase } from './VHTTPBase';
-import * as validator from 'node-form-validator';
+import { VHTTPBase } from "./VHTTPBase";
+import * as validator from "node-form-validator";
 
 export class VValidator extends VHTTPBase {
-  defaultPath = 'validators';
-  paramKeys = ['required', 'params', 'query', 'body']
+  private paramKeys = ["required", "params", "query", "body"]
 
   constructor(path = __dirname) {
     super(path)
     this.failurable = true;
+    this.defaultPath = "validators";
   }
 
-  isType(item: any): Boolean {
+  public isType(item: any): boolean {
     if (item instanceof Object) {
-      for (var k in item) {
-        if (this.paramKeys.indexOf(k) === -1) {
-          console.error('params error!');
-          return false;
-        }
-        if (k === 'required') {
-          if (!(item[k] instanceof Array)) {
-            console.error('required MUST be an array!');
+      for (const k in item) {
+        if (typeof k === "string") {
+          if (this.paramKeys.indexOf(k) === -1) {
+            console.error("params error!");
             return false;
+          }
+          if (k === "required") {
+            if (!(item[k] instanceof Array)) {
+              console.error("required MUST be an array!");
+              return false;
+            }
           }
         }
       }
@@ -34,10 +36,10 @@ export class VValidator extends VHTTPBase {
   }
 
   public process(req, res, next) {
-    let handler = this.check(req);
+    const handler = this.check(req);
     if (handler instanceof Function) {
       if (this.failurable) {
-        var failure = this.getFailure();
+        const failure = this.getFailure();
         return handler(req, res, this.onPassed(
           req, res, next, failure
         ));
@@ -52,11 +54,11 @@ export class VValidator extends VHTTPBase {
     }
   }
 
-  processObject(handler, req, res, next) {
+  public processObject(handler, req, res, next) {
     req.extracted = {};
-    var keys = ['query', 'params', 'body'];
-    for (var i = 0; i < keys.length; i++) {
-      var key = keys[i];
+    const keys = ["query", "params", "body"];
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
 
       // continue when no validation specified
       if (!handler[key]) {
@@ -72,9 +74,9 @@ export class VValidator extends VHTTPBase {
         if (handler.required.indexOf(key) === -1) {
           continue;
         }
-        return this.onPassed(req, res, next, this.failureHandler)(false, new Error(key + ' is required'));
+        return this.onPassed(req, res, next, this.failureHandler)(false, new Error(key + " is required"));
       }
-      var result = validator.validate(req[key], handler[key]);
+      const result = validator.validate(req[key], handler[key]);
       // return error info when validation failed
       if (!result || result.code !== 0) {
         return this.onPassed(req, res, next, this.failureHandler)(false, result);

@@ -3,40 +3,40 @@
  * Apache 2.0 Licensed
  */
 
-import * as _ from 'lodash';
-import { Generator } from 'errorable';
-import { VBase } from './VBase';
-import * as errorize from 'errorable-express';
+import * as _ from "lodash";
+import { Generator } from "errorable";
+import { VBase } from "./VBase";
+import * as errorize from "errorable-express";
 
 export class VError extends VBase {
-  defaultPath = 'errors'
-  locale = 'zh-CN'
+  protected locale = "zh-CN"
 
-  constructor(basePath = __dirname, locale = 'zh-CN') {
+  constructor(basePath = __dirname, locale = "zh-CN") {
     super(basePath)
     this.nameless = true;
     this.locale = locale;
+    this.defaultPath = "errors";
   }
 
-  isType(item: any): Boolean {
+  public isType(item: any): boolean {
     return item instanceof Object;
   }
 
-  merge(errors = {}) {
+  public merge(errors = {}) {
     this.data = _.merge(this.data, errors);
   }
 
-  generate(locale: string = 'zh-CN', filesOnly = true): Object {
-    var errors = super.generate();
+  public generate(locale: string = "zh-CN", filesOnly = true): object {
+    let errors = super.generate();
     if (!filesOnly) {
       errors = _.merge(errors, this.data);
     }
-    var generator = new Generator(errors, locale);
+    const generator = new Generator(errors, locale);
     return generator.errors;
   }
 
-  attach(app) {
-    var errors = this.generate(this.locale, false);
+  public attach(app) {
+    const errors = this.generate(this.locale, false);
     app.use(errorize(errors));
   }
 

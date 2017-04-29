@@ -1,13 +1,13 @@
-import * as fs from 'fs';
-import * as async from 'async';
+import * as fs from "fs";
+import * as async from "async";
 
-import { HTTP } from './HTTP';
+import { HTTP } from "./Components/HTTP";
 
-import { VBase, VConfig, VFallback, VCondition, VError, VMiddleware, VPolicy, VRouter, VValidator } from './Components';
+import { VBase, VConfig, VFallback, VCondition, VError, VMiddleware, VPolicy, VRouter, VValidator } from "./Components";
 
 export class VHandler {
-  protected urls: Array<String> = [];
-  protected path: String;
+  protected urls: string[] = [];
+  protected path: string;
   protected prefix = "";
 
   protected config: VConfig;
@@ -19,7 +19,7 @@ export class VHandler {
   protected validator: VValidator;
   protected fallback: VFallback;
 
-  constructor(urls: Array<String>, path: string = "", prefix = "") {
+  constructor(urls: string[], path: string = "", prefix = "") {
     this.urls = urls || [];
     this.path = path;
     this.prefix = prefix;
@@ -32,24 +32,24 @@ export class VHandler {
     this.router = new VRouter(path);
     this.validator = new VValidator(path);
     this.fallback = new VFallback(path);
-    var data = ['config', 'condition', 'error', 'middleware', 'policy', 'router', 'validator'];
-    for (var i = 0; i < data.length; i++) {
-      var key = data[i];
+    const data = ["config", "condition", "error", "middleware", "policy", "router", "validator"];
+    for (let i = 0; i < data.length; i++) {
+      const key = data[i];
       this[key].loadOn();
     }
     this.updateFallbacks();
   }
 
-  set(config) {
-    var keys = {
-      condition: 'conditions',
-      middleware: 'middlewares',
-      router: 'routers',
-      policy: 'policies',
-      validator: 'validations',
-      fallback: 'failures'
+  public set(config) {
+    const keys = {
+      condition: "conditions",
+      middleware: "middlewares",
+      router: "routers",
+      policy: "policies",
+      validator: "validations",
+      fallback: "failures"
     };
-    for (var key in keys) {
+    for (const key in keys) {
       if (config[keys[key]]) {
         this[key].set(config[keys[key]]);
       } else {
@@ -59,14 +59,14 @@ export class VHandler {
     this.updateFallbacks();
   }
 
-  updateFallbacks() {
-    var keys = {
-      validation: 'validator'
+  public updateFallbacks() {
+    const keys = {
+      validation: "validator"
     };
-    var fallbacks = this.fallback.get();
-    for (var key in fallbacks) {
+    const fallbacks = this.fallback.get();
+    for (const key in fallbacks) {
       if (fallbacks[key]) {
-        var keyOne = this[keys[key]] || this[key];
+        const keyOne = this[keys[key]] || this[key];
         if (keyOne) {
           keyOne.setFailureHandler(fallbacks[key]);
         }
@@ -74,18 +74,18 @@ export class VHandler {
     }
   }
 
-  attach(app) {
-    var handler = this;
-    let urls = [];
-    for (var i = 0; i < this.urls.length; i++) {
-      var url = this.prefix + this.urls[i];
+  public attach(app) {
+    const handler = this;
+    const urls = [];
+    for (let i = 0; i < this.urls.length; i++) {
+      const url = this.prefix + this.urls[i];
       app.all(url, (req, res) => {
         this.run(req, res);
       });
     }
   }
 
-  run(req, res) {
+  public run(req, res) {
     // Middlewares should not be failed
     this.middleware.process(req, res, () => {
       this.policy.process(req, res, () => {
@@ -100,14 +100,14 @@ export class VHandler {
     });
   }
 
-  notFound(error, req, res) {
+  public notFound(error, req, res) {
     if (error) {
-      res.status(404).send('Not Found!');
+      res.status(404).send("Not Found!");
     }
   }
 
-  toJSON() {
-    var json: any = {};
+  public toJSON() {
+    const json: any = {};
     json.prefix = this.prefix;
     json.urls = this.urls;
     json.routers = this.router.toMethods();

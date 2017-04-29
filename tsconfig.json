@@ -1,12 +1,26 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "module": "commonjs",
-    "allowJs": true,
+    "moduleResolution": "node",
+    "noImplicitAny": false,
     "outDir": "./lib",
-    "target": "es5"
-    // "noImplicitAny": true
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "target": "es5",
+    "lib": [
+      "es2015"
+    ],
+    "sourceMap": true
   },
   "include": [
-    "./src/**/*"
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*-spec.ts"
   ]
 }

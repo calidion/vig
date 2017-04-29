@@ -1,187 +1,34 @@
-# vig [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+[![Build Status](https://travis-ci.org/{{github-user-name}}/{{github-app-name}}.svg?branch=master)](https://travis-ci.org/{{github-user-name}}/{{github-app-name}}.svg?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/{{github-user-name}}/{{github-app-name}}/badge.svg?branch=master)](https://coveralls.io/github/{{github-user-name}}/{{github-app-name}}?branch=master)
+[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
-## 关于vig
+# Using this module in other modules
 
-是一个专注于Web业务逻辑的组件化框架，主要关心：
+Here is a quick example of how this module can be used in other modules. The [TypeScript Module Resolution Logic](https://www.typescriptlang.org/docs/handbook/module-resolution.html) makes it quite easy. The file `src/index.ts` is a [barrel](https://basarat.gitbooks.io/typescript/content/docs/tips/barrel.html) that re-exports selected exports from other files. The _package.json_ file contains `main` attribute that points to the generated `lib/index.js` file and `typings` attribute that points to the generated `lib/index.d.ts` file.
 
-1. 精减Web业务处理的代码
-2. 简化常规Web业务的处理
-3. 加速项目的开发
-4. 是一个简化Web业务处理的Web框架
-5. 将Web的业务逻辑标准化，可重用化是vig的主要目标
+> If you are planning to have code in multiple files (which is quite natural for a NodeJS module) that users can import, make sure you update `src/index.ts` file appropriately.
 
-目标是：
+Now assuming you have published this amazing module to _npm_ with the name `my-amazing-lib`, and installed it in the module in which you need it -
 
-1. 模块化(Modular)
-2. 可插件化(Pluggable)
-3. 可重入化(Reenterable)
-4. 可集成化(Integratable)
+- To use the `Greeter` class in a TypeScript file -
 
-# 功能列表
+```ts
+import { Greeter } from "my-amazing-lib";
 
-1. 组件化，所的功能都是组件级的
-2. 简化的路由机制
-3. 简洁，而强大的数据输入校检
-4. 方便的权限验证功能
-5. 框架内的事件机制
-6. 实用的VIG API规范支持（尚未实现）
-7. 简单的文件上传机制
-8. 简单的模型定义方式（基于waterline）
-9. 统一的错误处理机制（基于Errorable）
-10. 组件配置支持与全局配置支持（尚未实现）
-11. 模板支持（尚未实现）
-12. 实现一个请求一个服务器（尚未实现）
-
-# 组件化框架支持内容
-
-1. limitation
-
-即各种限制，比如限制一个IP一天只能访问1000次
-
-2. validation
-
-即数据校验，主要用于输入数据的校验，从而让服务器的数据更加的安全。
-
-3. middleware
-
-即自定义的子中间件，这种中间件只有访问到当前的URL时才会启动，而不会影响系统的整体性能。但是中间件是不会阻止请求向下执行的。
-
-4. checker
-
-类似于中间件，但是并不是对用户的检测，而是对系统的检测，并且可以阻止系统的向下执行。
-
-5. policies
-
-即权限的管理，比如只有用户才可以进入，只有作者才可以修改，只有管理员才可以看到等。
-
-6. fallback
-
-当各种验证失败时的处理代码，可以被policies, middleware, validation, limitation等使用。
-
-7. error
-
-即自定义错误，由于vig自定义错误非常方便。
-
-8. http请求
-
-即各种HTTP请求的最终处理代码。
-
-他们分别放在各自的目录
-
-
-## 快速上手
-
-1、创建一个test.js文件
-
-```sh
-vi test.js
+const greeter = new Greeter("World!");
+greeter.greet();
 ```
 
-2、添加如下代码
+- To use the `Greeter` class in a JavaScript file -
 
 ```js
-var app = require('express')();
-var vig = require('vig');
-vig.init(app);
-vig.addHandler(app, {
-  prefix: '/demo',
-  urls: ['/', '/hello'],
-  routers: {
-    get: function (req, res) {
-      res.send('Hello world!');
-    }
-  }
-});
+const Greeter = require('my-amazing-lib').Greeter;
 
-app.listen(10000, function () {
-  console.log('server running on http://localhost:10000');
-});
+const greeter = new Greeter('World!');
+greeter.greet();
 ```
 
-3、执行
-
-```sh
-npm install --save vig
-npm install --save express
-```
-
-4、运行
-
-```
-node test
-```
-
-## 教程
-
-[第一章 最简服务器创建](./demo/chapter-1)   
-
-[第二章 URL路由（别名与前缀）机制](./demo/chapter-1)   
-
-[第三章 vig的http方法机制详解](./demo/chapter-2)  
-
-[第四章 输入数据的校验与提取](./demo/chapter-3)  
-
-[第五章 输入数据的校验与提取（二）](./demo/chapter-4)  
-
-[第六章 输入数据的校验与提取（三）](./demo/chapter-5)  
-
-[第七章 基于waterline操作数据库与模型](./demo/chapter-6)  
-
-[第八章 在vig中进行错误处理](./demo/chapter-7)   
-
-[第九章 在vig中进行文件处理（未完成）](./demo/chapter-8)    
-
-[第十章 应用权限机制（未完成）](./demo/chapter-9)    
-
-[第十一章 错误处理机制（未完成）](./demo/chapter-10)    
-
-
-## 关于async/await支持的几点说明
-
-vig对async/await的支持依赖于用户的开发环境本身，与vig框架无关。  
-但是开发者需要注意的是:
-
-1. async/await无法实现对事件的支持,所以回调函数与async/await是不同的。
-2. 回调函数不会消失，async/await也无法适用于所有的场景
-
-所以在使用vig框架时需要注意事件与IO回调的区别。  
-
-下面再将事件与常规的IO调用的差别说明一下。
-
-1. IO的调用本身也是事件。  
-2. IO调用本身也是可以不定期的，比如网络IO。  
-3. 对于时间与任务明确的IO调用，推荐async/awati，比如数据库访问，文件访问等。  
-4. 对于不明确的事件应该使用回调，比如有些网络IO，一些硬件的IO事件，如键盘事件，鼠标事件等。  
-5. async/await无法取代回调函数  
-
-## 安装
-
-```sh
-$ npm install --save vig
-$ yarn add vig
-```
-
-## 教程与文档
-
-[教程与文档](./docs/README.md);
-
-## 项目地址
-
-https://github.com/calidion/vig
-
-
-## License
-
-Apache-2.0 © [calidion]()
-
-
-[npm-image]: https://badge.fury.io/js/vig.svg
-[npm-url]: https://npmjs.org/package/vig
-[travis-image]: https://travis-ci.org/calidion/vig.svg?branch=master
-[travis-url]: https://travis-ci.org/calidion/vig
-[daviddm-image]: https://david-dm.org/calidion/vig.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/calidion/vig
-[coveralls-image]: https://coveralls.io/repos/calidion/vig/badge.svg
-[coveralls-url]: https://coveralls.io/r/calidion/vig
-
-
+## Setting travis and coveralls badges
+1. Sign in to [travis](https://travis-ci.org/) and activate the build for your project.
+2. Sign in to [coveralls](https://coveralls.io/) and activate the build for your project.
+3. Replace {{github-user-name}}/{{github-app-name}} with your repo details like: "ospatil/generator-node-typescript".

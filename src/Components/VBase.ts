@@ -3,9 +3,9 @@
  * Apache 2.0 Licensed
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
-import * as _ from 'lodash';
+import * as fs from "fs";
+import * as path from "path";
+import * as _ from "lodash";
 
 /**
  * Base class for all Components
@@ -13,14 +13,14 @@ import * as _ from 'lodash';
 
 export abstract class VBase {
   // default path where components can read definitions from
-  protected defaultPath = ''
+  protected defaultPath = ""
   // Component base directory
   protected basePath = __dirname
   // stored data from specified directory.
   protected data: any = {};
 
   // files loaded
-  protected files: Array<string> = [];
+  protected files: string[] = [];
 
   // data types:
   // named:       named by filename
@@ -29,58 +29,58 @@ export abstract class VBase {
 
   protected filterEnabled = false;
 
-  protected filters: Array<String> = [];
-
-  protected abstract isType(item: any): Boolean;
+  protected filters: string[] = [];
 
   constructor(path: string) {
     this.basePath = path;
   }
 
-  toMethods() {
-    var json = {
+  public toMethods() {
+    const json = {
       methods: []
     };
 
-    for (var key in this.data) {
-      json.methods.push(key);
-      json[key] = this.data[key];
+    for (const key in this.data) {
+      if (typeof key === "string") {
+        json.methods.push(key);
+        json[key] = this.data[key];
+      }
     }
     return json;
   }
 
-  get() {
+  public get() {
     return this.data;
   }
 
-  set(data) {
+  public set(data) {
     this.data = data;
   }
 
-  getFiles() {
+  public getFiles() {
     return this.files;
   }
 
-  reset() {
+  public reset() {
     this.data = {};
     this.files = [];
   }
 
-  addFile(file: string = '') {
+  public addFile(file: string = "") {
     if (fs.existsSync(file)) {
       this.files.push(file);
     }
   }
 
-  getFile(file: string): Object {
+  public getFile(file: string): object {
     if (fs.existsSync(file)) {
-      var json = require(file);
+      const json = require(file);
       return json;
     }
     return null;
   }
 
-  extends(name: string, json: Object, data: any = {}) {
+  public extends(name: string, json: object, data: any = {}) {
     if (this.nameless) {
       data = _.merge(this.data, json);
     } else {
@@ -89,8 +89,8 @@ export abstract class VBase {
     return data;
   }
 
-  generate(data = {}) {
-    this.files.forEach(file => {
+  public generate(data = {}) {
+    this.files.forEach((file) => {
       const json = require(file);
       const name = path.basename(file, path.extname(file))
       data = this.extends(name, json, data);
@@ -98,30 +98,21 @@ export abstract class VBase {
     return data;
   }
 
-  filter() {
+  public filter() {
     if (!this.filterEnabled) {
-      console.warn('Filter is not enabled!');
+      console.warn("Filter is not enabled!");
       return;
     }
-    this.files = this.files.map(file => {
+    this.files = this.files.map((file) => {
       return this._filter(file);
     });
   }
 
-  protected _filter(file: string) {
-    const name = path.basename(file, path.extname(file))
-    if (this.filters.indexOf(name) !== -1) {
-      return file
-    }
-    console.warn('File filtered :' + file);
-    return null;
-  }
-
-  loadOn() {
+  public loadOn() {
     this.data = this.load();
   }
 
-  parseDir(dir = '') {
+  public parseDir(dir = "") {
     if (!this.basePath) {
       return false;
     }
@@ -129,24 +120,24 @@ export abstract class VBase {
       dir = path.resolve(this.basePath, this.defaultPath);
     }
     if (!fs.existsSync(dir)) {
-      console.error('Directory:[' + dir + '] not exists!');
+      console.error("Directory:[" + dir + "] not exists!");
       return false;
     }
     return dir;
   }
 
-  parseFile(dir, file) {
-    let absPath = path.resolve(dir, file);
-    let stat = fs.statSync(absPath);
+  public parseFile(dir, file) {
+    const absPath = path.resolve(dir, file);
+    const stat = fs.statSync(absPath);
     // ignore directories
     if (stat && stat.isDirectory()) {
-      console.warn('Directory:' + absPath + ' is ignored!');
+      console.warn("Directory:" + absPath + " is ignored!");
       return false;
     }
     // read from valid extensions only
-    const allowedExtensions = ['.js', '.ts', '.json'];
+    const allowedExtensions = [".js", ".ts", ".json"];
     if (allowedExtensions.indexOf(path.extname(file)) === -1) {
-      console.warn('File:' + absPath + ' is ignored!');
+      console.warn("File:" + absPath + " is ignored!");
       return false;
     }
     if (this.filterEnabled && !this._filter(absPath)) {
@@ -154,29 +145,29 @@ export abstract class VBase {
     }
     const loaded = require(absPath);
     if (!this.isType(loaded)) {
-      console.warn('Type is not match!');
+      console.warn("Type is not match!");
       return false;
     }
-    return { path: absPath, loaded: loaded };
+    return { path: absPath, loaded };
   }
 
-  dirReader(dir, iterator) {
+  public dirReader(dir, iterator) {
     dir = this.parseDir(dir);
     if (dir) {
-      let files = fs.readdirSync(dir);
+      const files = fs.readdirSync(dir);
       files.forEach((file) => {
         return iterator(dir, file);
       });
-      this.files = this.files.filter(function (value, index, self) {
+      this.files = this.files.filter((value, index, self) => {
         return self.indexOf(value) === index;
       });
     }
     return dir;
   }
 
-  addDir(dir) {
+  public addDir(dir) {
     this.dirReader(dir, (realDir, file) => {
-      let parsed = this.parseFile(realDir, file);
+      const parsed = this.parseFile(realDir, file);
       if (!parsed) {
         return;
       }
@@ -184,9 +175,9 @@ export abstract class VBase {
     });
   }
 
-  load(dir: any = '', data = {}) {
+  public load(dir: any = "", data = {}) {
     if (this.dirReader(dir, (realDir, file) => {
-      let parsed = this.parseFile(realDir, file);
+      const parsed = this.parseFile(realDir, file);
       if (!parsed) {
         return;
       }
@@ -197,4 +188,14 @@ export abstract class VBase {
       return data;
     }
   }
-};
+
+  protected _filter(file: string) {
+    const name = path.basename(file, path.extname(file))
+    if (this.filters.indexOf(name) !== -1) {
+      return file
+    }
+    console.warn("File filtered :" + file);
+    return null;
+  }
+  protected abstract isType(item: any): boolean;
+}

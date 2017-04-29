@@ -3,50 +3,53 @@
  * Apache 2.0 Licensed
  */
 
-import * as _ from 'lodash';
-import { Generator } from 'errorable';
-import { VBase } from './VBase';
-import * as Waterline from 'waterline';
+import * as _ from "lodash";
+import { Generator } from "errorable";
+import { VBase } from "./VBase";
+import * as Waterline from "waterline";
 
 export class VModel extends VBase {
-  defaultPath = 'models'
   constructor(basePath = __dirname) {
     super(basePath)
+    this.defaultPath = "models";
   }
 
-  isType(item: any): Boolean {
+  public isType(item: any): boolean {
     return item.attributes instanceof Object;
   }
 
-  attach(app, models) {
-    app.use(function (req, res, next) {
+  public attach(app, models) {
+    app.use((req, res, next) => {
       req.models = models || {};
       next();
     });
   }
 
-  init(config, options, next) {
-    var waterline = new Waterline();
-    var data: any = this.load();
-
-    for (var key in data) {
-      var model = data[key];
-      for (var k in options) {
-        if (typeof k === 'string') {
-          model[k] = options[k];
+  public init(config, options, next) {
+    const waterline = new Waterline();
+    const data: any = this.load();
+    for (const key in data) {
+      if (typeof key === "string") {
+        const model = data[key];
+        for (const k in options) {
+          if (typeof k === "string") {
+            model[k] = options[k];
+          }
         }
+        const connection = Waterline.Collection.extend(model);
+        waterline.loadCollection(connection);
       }
-      var connection = Waterline.Collection.extend(model);
-      waterline.loadCollection(connection);
     }
 
     waterline.initialize(config, (error, ontology) => {
       if (error) {
         return next(true, null);
       }
-      var results = {};
-      for (var key in data) {
-        results[key] = ontology.collections[data[key].identity];
+      const results = {};
+      for (const key in data) {
+        if (typeof key === "string") {
+          results[key] = ontology.collections[data[key].identity];
+        }
       }
       return next(false, results);
     });

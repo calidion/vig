@@ -1,23 +1,16 @@
-import * as uploader from 'file-cloud-uploader';
-import * as async from 'async';
-import * as skipper from 'skipper';
+import * as uploader from "file-cloud-uploader";
+import * as async from "async";
+import * as skipper from "skipper";
 
 export class VFile {
-  name
-  options
-  _isError(err, reject, cb) {
-    if (err) {
-      return reject(err);
-    }
-    cb();
-  }
-
-  cloud(req) {
+  protected name
+  protected options
+  public cloud(req) {
     return (name, options) => {
       return new Promise((resolve, reject) => {
         req.file(name).upload((err, files) => {
           this._isError(err, resolve, () => {
-            var cloudFiles = [];
+            const cloudFiles = [];
             async.each(files, (file, cb) => {
               uploader(options.type,
                 file.fd,
@@ -26,8 +19,8 @@ export class VFile {
                   cloudFiles.push(data);
                   cb();
                 });
-            }, (err) => {
-              this._isError(err, reject, () => {
+            }, (err1) => {
+              this._isError(err1, reject, () => {
                 resolve(cloudFiles);
               });
             });
@@ -36,15 +29,22 @@ export class VFile {
       });
     };
   }
-  attach(app) {
+  public attach(app) {
     app.use(skipper());
     app.use(this.use());
   }
-  use() {
-    var self = this;
-    return function(req, res, next) {
-      req.cloud = self.cloud(req);
+  public use() {
+    return (req, res, next) => {
+      req.cloud = this.cloud(req);
       next();
+    }
+  }
+  public _isError(err, reject, cb = null) {
+    if (err) {
+      return reject(err);
+    }
+    if (cb instanceof Function) {
+      cb();
     }
   }
 }
