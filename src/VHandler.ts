@@ -54,6 +54,10 @@ export class VHandler {
     }
   }
 
+  public extend(method, cb) {
+    return this.router.extend(method, cb);
+  }
+
   public set(config) {
     const keys = {
       condition: "conditions",

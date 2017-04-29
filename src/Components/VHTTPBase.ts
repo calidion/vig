@@ -22,14 +22,23 @@ export class VHTTPBase extends VBase {
 
   public check(req) {
     const method = req.method.toLowerCase();
-    if (this.data) {
-      return this.data[method] || this.data.all;
-    }
-    return false;
+    return this.data[method] || this.data.all;
   }
 
   public setFailureHandler(handler) {
     this.failureHandler = handler;
+  }
+
+  public extend(method, handler) {
+    if (!(handler instanceof Function)) {
+      return false;
+    }
+    if (this.filters.indexOf(method) === -1) {
+      return false;
+    }
+    console.log(this.data);
+    this.data[method] = handler;
+    return true;
   }
 
   public getFailure() {

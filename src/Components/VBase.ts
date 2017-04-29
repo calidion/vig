@@ -54,6 +54,9 @@ export abstract class VBase {
   }
 
   public set(data) {
+    if (!data) {
+      return;
+    }
     this.data = data;
   }
 
@@ -109,7 +112,7 @@ export abstract class VBase {
   }
 
   public loadOn() {
-    this.data = this.load();
+    this.set(this.load());
   }
 
   public parseDir(dir = "") {

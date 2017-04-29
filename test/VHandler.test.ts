@@ -95,4 +95,27 @@ describe('VHandler', () => {
         done()
       });
   });
+
+  it('should extend VHandler', (done) => {
+    let visited = false;
+    let handler = new VHandler();
+    handler.setUrls(['/send/xxx222'])
+    handler.setPrefix('/prefix');
+    handler.extend('sooo', () => {
+    });
+    handler.extend('post', null);
+    handler.extend('post', null);
+    handler.extend('get', function (req, res) {
+      visited = true;
+      res.send('get');
+    });
+    handler.attach(app);
+    request(app).get('/prefix/send/xxx222').
+      end(function (err, res) {
+        assert(!err);
+        assert(visited);
+        assert(res.text === 'get');
+        done()
+      });
+  });
 });
