@@ -88,7 +88,6 @@ describe('vig #routers', function () {
       .get('/add/handler')
       .expect(200)
       .end(function (err, res) {
-        console.log(err, res.text);
         assert(!err);
         assert(res.text === 'add/handler');
         done();

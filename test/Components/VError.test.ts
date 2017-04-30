@@ -14,7 +14,6 @@ var service = new VService();
 var app = express();
 
 let errorsHandlers = require('../data/errorsHandlers');
-console.log(errorsHandlers);
 
 const error = new VError();
 

@@ -55,6 +55,14 @@ export class VHTTPBase extends VBase {
       }
       return handler(req, res, next);
     }
+    if (typeof handler === "string") {
+      if (req[this.defaultPath] && req[this.defaultPath][handler]) {
+        const func = req[this.defaultPath][handler];
+        if (func instanceof Function) {
+          return func(req, res, next);
+        }
+      }
+    }
     if (next instanceof Function) {
       next(true)
     }

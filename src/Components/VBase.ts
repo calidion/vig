@@ -68,6 +68,10 @@ export abstract class VBase {
     this.files = [];
   }
 
+  public attach(app, extra = null) {
+    app.use(this._attachToRequest())
+  }
+
   public addFile(file: string = "") {
     if (fs.existsSync(file)) {
       this.files.push(file);
@@ -189,6 +193,13 @@ export abstract class VBase {
     })) {
       return data;
     }
+  }
+
+  protected _attachToRequest() {
+    return (req, res, next) => {
+      req[this.defaultPath] = this.data;
+      next();
+    };
   }
 
   protected _filter(file: string) {

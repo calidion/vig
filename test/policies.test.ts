@@ -7,9 +7,12 @@ var session = require('express-session');
 var cookies;
 
 var path = require('path');
-import { VHandler, VService } from '../src';
+import { VHandler, VService, VPolicy, VPolicyDefinition } from '../src';
 var service = new VService();
 var app = express();
+
+var policy = new VPolicyDefinition();
+policy = new VPolicyDefinition(path.resolve(__dirname, './data/'));
 
 describe('vig #policies', function () {
   before(function () {
@@ -131,6 +134,48 @@ describe('vig #policies', function () {
       .end(function (err, res) {
         assert(!err);
         assert(res.text === 'Access Denied!');
+        done();
+      });
+  });
+
+  it('should get policies', function (done) {
+    policy.loadOn();
+    policy.attach(app);
+    var handler = new VHandler();
+    handler.set({
+      urls: ['/policies/text'],
+      routers: {
+        get: function (req, res) {
+          res.send('get');
+        },
+        post: function (req, res) {
+          res.send('post');
+        }
+      },
+      policies: {
+        get: 'ok',
+        post: 'test'
+      }
+    });
+    handler.attach(app);
+    var req = request(app).get('/policies/text');
+    req
+      .expect(200)
+      .end(function (err, res) {
+        console.log(err, res.text);
+        assert(!err);
+        assert(res.text === 'ok');
+        done();
+      });
+  });
+
+  it('should get policies', function (done) {
+    var req = request(app).post('/policies/text');
+    req
+      .expect(404)
+      .end(function (err, res) {
+        assert(!err);
+        assert(res.text === 'test');
         done();
       });
   });

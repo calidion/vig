@@ -3,6 +3,7 @@ export * from "./VHandler";
 export * from "./VEvent";
 export * from "./Components";
 export * from "./VFile";
+export * from "./VPolicyDefinition";
 
 import {VHandler} from "./VHandler";
 import {VService } from "./VService";
