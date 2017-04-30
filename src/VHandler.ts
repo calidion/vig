@@ -68,6 +68,12 @@ export class VHandler {
       validator: "validations",
       fallback: "failures"
     };
+    if (config.urls) {
+      this.urls = config.urls;
+    }
+    if (config.prefix) {
+      this.prefix = config.prefix;
+    }
     for (const key in keys) {
       if (config[keys[key]]) {
         this[key].set(config[keys[key]]);
@@ -94,8 +100,8 @@ export class VHandler {
   }
 
   public attach(app) {
-    const handler = this;
-    const urls = [];
+    const prefix = this.prefix || "";
+    const urls = this.urls || [];
     for (let i = 0; i < this.urls.length; i++) {
       const url = this.prefix + this.urls[i];
       app.all(url, (req, res) => {
