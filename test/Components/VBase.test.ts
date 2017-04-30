@@ -25,6 +25,7 @@ describe('VBase', () => {
   });
 
   it('should add file', () => {
+    base.addFile();
     var file = path.resolve(__dirname, '../data/errors/vig.js');
     base.addFile(file);
     assert(base.getFiles().length === 1);
@@ -50,6 +51,8 @@ describe('VBase', () => {
   })
 
   it('should generate bases', () => {
+    var a = {};
+    var bases100 = base.generate(a);
     var bases = base.generate();
     assert(Object.keys(bases).length !== 0);
     var bases1 = base.extends('', {
@@ -64,8 +67,10 @@ describe('VBase', () => {
     }, base);
     assert.notDeepEqual(bases, bases1);
   })
-  
+
   it('should load wrong dir', () => {
+    base.parseDir();
     assert(!base.load('sdfsfdsdf'));
+    assert(!base.load('sdfsfdsdf', {aaa: 1}));
   })
 });

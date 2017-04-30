@@ -6,18 +6,19 @@ import { HTTP } from "./Components/HTTP";
 import { VBase, VConfig, VFallback, VCondition, VError, VMiddleware, VPolicy, VRouter, VValidator } from "./Components";
 
 export class VHandler {
-  protected urls: string[] = [];
-  protected path: string;
-  protected prefix = "";
+  public urls: string[] = [];
+  public prefix = "";
 
-  protected config: VConfig;
-  protected condition: VCondition;
-  protected error: VError;
-  protected middleware: VMiddleware;
-  protected policy: VPolicy;
-  protected router: VRouter;
-  protected validator: VValidator;
-  protected fallback: VFallback;
+  public config: VConfig;
+  public condition: VCondition;
+  public error: VError;
+  public middleware: VMiddleware;
+  public policy: VPolicy;
+  public router: VRouter;
+  public validator: VValidator;
+  public fallback: VFallback;
+  protected path: string;
+  // protected onStatusHandlers = {};
 
   constructor(urls: string[] = null, path: string = "", prefix = "") {
     this.urls = urls || [];
@@ -82,12 +83,12 @@ export class VHandler {
       validation: "validator"
     };
     const fallbacks = this.fallback.get();
-    for (const key in fallbacks) {
-      if (fallbacks[key]) {
-        const keyOne = this[keys[key]] || this[key];
-        if (keyOne) {
-          keyOne.setFailureHandler(fallbacks[key]);
-        }
+    const items = Object.keys(fallbacks);
+    for (let i = 0; i < items.length; i++) {
+      const key = items[i];
+      const keyOne = this[keys[key]] || this[key];
+      if (keyOne) {
+        keyOne.setFailureHandler(fallbacks[key]);
       }
     }
   }
@@ -119,10 +120,13 @@ export class VHandler {
   }
 
   public notFound(error, req, res) {
-    if (error) {
-      res.status(404).send("Not Found!");
-    }
+    console.warn(error);
+    res.status(404).send("Not Found!");
   }
+
+  // public setStatusHandler(status: Number, handler: Function) {
+  //   this.onStatusHandlers[String(status)] = handler;
+  // }
 
   public toJSON() {
     const json: any = {};

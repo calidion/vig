@@ -39,12 +39,11 @@ export abstract class VBase {
     const json = {
       methods: []
     };
-
-    for (const key in this.data) {
-      if (typeof key === "string") {
-        json.methods.push(key);
-        json[key] = this.data[key];
-      }
+    const keys = Object.keys(this.data);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      json.methods.push(key);
+      json[key] = this.data[key];
     }
     return json;
   }

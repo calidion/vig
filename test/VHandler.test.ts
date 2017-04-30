@@ -80,6 +80,8 @@ describe('VHandler', () => {
       '/send');
     handler.setUrls(['/send/xxx111'])
     handler.setPrefix('/prefix');
+    handler.update('rouaaater', {
+    });
     handler.update('router', {
       put: function (req, res) {
         visited = true;

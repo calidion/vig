@@ -51,6 +51,12 @@ export = [{
     },
     condition: function (error, req, res) {
       res.status(403).send('Access Denied Due to Failure to conditions');
+    },
+    sdfsfddf: function() {
+
+    },
+    1: {
+      
     }
   },
   validations: {

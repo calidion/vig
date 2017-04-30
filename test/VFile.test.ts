@@ -53,4 +53,9 @@ describe('VFile', () => {
       done();
     });
   });
+
+  it('should test onError', function () {
+    file._isError(false, function (err) {
+    });
+  });
 });

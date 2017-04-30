@@ -11,14 +11,22 @@ export class VEvent {
    */
   public add(events, isOnce = true) {
     const once = isOnce ? "once" : "on";
-    if (events && events.names && events.handlers) {
-      for (let i = 0; i < events.names.length; i++) {
-        const name = events.names[i];
-        const handler = events.handlers[name];
-        if (name && handler) {
-          VEvent.emitter[once](name, handler);
-        }
+    if (!events) {
+      return;
+    }
+    if (!events.names) {
+      return;
+    }
+    if (!events.handlers) {
+      return;
+    }
+    for (let i = 0; i < events.names.length; i++) {
+      const name = events.names[i];
+      const handler = events.handlers[name];
+      if (!handler) {
+        continue;
       }
+      VEvent.emitter[once](name, handler);
     }
   }
 

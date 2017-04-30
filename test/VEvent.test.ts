@@ -13,6 +13,12 @@ event.add(config);
 const once = require('./data/fixtures/events.once');
 
 event.add(once, false);
+event.add(null, false);
+event.add({}, false);
+event.add({ names: [] }, false);
+event.add({ names: [], handlers: {
+  
+} }, false);
 
 describe('VEvent', () => {
   it('should new VEvent', () => {

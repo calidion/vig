@@ -36,7 +36,6 @@ export class VHTTPBase extends VBase {
     if (this.filters.indexOf(method) === -1) {
       return false;
     }
-    console.log(this.data);
     this.data[method] = handler;
     return true;
   }
