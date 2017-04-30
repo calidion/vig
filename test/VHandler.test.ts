@@ -120,4 +120,32 @@ describe('VHandler', () => {
         done()
       });
   });
+
+    it('should extend VHandler after attach', (done) => {
+    let visited = false;
+    let visited1 = false;
+    let handler = new VHandler();
+    handler.setUrls(['/send/resend'])
+    handler.setPrefix('/prefix');
+    handler.extend('sooo', () => {
+    });
+    handler.extend('post', null);
+    handler.extend('post', null);
+    handler.extend('get', function (req, res) {
+      visited = true;
+      res.send('get');
+    });
+    handler.attach(app);
+    handler.extend('get', function (req, res) {
+      visited1 = true;
+      res.send('get1');
+    });
+    request(app).get('/prefix/send/resend').
+      end(function (err, res) {
+        assert(!err);
+        assert(visited1);
+        assert(res.text === 'get1');
+        done()
+      });
+  });
 });
