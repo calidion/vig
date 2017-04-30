@@ -47,20 +47,12 @@ export class VHTTPBase extends VBase {
   public process(req, res, next = null) {
     const handler = this.check(req);
     if (handler instanceof Function) {
-      if (this.failurable) {
-        const failure = this.getFailure();
-        return handler(req, res, this.onPassed(
-          req, res, next, failure
-        ));
-      }
-      return handler(req, res, next);
+      return this._onProcess(handler, req, res, next);
     }
-    if (typeof handler === "string") {
-      if (req[this.defaultPath] && req[this.defaultPath][handler]) {
-        const func = req[this.defaultPath][handler];
-        if (func instanceof Function) {
-          return func(req, res, next);
-        }
+    if (typeof handler === "string" && req[this.defaultPath] && req[this.defaultPath][handler]) {
+      const func = req[this.defaultPath][handler];
+      if (func instanceof Function) {
+        return this._onProcess(func, req, res, next);
       }
     }
     if (next instanceof Function) {
@@ -84,5 +76,15 @@ export class VHTTPBase extends VBase {
   public onAuthorFailed(message, req, res) {
     console.error(message);
     res.status(403).end("Access Denied!");
+  }
+
+  protected _onProcess(func, req, res, next) {
+    if (this.failurable) {
+      const failure = this.getFailure();
+      return func(req, res, this.onPassed(
+        req, res, next, failure
+      ));
+    }
+    return func(req, res, next);
   }
 }
