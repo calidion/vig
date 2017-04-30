@@ -121,7 +121,7 @@ describe('VHandler', () => {
       });
   });
 
-    it('should extend VHandler after attach', (done) => {
+  it('should extend VHandler after attach', (done) => {
     let visited = false;
     let visited1 = false;
     let handler = new VHandler();
@@ -147,5 +147,13 @@ describe('VHandler', () => {
         assert(res.text === 'get1');
         done()
       });
+  });
+
+  it('should extend VHandler after attach', () => {
+    let visited = false;
+    let visited1 = false;
+    let handler = new VHandler();
+    handler.urls = null;
+    handler.attach(app);
   });
 });

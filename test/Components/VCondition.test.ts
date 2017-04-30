@@ -20,8 +20,8 @@ describe('VCondition', () => {
   })
 
   it('should load', () => {
-    var router = new VCondition(componentPath);
-    var data: any = router.load();
+    let r = new VCondition(componentPath);
+    var data: any = r.load();
     assert(data && data.get && data.post && !data.fuck);
   })
 });

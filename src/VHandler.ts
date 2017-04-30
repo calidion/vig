@@ -101,9 +101,12 @@ export class VHandler {
 
   public attach(app) {
     const prefix = this.prefix || "";
-    const urls = this.urls || [];
-    for (let i = 0; i < this.urls.length; i++) {
-      const url = this.prefix + this.urls[i];
+    let urls = [];
+    if (this.urls instanceof Array) {
+      urls = this.urls;
+    }
+    for (let i = 0; i < urls.length; i++) {
+      const url = prefix + urls[i];
       app.all(url, (req, res) => {
         this.run(req, res);
       });

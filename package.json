@@ -1,6 +1,6 @@
 {
   "name": "vig",
-  "version": "0.8.0-beta",
+  "version": "0.8.0-beta-2",
   "description": "a component based web framework, focus on web basic logics",
   "license": "MIT",
   "repository": "calidion/vig",
@@ -35,7 +35,7 @@
     "errorable-express": "0.0.4",
     "file-cloud-uploader": "0.0.5",
     "lodash": "^4.17.4",
-    "node-form-validator": "^1.5.0",
+    "node-form-validator": "^1.5.1",
     "skipper": "^0.8.2",
     "waterline": "^0.11.11"
   },
