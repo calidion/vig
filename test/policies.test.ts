@@ -178,4 +178,24 @@ describe('vig #policies', function () {
         done();
       });
   });
+
+  it('should get policies', function (done) {
+    policy.loadOn();
+    policy.attach(app);
+    var handler = new VHandler(
+      ['/policies/text1'],
+      path.resolve(__dirname, './data/component.policies')
+    );
+    let json = handler.toJSON();
+    console.log(json);
+    handler.attach(app);
+    var req = request(app).get('/policies/text1');
+    req
+      .expect(200)
+      .end(function (err, res) {
+        assert(!err);
+        assert(res.text === 'ok');
+        done();
+      });
+  });
 });

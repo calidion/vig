@@ -10,4 +10,8 @@ export class VPolicy extends VHTTPBase {
     this.failurable = true;
     this.defaultPath = "policies";
   }
+  public isType(item: any): boolean {
+    return item instanceof Function
+    || typeof item === "string";
+  }
 }
