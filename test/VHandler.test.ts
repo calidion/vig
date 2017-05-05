@@ -45,6 +45,9 @@ describe('VHandler', () => {
     var json = handler.toJSON();
     console.log(json);
     assert(json.failures);
+    assert(json.failures.condition);
+    assert(json.failures.policy);
+    assert(json.failures.validation);
     handler.attach(app);
     request(app).get('/send/xxx').
       expect(200, function (err, res) {
