@@ -4,6 +4,7 @@ export * from "./VEvent";
 export * from "./Components";
 export * from "./VFile";
 export * from "./VPolicyDefinition";
+export * from "./VFallbackDefinition";
 
 import {VHandler} from "./VHandler";
 import {VService } from "./VService";

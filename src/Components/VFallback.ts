@@ -10,4 +10,8 @@ export class VFallback extends VHTTPBase {
     this.defaultPath = "fallbacks";
     this.filters = ["condition", "validation", "policy", "validator"]
   }
+  public isType(item: any): boolean {
+    return item instanceof Function
+      || typeof item === "string";
+  }
 }
