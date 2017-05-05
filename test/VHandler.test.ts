@@ -43,7 +43,8 @@ describe('VHandler', () => {
       componentPath,
       '/send');
     var json = handler.toJSON();
-    assert(json);
+    console.log(json);
+    assert(json.failures);
     handler.attach(app);
     request(app).get('/send/xxx').
       expect(200, function (err, res) {

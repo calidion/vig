@@ -33,7 +33,15 @@ export class VHandler {
     this.router = new VRouter(path);
     this.validator = new VValidator(path);
     this.fallback = new VFallback(path);
-    const data = ["config", "condition", "error", "middleware", "policy", "router", "validator"];
+    const data = [
+      "config",
+      "condition",
+      "error",
+      "middleware",
+      "policy",
+      "router",
+      "validator",
+      "fallback"];
     for (let i = 0; i < data.length; i++) {
       const key = data[i];
       this[key].loadOn();
