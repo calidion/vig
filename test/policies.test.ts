@@ -187,7 +187,6 @@ describe('vig #policies', function () {
       path.resolve(__dirname, './data/component.policies')
     );
     let json = handler.toJSON();
-    console.log(json);
     handler.attach(app);
     var req = request(app).get('/policies/text1');
     req

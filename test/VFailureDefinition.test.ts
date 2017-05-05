@@ -1,7 +1,4 @@
 "use strict";
-
-
-
 var assert = require("assert");
 var request = require("supertest");
 var express = require("express");
@@ -27,7 +24,6 @@ describe("vig #policies", function () {
         secure: false
       }
     }));
-    console.log(vfallback.get());
     vfallback.loadOn();
     vfallback.attach(app);
 
@@ -44,7 +40,6 @@ describe("vig #policies", function () {
       policies: {
         methods: ['get'],
         get: function (req, res, next) {
-          console.log(arguments);
           next(false);
         }
       },
@@ -97,4 +92,5 @@ describe("vig #policies", function () {
         done();
       });
   });
-});
+})
+

@@ -65,7 +65,6 @@ export class VHTTPBase extends VBase {
       if (passed === true) {
         return next();
       }
-      console.log(req.fallbacks);
       if (cb instanceof Function) {
         cb(info, req, res);
       } else if (req.fallbacks && req.fallbacks[cb] && req.fallbacks[cb] instanceof Function) {
