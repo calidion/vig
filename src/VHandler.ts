@@ -18,10 +18,10 @@ export class VHandler {
   public validator: VValidator;
   public fallback: VFallback;
   protected path: string;
-  // protected onStatusHandlers = {};
 
   constructor(urls: string[] = null, path: string = "", prefix = "") {
     this.urls = urls || [];
+    path = path || "";
     this.path = path;
     this.prefix = prefix;
 

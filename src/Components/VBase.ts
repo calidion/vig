@@ -15,7 +15,7 @@ export abstract class VBase {
   // default path where components can read definitions from
   protected defaultPath = ""
   // Component base directory
-  protected basePath = __dirname
+  protected basePath = ""
   // stored data from specified directory.
   protected data: any = {};
 
@@ -106,7 +106,6 @@ export abstract class VBase {
 
   public filter() {
     if (!this.filterEnabled) {
-      console.warn("Filter is not enabled!");
       return;
     }
     this.files = this.files.map((file) => {
@@ -119,17 +118,10 @@ export abstract class VBase {
   }
 
   public parseDir(dir = "") {
-    if (!this.basePath) {
-      return false;
+    if (fs.existsSync(dir)) {
+      return dir;
     }
-    if (!dir) {
-      dir = path.resolve(this.basePath, this.defaultPath);
-    }
-    if (!fs.existsSync(dir)) {
-      console.error("Directory:[" + dir + "] not exists!");
-      return false;
-    }
-    return dir;
+    return false;
   }
 
   public parseFile(dir, file) {
@@ -137,13 +129,11 @@ export abstract class VBase {
     const stat = fs.statSync(absPath);
     // ignore directories
     if (stat && stat.isDirectory()) {
-      console.warn("Directory:" + absPath + " is ignored!");
       return false;
     }
     // read from valid extensions only
     const allowedExtensions = [".js", ".ts", ".json"];
     if (allowedExtensions.indexOf(path.extname(file)) === -1) {
-      console.warn("File:" + absPath + " is ignored!");
       return false;
     }
     if (this.filterEnabled && !this._filter(absPath)) {
@@ -151,7 +141,6 @@ export abstract class VBase {
     }
     const loaded = require(absPath);
     if (!this.isType(loaded)) {
-      console.warn("Type is not match!");
       return false;
     }
     return { path: absPath, loaded };
@@ -182,6 +171,9 @@ export abstract class VBase {
   }
 
   public load(dir: any = "", data = {}) {
+    if (!dir) {
+      dir = path.resolve(this.basePath, this.defaultPath);
+    }
     if (this.dirReader(dir, (realDir, file) => {
       const parsed = this.parseFile(realDir, file);
       if (!parsed) {
@@ -207,7 +199,6 @@ export abstract class VBase {
     if (this.filters.indexOf(name) !== -1) {
       return file
     }
-    console.warn("File filtered :" + file);
     return null;
   }
   protected abstract isType(item: any): boolean;

@@ -9,7 +9,7 @@ import { HTTP } from "./HTTP";
 export class VHTTPBase extends VBase {
   protected failurable = false;
   protected failureHandler: () => void;
-  constructor(path = __dirname, failurable = false) {
+  constructor(path = "", failurable = false) {
     super(path);
     this.filterEnabled = true;
     this.failurable = failurable;

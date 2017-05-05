@@ -5,7 +5,7 @@
 import { VHTTPBase } from "./VHTTPBase";
 
 export class VCondition extends VHTTPBase {
-  constructor(path = __dirname) {
+  constructor(path = "") {
     super(path)
     this.failurable = true;
     this.defaultPath = "conditions";

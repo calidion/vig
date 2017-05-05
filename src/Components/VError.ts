@@ -11,7 +11,7 @@ import * as errorize from "errorable-express";
 export class VError extends VBase {
   protected locale = "zh-CN"
 
-  constructor(basePath = __dirname, locale = "zh-CN") {
+  constructor(basePath = "", locale = "zh-CN") {
     super(basePath)
     this.nameless = true;
     this.locale = locale;

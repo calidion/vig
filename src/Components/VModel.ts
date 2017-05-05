@@ -9,7 +9,7 @@ import { VBase } from "./VBase";
 import * as Waterline from "waterline";
 
 export class VModel extends VBase {
-  constructor(basePath = __dirname) {
+  constructor(basePath = "") {
     super(basePath)
     this.defaultPath = "models";
   }

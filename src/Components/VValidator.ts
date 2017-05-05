@@ -9,7 +9,7 @@ import * as validator from "node-form-validator";
 export class VValidator extends VHTTPBase {
   private paramKeys = ["required", "params", "query", "body"]
 
-  constructor(path = __dirname) {
+  constructor(path = "") {
     super(path)
     this.failurable = true;
     this.defaultPath = "validators";

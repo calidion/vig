@@ -9,7 +9,7 @@ import { Generator } from "errorable";
 import { VBase } from "./VBase";
 
 export class VConfig extends VBase {
-  constructor(path = __dirname) {
+  constructor(path = "") {
     super(path)
     this.defaultPath = "configs";
   }

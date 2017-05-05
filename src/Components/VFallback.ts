@@ -5,7 +5,7 @@
 import { VHTTPBase } from "./VHTTPBase";
 
 export class VFallback extends VHTTPBase {
-  constructor(path = __dirname) {
+  constructor(path = "") {
     super(path)
     this.defaultPath = "fallbacks";
     this.filters = ["condition", "validation", "policy", "validator"]
