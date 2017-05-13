@@ -7,6 +7,18 @@ import * as fs from 'fs';
 
 const base = new VHTTPBase(__dirname);
 
+class VHTTP extends VHTTPBase {
+  constructor(path = "") {
+    super(path);
+    this.defaultPath = "a";
+  }
+  public isType(item: any): boolean {
+    return item instanceof Function || typeof item === "string";
+  }
+}
+
+const v = new VHTTP();
+
 describe('VHTTPBase', () => {
   it('should new VHTTPBase', () => {
     assert(base);
@@ -51,5 +63,28 @@ describe('VHTTPBase', () => {
     var handler2 = base.getFallback({
       fallbacks: { get: 'oosodssd' }
     });
+  })
+
+  it('should checkEx', () => {
+    v.setFailureHandler('get');
+    v.set({
+      get: 'get'
+    });
+        v.checkEx({
+      method: 'get'
+    });
+    v.checkEx({
+      method: 'get',
+      a: {
+      }
+    });
+    v.checkEx({
+      method: 'get',
+      a: {
+        get: 'sodff'
+      }
+    });
+    new VHTTPBase("", true);
+    new VHTTPBase("sosos", true);
   })
 });

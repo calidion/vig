@@ -25,6 +25,27 @@ export class VHTTPBase extends VBase {
     return this.data[method] || this.data.all;
   }
 
+  public checkEx(req) {
+    const method = req.method.toLowerCase();
+    const handler = this.data[method] || this.data.all;
+    if (handler instanceof Function) {
+      return handler;
+    }
+    if (typeof handler !== "string") {
+      return false;
+    }
+    if (!req[this.defaultPath]) {
+      return false;
+    }
+    if (!req[this.defaultPath][handler]) {
+      return false;
+    }
+    if (req[this.defaultPath][handler] instanceof Function) {
+      return req[this.defaultPath][handler];
+    }
+    return false;
+  }
+
   public setFailureHandler(handler) {
     this.failureHandler = handler;
   }
@@ -60,16 +81,10 @@ export class VHTTPBase extends VBase {
     return req.fallbacks[handler];
   }
 
-  public process(req, res, next = null) {
-    const handler = this.check(req);
-    if (handler instanceof Function) {
+  public process(req, res, next) {
+    const handler = this.checkEx(req);
+    if (handler) {
       return this._onProcess(handler, req, res, next);
-    }
-    if (typeof handler === "string" && req[this.defaultPath] && req[this.defaultPath][handler]) {
-      const func = req[this.defaultPath][handler];
-      if (func instanceof Function) {
-        return this._onProcess(func, req, res, next);
-      }
     }
     if (next instanceof Function) {
       next(true)
