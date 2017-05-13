@@ -40,8 +40,24 @@ export class VHTTPBase extends VBase {
     return true;
   }
 
-  public getFailure() {
-    return this.failureHandler;
+  public getFallback(req) {
+    const handler: any = this.failureHandler;
+    if (handler instanceof Function) {
+      return handler;
+    }
+    if (typeof handler !== "string") {
+      return false;
+    }
+    if (!req.fallbacks) {
+      return false;
+    }
+    if (!req.fallbacks[handler]) {
+      return false
+    }
+    if (!(req.fallbacks[handler] instanceof Function)) {
+      return false;
+    }
+    return req.fallbacks[handler];
   }
 
   public process(req, res, next = null) {
@@ -67,9 +83,6 @@ export class VHTTPBase extends VBase {
       }
       if (cb instanceof Function) {
         cb(info, req, res);
-      } else if (req.fallbacks && req.fallbacks[cb] && req.fallbacks[cb] instanceof Function) {
-        const func = req.fallbacks[cb];
-        func(info, req, res);
       } else {
         this.onAuthorFailed(info, req, res);
       }
@@ -77,17 +90,21 @@ export class VHTTPBase extends VBase {
   }
 
   public onAuthorFailed(message, req, res) {
-    console.error(message);
+    // console.error(message);
     res.status(403).end("Access Denied!");
   }
 
   protected _onProcess(func, req, res, next) {
-    if (this.failurable) {
-      const failure = this.getFailure();
-      return func(req, res, this.onPassed(
-        req, res, next, failure
-      ));
-    }
-    return func(req, res, next);
+    return func(req, res, (passed, info) => {
+      if (!this.failurable || passed) {
+        return next();
+      }
+      const falback = this.getFallback(req);
+      if (falback instanceof Function) {
+        falback(info, req, res);
+      } else {
+        this.onAuthorFailed(info, req, res);
+      }
+    });
   }
 }

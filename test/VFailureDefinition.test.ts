@@ -76,6 +76,7 @@ describe("vig #policies", function () {
       .get("/failure")
       .expect(200)
       .end(function (err, res) {
+        console.log(err, res.text);
         assert(!err);
         assert(res.text === "ok");
         done();

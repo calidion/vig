@@ -20,12 +20,12 @@ export class VValidator extends VHTTPBase {
       for (const k in item) {
         if (typeof k === "string") {
           if (this.paramKeys.indexOf(k) === -1) {
-            console.error("params error!");
+            // console.error("params error!");
             return false;
           }
           if (k === "required") {
             if (!(item[k] instanceof Array)) {
-              console.error("required MUST be an array!");
+              // console.error("required MUST be an array!");
               return false;
             }
           }
@@ -38,9 +38,9 @@ export class VValidator extends VHTTPBase {
   public process(req, res, next) {
     const handler = this.check(req);
     if (handler instanceof Function) {
-      const failure = this.getFailure();
+      const fallback = this.getFallback(req);
       return handler(req, res, this.onPassed(
-        req, res, next, failure
+        req, res, next, fallback
       ));
     }
     if (handler && handler instanceof Object) {

@@ -137,7 +137,7 @@ export class VHandler {
   }
 
   public notFound(error, req, res) {
-    console.warn(error);
+    // console.warn(error);
     res.status(404).send("Not Found!");
   }
 

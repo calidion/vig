@@ -40,4 +40,16 @@ describe('VHTTPBase', () => {
       method: 'get'
     }));
   })
+
+  it('should getFallback with no callbacks', () => {
+    base.setFailureHandler('get');
+    var handler = base.getFallback({
+    });
+    var handler1 = base.getFallback({
+      fallbacks: {}
+    });
+    var handler2 = base.getFallback({
+      fallbacks: { get: 'oosodssd' }
+    });
+  })
 });
