@@ -121,19 +121,25 @@ export class VHandler {
     }
   }
 
-  public run(req, res) {
+  public async run(req, res) {
     // Middlewares should not be failed
-    this.middleware.process(req, res, () => {
-      this.policy.process(req, res, () => {
-        this.condition.process(req, res, () => {
-          this.validator.process(req, res, () => {
-            this.router.process(req, res, (error) => {
-              this.notFound(error, req, res);
-            });
-          });
-        });
-      });
-    });
+    try {
+      await this.middleware.process(req, res);
+      if (!await this.policy.process(req, res)) {
+        return;
+      }
+      if (!await this.condition.process(req, res)) {
+        return;
+      }
+      if (!await this.validator.process(req, res)) {
+        return;
+      }
+      if (!await this.router.process(req, res)) {
+        this.notFound('Not Found!', req, res);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   public notFound(error, req, res) {

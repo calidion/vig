@@ -81,21 +81,16 @@ export class VHTTPBase extends VBase {
     return req.fallbacks[handler];
   }
 
-  public process(req, res, next) {
+  public async process(req, res) {
     const handler = this.checkEx(req);
     if (handler) {
-      return this._onProcess(handler, req, res, next);
+      return await Promise.resolve(this._onProcess(handler, req, res));
     }
-    if (next instanceof Function) {
-      next(true)
-    }
+    return await Promise.resolve(true);
   }
 
-  public onPassed(req, res, next, cb) {
+  public onPassed(req, res, cb) {
     return (passed, info) => {
-      if (passed === true) {
-        return next();
-      }
       if (cb instanceof Function) {
         cb(info, req, res);
       } else {
@@ -109,17 +104,20 @@ export class VHTTPBase extends VBase {
     res.status(403).end("Access Denied!");
   }
 
-  protected _onProcess(func, req, res, next) {
-    return func(req, res, (passed, info) => {
-      if (!this.failurable || passed) {
-        return next();
-      }
-      const falback = this.getFallback(req);
-      if (falback instanceof Function) {
-        falback(info, req, res);
-      } else {
-        this.onAuthorFailed(info, req, res);
-      }
+  protected _onProcess(func, req, res) {
+    return new Promise((resovle) => {
+      func(req, res, (passed, info) => {
+        if (!this.failurable || passed) {
+          return resovle(true);
+        }
+        const falback = this.getFallback(req);
+        if (falback instanceof Function) {
+          falback(info, req, res);
+        } else {
+          this.onAuthorFailed(info, req, res);
+        }
+        resovle(false);
+      });
     });
   }
 }

@@ -16,26 +16,26 @@ var componentPath = path.resolve(__dirname, './data/component/');
 var componentPathNoFailure = path.resolve(__dirname, './data/component.nofailure/');
 
 describe('VHandler', () => {
-  it('should new VHandler', () => {
+  it('should new VHandler 1', () => {
     const handler = new VHandler(null, __dirname);
     var json = handler.toJSON();
     assert(json);
   });
 
-  it('should new VHandler', () => {
+  it('should new VHandler 2', () => {
     var passed = false;
     const handler = new VHandler(['/abc'], null);
     var json = handler.toJSON();
     assert(json);
   });
 
-  it('should new VHandler', () => {
+  it('should new VHandler 3', () => {
     const handler = new VHandler(['/abc'], 'null');
     var json = handler.toJSON();
     assert(json);
   });
 
-  it('should new VHandler', (done) => {
+  it('should new VHandler 4', (done) => {
     const handler = new VHandler(
       [
         '/xxx'
@@ -56,7 +56,7 @@ describe('VHandler', () => {
       });
   });
 
-  it('should new VHandler', (done) => {
+  it('should new VHandler 5', (done) => {
     const handler = new VHandler(
       [
         '/xxx'
@@ -68,13 +68,14 @@ describe('VHandler', () => {
     handler.attach(app);
     request(app).put('/send/xxx').
       expect(404, function (err, res) {
+        console.log(err, res.text);
         assert(!err);
         assert(res.text === 'Not Found!');
         done()
       });
   });
 
-  it('should new VHandler', (done) => {
+  it('should new VHandler 6', (done) => {
     let visited = false;
     let handler = new VHandler(
       [
@@ -159,5 +160,12 @@ describe('VHandler', () => {
     let handler = new VHandler();
     handler.urls = null;
     handler.attach(app);
+  });
+
+  it('should extend VHandler after attach', () => {
+    let visited = false;
+    let visited1 = false;
+    let handler = new VHandler();
+    handler.run(null, null);
   });
 });
