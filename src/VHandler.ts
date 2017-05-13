@@ -135,7 +135,7 @@ export class VHandler {
         return;
       }
       if (!await this.router.process(req, res)) {
-        this.notFound('Not Found!', req, res);
+        this.notFound("Not Found!", req, res);
       }
     } catch (e) {
       console.error(e);
