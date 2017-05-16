@@ -2,6 +2,8 @@
 
 ## 关于vig
 
+![](http://res.cloudinary.com/dawjytvkn/image/upload/v1494714446/sosos_ubpueo.png)
+
 是一个专注于Web业务逻辑的组件化框架，主要关心：
 
 1. 精减Web业务处理的代码
