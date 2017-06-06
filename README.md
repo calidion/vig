@@ -1,8 +1,16 @@
 # vig [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 
-## 关于vig
+## vig与其它框架单机性能测试对照
+
+详细见文章 [  一个支持async的超高性能的基于node.js的Web业务框架](https://t1bao.com/thread/visit/11)
 
 ![](http://res.cloudinary.com/dawjytvkn/image/upload/v1494714446/sosos_ubpueo.png)
+
+## 说明
+
+详见·[缘起](https://github.com/calidion/vig/wiki)
+
+## 关于vig
 
 是一个专注于Web业务逻辑的组件化框架，主要关心：
 
