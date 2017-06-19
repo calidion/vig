@@ -2,9 +2,7 @@
 
 ## 导航
 
-·[缘起](https://github.com/calidion/vig/wiki)· 
-
-·[教程](https://github.com/calidion/vig/wiki/%E6%95%99%E7%A8%8B)·
+[[缘起](https://github.com/calidion/vig/wiki)] [[教程](https://github.com/calidion/vig/wiki/%E6%95%99%E7%A8%8B)]
 
 
 ## vig与其它框架单机性能测试对照
