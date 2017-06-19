@@ -1,5 +1,12 @@
 # vig [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 
+## 导航
+
+·[缘起](https://github.com/calidion/vig/wiki)· 
+
+·[教程](https://github.com/calidion/vig/wiki/%E6%95%99%E7%A8%8B)·
+
+
 ## vig与其它框架单机性能测试对照
 
 详细见文章 [  一个支持async的超高性能的基于node.js的Web业务框架](https://t1bao.com/thread/visit/11)
@@ -14,10 +21,6 @@
 > 原因很简单，虽然vig相对于express的折损只有1%多点。
 > 但是如果基于koa的也只折损1%，那么vig的性能就会大大的提高。
 
-
-## 缘起
-
-详见 · [缘起](https://github.com/calidion/vig/wiki) ·
 
 ## 关于vig
 
@@ -36,7 +39,7 @@
 3. 可重入化(Reenterable)
 4. 可集成化(Integratable)
 
-# 功能列表
+## 功能列表
 
 1. 组件化，所的功能都是组件级的
 2. 简化的路由机制
@@ -97,9 +100,6 @@ npm install --save express
 ```
 npm test
 ```
-
-## 教程
-详见·[教程](https://github.com/calidion/vig/wiki/%E6%95%99%E7%A8%8B)
 
 ## 关于async/await支持的几点说明
 
