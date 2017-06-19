@@ -6,9 +6,15 @@
 
 ![](http://res.cloudinary.com/dawjytvkn/image/upload/v1494714446/sosos_ubpueo.png)
 
-## 说明
 
-详见·[缘起](https://github.com/calidion/vig/wiki)
+> vig是一个Web业务框架，本身并不想处理Web协议层面的事情。
+> 但是因为协议与上层的业务是紧密关联的，所以未来可能会参与到协议层框架的开发上去。
+> 原因很简单，虽然vig相对于express的折损只有1%多点。但是如果基于koa的也只折损1%，那么vig的性能就会大大的提高。
+
+
+## 缘起
+
+详见 · [缘起](https://github.com/calidion/vig/wiki) ·
 
 ## 关于vig
 
@@ -44,19 +50,21 @@
 
 ## 快速上手
 
-1、创建一个test.js文件
+1、创建一个test.ts文件(推荐使用TS）
 
 ```sh
-vi test.js
+vi test.ts
 ```
 
 2、添加如下代码
 
-```js
-var app = require('express')();
-var vig = require('vig');
-vig.init(app);
-vig.addHandler(app, {
+```js/ts
+
+import { VHandler } from "vig";
+let app = require('express')();
+const handler = new VHandler();
+
+handler.set({
   prefix: '/demo',
   urls: ['/', '/hello'],
   routers: {
@@ -65,6 +73,7 @@ vig.addHandler(app, {
     }
   }
 });
+handler.attach(app);
 
 app.listen(10000, function () {
   console.log('server running on http://localhost:10000');
@@ -87,29 +96,7 @@ npm test
 ```
 
 ## 教程
-
-[第一章 最简服务器创建](./demo/chapter-1)   
-
-[第二章 URL路由（别名与前缀）机制](./demo/chapter-1)   
-
-[第三章 vig的http方法机制详解](./demo/chapter-2)  
-
-[第四章 输入数据的校验与提取](./demo/chapter-3)  
-
-[第五章 输入数据的校验与提取（二）](./demo/chapter-4)  
-
-[第六章 输入数据的校验与提取（三）](./demo/chapter-5)  
-
-[第七章 基于waterline操作数据库与模型](./demo/chapter-6)  
-
-[第八章 在vig中进行错误处理](./demo/chapter-7)   
-
-[第九章 在vig中进行文件处理（未完成）](./demo/chapter-8)    
-
-[第十章 应用权限机制（未完成）](./demo/chapter-9)    
-
-[第十一章 错误处理机制（未完成）](./demo/chapter-10)    
-
+详见·[教程](https://github.com/calidion/vig/wiki/%E6%95%99%E7%A8%8B)
 
 ## 关于async/await支持的几点说明
 
@@ -135,10 +122,6 @@ vig对async/await的支持依赖于用户的开发环境本身，与vig框架无
 $ npm install --save vig
 $ yarn add vig
 ```
-
-## 教程与文档
-
-[教程与文档](./docs/README.md);
 
 ## 项目地址
 
