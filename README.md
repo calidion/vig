@@ -1,8 +1,18 @@
 # vig [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 
+## 简介
+
+一个受sailsjs启发的新Web框架，但是追求小而美，而又敏捷，灵活，高效。以完成MVC的C端为重点，插件化的Web框架。
+
 ## 导航
 
 [[缘起](https://github.com/calidion/vig/wiki)] [[教程](https://github.com/calidion/vig/wiki/%E6%95%99%E7%A8%8B)]
+
+## 示例
+
+[国内](https://t1bao.com/)
+
+[国外](https://forum.webfullstack.me/)
 
 
 ## vig与其它框架单机性能测试对照
