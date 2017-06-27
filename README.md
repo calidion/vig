@@ -4,6 +4,10 @@
 
 一个受sailsjs启发的新Web框架，但是追求小而美，而又敏捷，灵活，高效。以完成MVC的C端为重点，插件化的Web框架。
 
+## 交流QQ群
+
+423652352
+
 ## 导航
 
 [[缘起](https://github.com/calidion/vig/wiki)] [[教程](https://github.com/calidion/vig/wiki/%E6%95%99%E7%A8%8B)]
