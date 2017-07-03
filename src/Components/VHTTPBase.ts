@@ -81,30 +81,32 @@ export class VHTTPBase extends VBase {
     return req.fallbacks[handler];
   }
 
-  public async process(req, res) {
+  public async process(req, res): Promise<Boolean> {
     const handler = this.checkEx(req);
     if (handler) {
-      return await Promise.resolve(this._onProcess(handler, req, res));
+      const processed: Boolean = await this._onProcess(handler, req, res);
+      return await Promise.resolve(processed);
     }
     return await Promise.resolve(true);
   }
 
   public onPassed(req, res, cb) {
-    return (passed, info) => {
+    return (passed, info): Boolean => {
       if (cb instanceof Function) {
-        cb(info, req, res);
+        return cb(info, req, res);
       } else {
-        this.onAuthorFailed(info, req, res);
+        return this.onAuthorFailed(info, req, res);
       }
     };
   }
 
-  public onAuthorFailed(message, req, res) {
+  public onAuthorFailed(message, req, res): Boolean {
     // console.error(message);
     res.status(403).end("Access Denied!");
+    return false;
   }
 
-  protected _onProcess(func, req, res) {
+  protected _onProcess(func, req, res): Promise<Boolean> {
     return new Promise((resovle) => {
       func(req, res, (passed, info) => {
         if (!this.failurable || passed) {
