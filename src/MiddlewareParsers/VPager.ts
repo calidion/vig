@@ -48,7 +48,6 @@ export class VPager extends VHTTPBase {
     query.page = this.toNumber(query.page);
     query.limit = this.toNumber(query.limit);
     scope.query = query;
-    console.log(scope);
     return true;
   }
 }

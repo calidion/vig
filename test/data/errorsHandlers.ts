@@ -1,7 +1,7 @@
 export = [{
   urls: ['/errors'],
   routers: {
-    methods: ['get', 'post', 'bad'],
+    methods: ['get', 'post', 'put', 'bad'],
     get: function (req, res) {
       res.errorize(res.errors.Success);
     },

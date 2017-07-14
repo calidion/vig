@@ -11,6 +11,8 @@ import * as errorize from "errorable-express";
 export class VError extends VBase {
   protected locale = "zh-CN"
 
+  private _cache = null;
+
   constructor(basePath = "", locale = "zh-CN") {
     super(basePath)
     this.nameless = true;
@@ -24,6 +26,13 @@ export class VError extends VBase {
 
   public merge(errors = {}) {
     this.data = _.merge(this.data, errors);
+  }
+
+  public parse(req, res, scope) {
+    if (!this._cache) {
+      this._cache = this.generate(this.locale, false);
+    }
+    scope.errors = this._cache;
   }
 
   public generate(locale: string = "zh-CN", filesOnly = true): object {

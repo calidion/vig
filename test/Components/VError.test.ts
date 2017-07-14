@@ -43,6 +43,17 @@ describe('VError', () => {
       });
   });
 
+  it('should put /errors', function (done) {
+    request(app)
+      .put('/errors')
+      .expect(200)
+      .end(function (err, res) {
+        assert(!err);
+        assert.deepEqual(res.body, errors.VigTestError.restify());
+        done();
+      });
+  });
+
   it('should new VError', () => {
     assert(error);
   });
@@ -63,40 +74,40 @@ describe('VError', () => {
     error.addDir(path.resolve(__dirname, '../data/'));
   })
 
-   it('should merge', () => {
+  it('should merge', () => {
     var error = new VError(path.resolve(__dirname, '../data/'));
     var data: any = error.merge({
       Send: {
         Me: {
-        messages: {
-          'zh-CN': 'Vig测试错误!',
-          'en-US': 'Vig Test Error!'
-        }
+          messages: {
+            'zh-CN': 'Vig测试错误!',
+            'en-US': 'Vig Test Error!'
+          }
         }
       }
     });
-    var errors:any = error.generate('', false);
+    var errors: any = error.generate('', false);
     assert(errors && errors.SendMe);
-  }) 
+  })
 
-     it('should merge errors', (done) => {
+  it('should merge errors', (done) => {
     var error = new VError(path.resolve(__dirname, '../data/'));
     var data: any = error.merge({
       Send: {
         Me: {
-        messages: {
-          'zh-CN': 'Vig测试错误!',
-          'en-US': 'Vig Test Error!'
-        }
+          messages: {
+            'zh-CN': 'Vig测试错误!',
+            'en-US': 'Vig Test Error!'
+          }
         }
       }
     });
 
     error.attach(app);
 
-    var errors:any = error.generate('', false);
+    var errors: any = error.generate('', false);
 
-    app.all('/merged/errors', function(req, res) {
+    app.all('/merged/errors', function (req, res) {
       res.errorize(res.errors.SendMe);
     });
 
@@ -108,6 +119,6 @@ describe('VError', () => {
         assert.deepEqual(res.body, errors.SendMe.restify());
         done();
       });
-  }) 
+  })
 
 });

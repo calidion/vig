@@ -11,7 +11,6 @@ export class VRouter extends VHTTPBase {
   }
 
   public async run(req, res, scope): Promise<boolean> {
-    console.log(scope);
     const handler = this.checkEx(req);
     if (handler) {
       return await this._run(handler, req, res, scope);
@@ -20,7 +19,6 @@ export class VRouter extends VHTTPBase {
   }
 
   protected async _run(func, req, res, scope): Promise<boolean> {
-    console.log(scope);
     await func(req, res, scope);
     return true;
   }

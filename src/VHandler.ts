@@ -153,6 +153,7 @@ export class VHandler {
         return;
       }
       this.pager.parse(req, res, this.scope);
+      this.error.parse(req, res, this.scope);
       console.log(this.scope);
       if (!await this.router.run(req, res, this.scope)) {
         this.notFound("Not Found!", req, res);

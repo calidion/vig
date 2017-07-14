@@ -18,5 +18,4 @@ export class VMiddleware extends VHTTPBase {
     super(path)
     this.defaultPath = "middlewares";
   }
-
 }
