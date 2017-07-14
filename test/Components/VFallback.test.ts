@@ -1,5 +1,5 @@
 import 'mocha';
-import { VFallback } from '../../src/Components/VFallback';
+import { VFallback } from '../../src/MiddlewareParsers/VFallback';
 
 import * as assert from 'assert';
 import * as path from 'path';

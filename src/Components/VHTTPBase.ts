@@ -9,10 +9,9 @@ import { HTTP } from "./HTTP";
 export class VHTTPBase extends VBase {
   protected failurable = false;
   protected failureHandler: () => void;
-  constructor(path = "", failurable = false) {
+  constructor(path) {
     super(path);
     this.filterEnabled = true;
-    this.failurable = failurable;
     this.filters = HTTP.methods;
   }
 
@@ -34,12 +33,15 @@ export class VHTTPBase extends VBase {
     if (typeof handler !== "string") {
       return false;
     }
+
     if (!req[this.defaultPath]) {
       return false;
     }
+
     if (!req[this.defaultPath][handler]) {
       return false;
     }
+
     if (req[this.defaultPath][handler] instanceof Function) {
       return req[this.defaultPath][handler];
     }
@@ -81,17 +83,17 @@ export class VHTTPBase extends VBase {
     return req.fallbacks[handler];
   }
 
-  public async process(req, res): Promise<Boolean> {
+  public async process(req, res): Promise<boolean> {
     const handler = this.checkEx(req);
     if (handler) {
-      const processed: Boolean = await this._onProcess(handler, req, res);
+      const processed: boolean = await this._onProcess(handler, req, res);
       return await Promise.resolve(processed);
     }
     return await Promise.resolve(true);
   }
 
   public onPassed(req, res, cb) {
-    return (passed, info): Boolean => {
+    return (passed, info): boolean => {
       if (cb instanceof Function) {
         return cb(info, req, res);
       } else {
@@ -100,13 +102,13 @@ export class VHTTPBase extends VBase {
     };
   }
 
-  public onAuthorFailed(message, req, res): Boolean {
+  public onAuthorFailed(message, req, res): boolean {
     // console.error(message);
     res.status(403).end("Access Denied!");
     return false;
   }
 
-  protected _onProcess(func, req, res): Promise<Boolean> {
+  protected _onProcess(func, req, res): Promise<boolean> {
     return new Promise((resovle) => {
       func(req, res, (passed, info) => {
         if (!this.failurable || passed) {

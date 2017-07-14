@@ -3,9 +3,11 @@ import * as async from "async";
 
 import { HTTP } from "./Components/HTTP";
 
-import { VBase, VConfig, VFallback, VCondition, VError, VMiddleware, VPolicy, VRouter, VValidator } from "./Components";
+import { VBase, VConfig, VError, VMiddleware, VRouter, } from "./Components";
+import { VFallback, VCondition, VPolicy, VValidator, VPager } from "./MiddlewareParsers";
 
 export class VHandler {
+
   public urls: string[] = [];
   public prefix = "";
 
@@ -17,7 +19,13 @@ export class VHandler {
   public router: VRouter;
   public validator: VValidator;
   public fallback: VFallback;
+  public pager: VPager;
   protected path: string;
+  private parent: VHandler;
+
+
+  // Current Scope
+  private scope: object = {};
 
   constructor(urls: string[] = null, path: string = "", prefix = "") {
     this.urls = urls || [];
@@ -26,6 +34,7 @@ export class VHandler {
     this.prefix = prefix;
 
     this.config = new VConfig(path);
+    this.pager = new VPager(path);
     this.condition = new VCondition(path);
     this.error = new VError(path);
     this.middleware = new VMiddleware(path);
@@ -34,6 +43,7 @@ export class VHandler {
     this.validator = new VValidator(path);
     this.fallback = new VFallback(path);
     const data = [
+      "pager",
       "config",
       "condition",
       "error",
@@ -72,6 +82,8 @@ export class VHandler {
       condition: "conditions",
       middleware: "middlewares",
       router: "routers",
+      error: "errors",
+      pager: "pagers",
       policy: "policies",
       validator: "validations",
       fallback: "failures"
@@ -122,8 +134,14 @@ export class VHandler {
   }
 
   public async run(req, res) {
-    // Middlewares should not be failed
+
+    // Parent Sharing Info
+    // const pi = this.parent.getInfo();
+
+    // Sharing Info, All shared data info
+
     try {
+      // Middlewares should not be failed
       await this.middleware.process(req, res);
       if (!await this.policy.process(req, res)) {
         return;
@@ -134,7 +152,9 @@ export class VHandler {
       if (!await this.validator.process(req, res)) {
         return;
       }
-      if (!await this.router.process(req, res)) {
+      this.pager.parse(req, res, this.scope);
+      console.log(this.scope);
+      if (!await this.router.run(req, res, this.scope)) {
         this.notFound("Not Found!", req, res);
       }
     } catch (e) {

@@ -6,12 +6,12 @@
 import * as fs from "fs";
 import * as _ from "lodash";
 import { Generator } from "errorable";
-import { VBase } from "./Components/VBase";
+import { VBase } from "../Components/VBase";
 
-export class VFallbackDefinition extends VBase {
+export class VPolicyDefinition extends VBase {
   constructor(path = "") {
     super(path)
-    this.defaultPath = "fallbacks";
+    this.defaultPath = "policies";
   }
   public isType(item: any): boolean {
     return item instanceof Object;

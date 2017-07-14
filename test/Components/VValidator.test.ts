@@ -1,5 +1,5 @@
 import 'mocha';
-import { VValidator } from '../../src/Components/VValidator';
+import { VValidator } from '../../src/MiddlewareParsers/VValidator';
 
 import * as assert from 'assert';
 import * as path from 'path';

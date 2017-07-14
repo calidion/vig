@@ -1,5 +1,5 @@
 import "mocha";
-import { VCondition } from "../../src/Components/VCondition";
+import { VCondition } from "../../src/MiddlewareParsers/VCondition";
 
 import * as assert from "assert";
 import * as path from "path";

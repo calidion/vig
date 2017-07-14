@@ -3,7 +3,7 @@
  * Apache 2.0 Licensed
  */
 
-import { VHTTPBase } from "./VHTTPBase";
+import { VHTTPBase } from "../Components/VHTTPBase";
 import * as validator from "node-form-validator";
 
 export class VValidator extends VHTTPBase {
@@ -35,19 +35,19 @@ export class VValidator extends VHTTPBase {
     return item instanceof Object || item instanceof Function;
   }
 
-  public async process(req, res):Promise<Boolean> {
+  public async process(req, res): Promise<boolean> {
     const handler = this.check(req);
     if (handler instanceof Function) {
       return await Promise.resolve(this._onProcess(handler, req, res));
     }
     if (handler && handler instanceof Object) {
-      const processed:Boolean = this.processObject(handler, req, res);
+      const processed: boolean = this.processObject(handler, req, res);
       return await Promise.resolve(processed);
     }
     return await Promise.resolve(true);
   }
 
-  public processObject(handler, req, res):Boolean {
+  public processObject(handler, req, res): boolean {
     req.extracted = {};
     const keys = ["query", "params", "body"];
     const falback = this.getFallback(req);

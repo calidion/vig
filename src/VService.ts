@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-import { VFile } from "./VFile"
+import { VFile } from "./MiddlewareParsers/VFile"
 import { VHandler } from "./VHandler"
 
 import * as bodyParser from "body-parser";

@@ -10,11 +10,18 @@ export class VRouter extends VHTTPBase {
     this.defaultPath = "routers";
   }
 
-  public async process(req, res) {
+  public async run(req, res, scope): Promise<boolean> {
+    console.log(scope);
     const handler = this.checkEx(req);
     if (handler) {
-      return await Promise.resolve(this._onProcess(handler, req, res));
+      return await this._run(handler, req, res, scope);
     }
-    return await Promise.resolve(false);
+    return false;
+  }
+
+  protected async _run(func, req, res, scope): Promise<boolean> {
+    console.log(scope);
+    await func(req, res, scope);
+    return true;
   }
 }

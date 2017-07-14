@@ -8,7 +8,6 @@ var service = new VService();
 var app = express();
 var request = require('supertest');
 
-
 describe('vig #handlers', function () {
   it('should include handles', function () {
     service.include(app, path.resolve(__dirname, './data/nomethodHandlers'));
@@ -24,5 +23,5 @@ describe('vig #handlers', function () {
         assert(res.text === 'nomethod100');
         done();
       });
-  });
+  });  
 });

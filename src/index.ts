@@ -2,9 +2,9 @@ export * from "./VService";
 export * from "./VHandler";
 export * from "./VEvent";
 export * from "./Components";
-export * from "./VFile";
-export * from "./VPolicyDefinition";
-export * from "./VFallbackDefinition";
+export * from "./MiddlewareParsers/";
+export * from "./DefinitionParsers/VPolicyDefinition";
+export * from "./DefinitionParsers/VFallbackDefinition";
 
 import {VHandler} from "./VHandler";
 import {VService } from "./VService";

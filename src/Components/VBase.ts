@@ -12,11 +12,14 @@ import * as _ from "lodash";
  */
 
 export abstract class VBase {
-  // default path where components can read definitions from
+
+  // Default path where components can read definitions from
   protected defaultPath = ""
+
   // Component base directory
   protected basePath = ""
-  // stored data from specified directory.
+
+  // Stored data from specified directory.
   protected data: any = {};
 
   // files loaded
@@ -27,9 +30,15 @@ export abstract class VBase {
   // nameless:    merged by object
   protected nameless = false;
 
+  // Filter enabled to ignore files whose names are not in array filters.
   protected filterEnabled = false;
 
+  // Names should be filtered.
   protected filters: string[] = [];
+
+  // Alloed extensions
+
+  protected allowedExt = [".js", ".ts", ".json"];
 
   constructor(path: string) {
     this.basePath = path;
@@ -67,6 +76,8 @@ export abstract class VBase {
     this.data = {};
     this.files = [];
   }
+
+  // Attach to an server
 
   public attach(app, extra = null) {
     app.use(this._attachToRequest())
@@ -132,8 +143,7 @@ export abstract class VBase {
       return false;
     }
     // read from valid extensions only
-    const allowedExtensions = [".js", ".ts", ".json"];
-    if (allowedExtensions.indexOf(path.extname(file)) === -1) {
+    if (this.allowedExt.indexOf(path.extname(file)) === -1) {
       return false;
     }
     if (this.filterEnabled && !this._filter(absPath)) {
@@ -201,5 +211,7 @@ export abstract class VBase {
     }
     return null;
   }
+
+  // Define types able to be parsed
   protected abstract isType(item: any): boolean;
 }
