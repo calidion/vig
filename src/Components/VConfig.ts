@@ -9,11 +9,15 @@ import { Generator } from "errorable";
 import { VBase } from "./VBase";
 
 export class VConfig extends VBase {
-  constructor(path = "") {
+  constructor(path) {
     super(path)
     this.defaultPath = "configs";
   }
   public isType(item: any): boolean {
     return item instanceof Object;
+  }
+
+  public parse(scope) {
+    scope.configs = this.data;
   }
 }

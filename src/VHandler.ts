@@ -90,6 +90,7 @@ export class VHandler {
       middleware: "middlewares",
       router: "routers",
       error: "errors",
+      config: "configs",
       event: "events",
       body: "bodies",
       pager: "pagers",
@@ -145,9 +146,11 @@ export class VHandler {
   }
 
   public loadStaticScope() {
+    this.config.parse(this.scope);
     this.error.parse(this.scope);
     this.eventPrepare();
   }
+
   public eventPrepare() {
     const events = this.event.get();
     for (const key in events) {
