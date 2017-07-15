@@ -3,10 +3,9 @@
  * Apache 2.0 Licensed
  */
 import { VHTTPBase } from "../Components/VHTTPBase";
-
 import { promisify } from "bluebird";
-
 import * as parser from "body-parser";
+import * as skipper from "skipper";
 
 export class VBody extends VHTTPBase {
   constructor(path) {
@@ -16,6 +15,13 @@ export class VBody extends VHTTPBase {
 
   public isType(item: any): boolean {
     return item instanceof Object;
+  }
+
+  public file(req) {
+    return async (name) => {
+      const cb = promisify(req.file(name).upload);
+      return await cb.call(req.file(name));
+    }
   }
 
   public async parse(req, res): Promise<boolean> {
@@ -39,6 +45,10 @@ export class VBody extends VHTTPBase {
             break;
           case "json":
             cb = parser.json();
+            break;
+          case "file":
+            cb = skipper();
+            req.storage = this.file(req);
             break;
           default:
             continue;
