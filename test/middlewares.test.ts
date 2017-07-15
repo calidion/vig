@@ -63,4 +63,12 @@ describe('#middlewares', function () {
       done();
     });
   });
+
+  it('should send event', function (done) {
+    const event = new VEvent();
+    event.send("send");
+    setTimeout(() => {
+      done();
+    }, 100);
+  });
 });
