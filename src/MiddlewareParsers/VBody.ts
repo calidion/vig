@@ -21,6 +21,9 @@ export class VBody extends VHTTPBase {
   public async parse(req, res): Promise<boolean> {
     const data = this.check(req);
     for (const k in data) {
+      if (typeof k !== "string") {
+        continue;
+      }
       let cb = data[k];
       if (!cb) {
         continue;
