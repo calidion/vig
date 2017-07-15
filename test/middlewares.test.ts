@@ -53,9 +53,9 @@ describe('#middlewares', function () {
       });
   });
 
-
   it('should send event', function (done) {
     const event = new VEvent();
+    event.send("send");
     event.send("hello", (data, errors) => {
       assert(data === "hello");
       assert(errors);

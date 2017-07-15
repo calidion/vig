@@ -35,7 +35,7 @@ export class VHandler {
 
     this.config = new VConfig(path);
     this.pager = new VPager(path);
-    this.event = new VEventReader();
+    this.event = new VEventReader(path);
     this.condition = new VCondition(path);
     this.error = new VError(path);
     this.middleware = new VMiddleware(path);
@@ -48,6 +48,7 @@ export class VHandler {
       "config",
       "condition",
       "error",
+      "event",
       "middleware",
       "policy",
       "event",
@@ -139,12 +140,8 @@ export class VHandler {
   }
 
   public loadStaticScope() {
-    console.log('inside load scope');
     this.error.parse(this.scope);
-    console.log(this.scope);
-
     this.eventPrepare();
-    console.log(this.scope);
   }
   public eventPrepare() {
     const events = this.event.get();
