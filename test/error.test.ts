@@ -8,7 +8,7 @@ var assert = require('assert');
 var request = require('supertest');
 var express = require('express');
 var path = require('path');
-import { VHandler, VService } from '../src';
+import { VHandler, VService, VEvent } from '../src';
 var app = express();
 
 describe('vig #pager', function () {
@@ -26,6 +26,19 @@ describe('vig #pager', function () {
               }
             }
           }
+        }
+      },
+      events: {
+        hooee: null,
+        send1: async (scope, cb) => {
+          const { errors } = scope;
+          assert(errors.ILoveYou);
+          cb('send1');
+        },
+        send2: async (scope, cb) => {
+          const { errors } = scope;
+          assert(errors.ILoveYou);
+          cb('send2');
         }
       },
       routers: {
@@ -63,5 +76,21 @@ describe('vig #pager', function () {
         assert(res.text === 'post');
         done();
       });
+  });
+
+  it('should send events', function (done) {
+    var event = new VEvent();
+    event.send('send1', function (data) {
+      assert(data === 'send1');
+      done();
+    });
+  });
+
+  it('should send events', function (done) {
+    var event = new VEvent();
+    event.send('send2', function (data) {
+      assert(data === 'send2');
+      done();
+    });
   });
 });

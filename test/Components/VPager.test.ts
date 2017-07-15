@@ -5,7 +5,7 @@ import * as assert from 'assert';
 import * as path from 'path';
 import * as fs from 'fs';
 
-const pager = new VPager();
+const pager = new VPager("");
 var componentPath = path.resolve(__dirname, '../data/component/');
 var objPath = path.resolve(__dirname, '../data/component/pagers');
 

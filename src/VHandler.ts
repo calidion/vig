@@ -1,9 +1,7 @@
 import * as fs from "fs";
 import * as async from "async";
-
-import { HTTP } from "./Components/HTTP";
-
-import { VBase, VConfig, VError, VMiddleware, VRouter, } from "./Components";
+import { VEvent } from "./VEvent";
+import { HTTP, VBase, VConfig, VError, VMiddleware, VRouter, VEventReader } from "./Components";
 import { VFallback, VCondition, VPolicy, VValidator, VPager } from "./MiddlewareParsers";
 
 export class VHandler {
@@ -14,6 +12,7 @@ export class VHandler {
   public config: VConfig;
   public condition: VCondition;
   public error: VError;
+  public event: VEventReader;
   public middleware: VMiddleware;
   public policy: VPolicy;
   public router: VRouter;
@@ -23,6 +22,7 @@ export class VHandler {
   protected path: string;
   private parent: VHandler;
 
+  private eventHandler: VEvent = new VEvent();
 
   // Current Scope
   private scope: object = {};
@@ -35,6 +35,7 @@ export class VHandler {
 
     this.config = new VConfig(path);
     this.pager = new VPager(path);
+    this.event = new VEventReader();
     this.condition = new VCondition(path);
     this.error = new VError(path);
     this.middleware = new VMiddleware(path);
@@ -49,6 +50,7 @@ export class VHandler {
       "error",
       "middleware",
       "policy",
+      "event",
       "router",
       "validator",
       "fallback"];
@@ -57,6 +59,7 @@ export class VHandler {
       this[key].loadOn();
     }
     this.updateFallbacks();
+    this.loadStaticScope();
   }
 
   public setUrls(urls) {
@@ -83,6 +86,7 @@ export class VHandler {
       middleware: "middlewares",
       router: "routers",
       error: "errors",
+      event: "events",
       pager: "pagers",
       policy: "policies",
       validator: "validations",
@@ -102,6 +106,7 @@ export class VHandler {
       }
     }
     this.updateFallbacks();
+    this.loadStaticScope();
   }
 
   public updateFallbacks() {
@@ -133,6 +138,28 @@ export class VHandler {
     }
   }
 
+  public loadStaticScope() {
+    console.log('inside load scope');
+    this.error.parse(this.scope);
+    console.log(this.scope);
+
+    this.eventPrepare();
+    console.log(this.scope);
+  }
+  public eventPrepare() {
+    const events = this.event.get();
+    for (const key in events) {
+      if (key && events[key]) {
+        this.eventHandler.on(key, ((iK) => {
+          return async (...args) => {
+            args = [this.scope].concat(args);
+            await this.event.run(iK, args);
+          }
+        })(key));
+      }
+    }
+  }
+
   public async run(req, res) {
 
     // Parent Sharing Info
@@ -153,8 +180,6 @@ export class VHandler {
         return;
       }
       this.pager.parse(req, res, this.scope);
-      this.error.parse(req, res, this.scope);
-      console.log(this.scope);
       if (!await this.router.run(req, res, this.scope)) {
         this.notFound("Not Found!", req, res);
       }

@@ -84,7 +84,7 @@ describe('VHTTPBase', () => {
         get: 'sodff'
       }
     });
-    new VHTTPBase("", true);
-    new VHTTPBase("sosos", true);
+    new VHTTPBase("");
+    new VHTTPBase("sosos");
   })
 });
