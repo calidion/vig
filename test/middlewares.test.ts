@@ -52,4 +52,15 @@ describe('#middlewares', function () {
         done();
       });
   });
+
+
+  it('should send event', function (done) {
+    const event = new VEvent();
+    event.send("hello", (data, errors) => {
+      assert(data === "hello");
+      assert(errors);
+      assert(errors.VigTestError);
+      done();
+    });
+  });
 });
