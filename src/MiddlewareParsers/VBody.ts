@@ -14,6 +14,10 @@ export class VBody extends VHTTPBase {
     this.defaultPath = "bodies";
   }
 
+  public isType(item: any): boolean {
+    return item instanceof Object;
+  }
+
   public async parse(req, res): Promise<boolean> {
     const data = this.check(req);
     for (const k in data) {
@@ -23,14 +27,14 @@ export class VBody extends VHTTPBase {
       }
       if (!(cb instanceof Function)) {
         switch (k) {
-          case 'formdata':
-          case 'form':
+          case "formdata":
+          case "form":
             cb = parser.urlencoded({ extended: false });
             break;
-          case 'xml':
-            cb = parser.raw({ type: '*/xml' });
+          case "xml":
+            cb = parser.raw({ type: "*/xml" });
             break;
-          case 'json':
+          case "json":
             cb = parser.json();
             break;
           default:

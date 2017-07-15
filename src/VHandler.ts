@@ -136,7 +136,8 @@ export class VHandler {
       urls = this.urls;
     }
     for (let i = 0; i < urls.length; i++) {
-      const url = prefix + urls[i];
+      let url = prefix + urls[i];
+      url = url.replace(/\/+/g, "/");
       app.all(url, (req, res) => {
         this.run(req, res);
       });

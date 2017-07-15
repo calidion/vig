@@ -6,6 +6,9 @@ var path = require('path');
 import { VHandler, VService, VEvent } from '../src';
 var app = express();
 
+var componentPath = path.resolve(__dirname, './data/component.bodies/');
+
+
 describe('vig #body', function () {
   it('should get body1', function (done) {
     var handler = new VHandler();
@@ -145,7 +148,7 @@ describe('vig #body', function () {
       });
   });
 
-    it('should get body5', function (done) {
+  it('should get body5', function (done) {
     var handler = new VHandler();
     handler.set({
       urls: ['/body5'],
@@ -177,6 +180,34 @@ describe('vig #body', function () {
       .end(function (err, res) {
         assert(!err);
         assert(res.text === '<?xml version="1.0" encoding="utf-8" ?><key>value</key><key1>value1</key1>');
+        done();
+      });
+  });
+
+  it('should post /body6', function (done) {
+    const app1 = express();
+    var handler = new VHandler(
+      ['/body6'],
+      componentPath,
+      "/"
+    );
+    console.log(handler.toJSON());
+    handler.attach(app1);
+
+    request(app1)
+      .post('/body6')
+      .type('form')
+      .send({
+        key: 'value',
+        key1: 'value1'
+      })
+      .expect(200)
+      .end(function (err, res) {
+        console.log(err, res.text);
+        assert(!err);
+        console.log(res.body);
+        assert(res.body.key === 'value');
+        assert(res.body.key1 === 'value1');
         done();
       });
   });
