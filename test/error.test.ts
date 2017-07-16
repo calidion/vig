@@ -40,6 +40,7 @@ describe('vig #pager', function () {
       },
       events: {
         hooee: null,
+        send3: true,
         send1: async (scope, cb) => {
           const { errors } = scope;
           assert(errors.ILoveYou);
@@ -94,6 +95,7 @@ describe('vig #pager', function () {
 
   it('should send events', function (done) {
     var event = new VEvent();
+    event.send("send3");
     event.send('send1', function (data) {
       assert(data === 'send1');
       done();

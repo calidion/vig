@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as async from "async";
 import { VEvent } from "./VEvent";
-import { HTTP, VBase, VConfig, VError, VMiddleware, VRouter, VEventReader } from "./Components";
+import { HTTP, VBase, VConfig, VError, VModel, VMiddleware, VRouter, VEventReader } from "./Components";
 import { VFallback, VCondition, VPolicy, VValidator, VPager, VBody, VSession } from "./MiddlewareParsers";
 
 export class VHandler {
@@ -15,6 +15,7 @@ export class VHandler {
   public body: VBody;
   public event: VEventReader;
   public middleware: VMiddleware;
+  public model: VModel;
   public policy: VPolicy;
   public session: VSession;
   public router: VRouter;
@@ -41,6 +42,7 @@ export class VHandler {
     this.condition = new VCondition(path);
     this.error = new VError(path);
     this.body = new VBody(path);
+    this.model = new VModel(path);
     this.session = new VSession(path);
     this.middleware = new VMiddleware(path);
     this.policy = new VPolicy(path);
@@ -53,6 +55,7 @@ export class VHandler {
       "condition",
       "error",
       "body",
+      "model",
       "session",
       "event",
       "middleware",
@@ -96,6 +99,7 @@ export class VHandler {
       config: "configs",
       event: "events",
       body: "bodies",
+      model: "models",
       session: "sessions",
       pager: "pagers",
       policy: "policies",
@@ -152,6 +156,8 @@ export class VHandler {
   public loadStaticScope() {
     this.config.parse(this.scope);
     this.error.parse(this.scope);
+    this.model.parse(this.scope);
+    
     this.eventPrepare();
   }
 
@@ -177,15 +183,11 @@ export class VHandler {
     // Sharing Info, All shared data info
 
     try {
-      // Middlewares should not be failed
+      // Parsers and processors
 
       await this.body.parse(req, res);
       await this.session.parse(req, res);
-
       await this.middleware.process(req, res);
-      if (!await this.policy.process(req, res)) {
-        return;
-      }
       if (!await this.condition.process(req, res)) {
         return;
       }
@@ -193,6 +195,11 @@ export class VHandler {
         return;
       }
       this.pager.parse(req, res, this.scope);
+      if (!await this.policy.process(req, res)) {
+        return;
+      }
+
+      // Final request process
       if (!await this.router.run(req, res, this.scope)) {
         this.notFound("Not Found!", req, res);
       }

@@ -8,7 +8,7 @@ import { VBase } from "./VBase";
 
 export class VEventReader extends VBase {
 
-  constructor(basePath = "") {
+  constructor(basePath) {
     super(basePath)
     this.defaultPath = "events";
   }
@@ -19,7 +19,8 @@ export class VEventReader extends VBase {
 
   public async run(key, args) {
     const handler = this.data[key];
-    if (typeof handler === "function") {
+    console.log(handler instanceof Function);
+    if (handler instanceof Function) {
       await handler.apply(this, args);
     }
   }

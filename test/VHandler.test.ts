@@ -1,5 +1,5 @@
 import 'mocha';
-import { VHandler } from '../src';
+import { VHandler, VRouter } from '../src';
 
 import * as assert from 'assert';
 import * as path from 'path';
@@ -10,6 +10,9 @@ import * as express from 'express';
 
 const app = express();
 import * as request from 'supertest';
+
+const router = new VRouter("");
+const router1 = new VRouter(null);
 
 var componentPath = path.resolve(__dirname, './data/component/');
 

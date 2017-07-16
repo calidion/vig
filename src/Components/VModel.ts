@@ -4,11 +4,14 @@
  */
 
 import * as _ from "lodash";
-import { Generator } from "errorable";
 import { VBase } from "./VBase";
 import * as Waterline from "waterline";
+import { promisify } from "bluebird";
 
 export class VModel extends VBase {
+  protected static initialized = false;
+  protected static data = {};
+  protected static models = {};
   constructor(basePath = "") {
     super(basePath)
     this.defaultPath = "models";
@@ -18,16 +21,21 @@ export class VModel extends VBase {
     return item.attributes instanceof Object;
   }
 
-  public attach(app, models) {
-    app.use((req, res, next) => {
-      req.models = models || {};
-      next();
-    });
+  public loadOn() {
+    this.set(this.load());
+    VModel.data = _.merge(VModel.data, this.data);
   }
 
-  public init(config, options, next) {
+  public static async fetch(config, options) {
+    if (VModel.initialized) {
+      return VModel.models;
+    }
+    return await VModel.prepare(config, options);
+  }
+
+  public static async prepare(config, options) {
     const waterline = new Waterline();
-    const data: any = this.load();
+    const data: any = VModel.data;
     for (const key in data) {
       if (typeof key === "string") {
         const model = data[key];
@@ -41,17 +49,51 @@ export class VModel extends VBase {
       }
     }
 
-    waterline.initialize(config, (error, ontology) => {
-      if (error) {
-        return next(true, null);
-      }
-      const results = {};
-      for (const key in data) {
-        if (typeof key === "string") {
-          results[key] = ontology.collections[data[key].identity];
-        }
-      }
-      return next(false, results);
-    });
+    const initialize = promisify(waterline.initialize);
+    const ontology = await initialize.call(waterline, config);
+    const results = {};
+    for (const key of Object.keys(data)) {
+      results[key] = ontology.collections[data[key].identity];
+    }
+    VModel.initialized = true;
+    VModel.models = results;
+    return results;
   }
+
+  public parse(scope) {
+    if (VModel.initialized) {
+      scope.models = VModel.models;
+    } 
+  }
+
+  // // Deprecated
+  // public init(config, options, next) {
+  //   const waterline = new Waterline();
+  //   const data: any = this.load();
+  //   for (const key in data) {
+  //     if (typeof key === "string") {
+  //       const model = data[key];
+  //       for (const k in options) {
+  //         if (typeof k === "string") {
+  //           model[k] = options[k];
+  //         }
+  //       }
+  //       const connection = Waterline.Collection.extend(model);
+  //       waterline.loadCollection(connection);
+  //     }
+  //   }
+
+  //   waterline.initialize(config, (error, ontology) => {
+  //     if (error) {
+  //       return next(true, null);
+  //     }
+  //     const results = {};
+  //     for (const key in data) {
+  //       if (typeof key === "string") {
+  //         results[key] = ontology.collections[data[key].identity];
+  //       }
+  //     }
+  //     return next(false, results);
+  //   });
+  // }
 }

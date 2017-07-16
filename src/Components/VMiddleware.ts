@@ -14,7 +14,7 @@ import { VHTTPBase } from "./VHTTPBase";
  */
 
 export class VMiddleware extends VHTTPBase {
-  constructor(path = "") {
+  constructor(path) {
     super(path)
     this.defaultPath = "middlewares";
   }
