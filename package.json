@@ -31,6 +31,7 @@
   "dependencies": {
     "async": "^2.4.0",
     "body-parser": "^1.17.1",
+    "cookie-parser": "^1.4.3",
     "errorable": "^0.4.0",
     "errorable-express": "0.0.4",
     "file-cloud-uploader": "0.0.5",

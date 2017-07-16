@@ -198,6 +198,7 @@ describe("vig #body", function () {
     request(app1)
       .post("/body6")
       .type("form")
+      .set('Cookie', ['myApp-token=12345667', 'myApp-other=blah'])
       .send({
         key: "value",
         key1: "value1"
@@ -214,7 +215,7 @@ describe("vig #body", function () {
   });
 
 
-    it("should post /file", function (done) {
+  it("should post /file", function (done) {
     var handler = new VHandler();
     handler.set({
       urls: ["/file"],

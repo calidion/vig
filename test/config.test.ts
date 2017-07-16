@@ -1,9 +1,3 @@
-'use strict';
-var common = require('errorable-common');
-var errorable = require('errorable');
-var Generator = errorable.Generator;
-var configs = new Generator(common, 'zh-CN').configs;
-
 var assert = require('assert');
 var request = require('supertest');
 var express = require('express');

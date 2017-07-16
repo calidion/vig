@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as async from "async";
 import { VEvent } from "./VEvent";
 import { HTTP, VBase, VConfig, VError, VMiddleware, VRouter, VEventReader } from "./Components";
-import { VFallback, VCondition, VPolicy, VValidator, VPager, VBody } from "./MiddlewareParsers";
+import { VFallback, VCondition, VPolicy, VValidator, VPager, VBody, VSession } from "./MiddlewareParsers";
 
 export class VHandler {
 
@@ -16,6 +16,7 @@ export class VHandler {
   public event: VEventReader;
   public middleware: VMiddleware;
   public policy: VPolicy;
+  public session: VSession;
   public router: VRouter;
   public validator: VValidator;
   public fallback: VFallback;
@@ -40,6 +41,7 @@ export class VHandler {
     this.condition = new VCondition(path);
     this.error = new VError(path);
     this.body = new VBody(path);
+    this.session = new VSession(path);
     this.middleware = new VMiddleware(path);
     this.policy = new VPolicy(path);
     this.router = new VRouter(path);
@@ -51,6 +53,7 @@ export class VHandler {
       "condition",
       "error",
       "body",
+      "session",
       "event",
       "middleware",
       "policy",
@@ -93,6 +96,7 @@ export class VHandler {
       config: "configs",
       event: "events",
       body: "bodies",
+      session: "sessions",
       pager: "pagers",
       policy: "policies",
       validator: "validations",
@@ -176,6 +180,8 @@ export class VHandler {
       // Middlewares should not be failed
 
       await this.body.parse(req, res);
+      await this.session.parse(req, res);
+
       await this.middleware.process(req, res);
       if (!await this.policy.process(req, res)) {
         return;

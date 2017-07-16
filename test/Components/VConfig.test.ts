@@ -7,7 +7,7 @@ import * as fs from 'fs';
 
 var componentPath = path.resolve(__dirname, '../data/');
 var objPath = path.resolve(__dirname, '../data/configs');
-const config = new VConfig();
+const config = new VConfig("");
 
 describe('VConfig', () => {
   it('should new VConfig', () => {

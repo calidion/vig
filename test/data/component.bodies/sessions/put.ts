@@ -1,0 +1,3 @@
+export = {
+  cookie: true
+}

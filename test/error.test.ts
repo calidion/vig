@@ -16,6 +16,16 @@ describe('vig #pager', function () {
     var handler = new VHandler();
     handler.set({
       urls: ['/errors'],
+      sessions: {
+        get: {
+          cookie: true,
+          sdosof: null,
+          sosd: true,
+          nosd: function(req, res, next) {
+            next();
+          }
+        }
+      },
       errors: {
         I: {
           Love: {
@@ -45,11 +55,13 @@ describe('vig #pager', function () {
         get: async (req, res, scope) => {
           const { errors } = scope;
           assert(errors.ILoveYou);
+          assert(req.cookies);
           res.send('get');
         },
         post: async (req, res, scope) => {
           const { errors } = scope;
           assert(errors.ILoveYou);
+          assert(!req.cookies);
           res.send('post');
         }
       }
@@ -59,6 +71,7 @@ describe('vig #pager', function () {
   it('should get errors', function (done) {
     request(app)
       .get('/errors')
+      .set('Cookie', ['myApp-token=12345667', 'myApp-other=blah'])
       .expect(200)
       .end(function (err, res) {
         assert(!err);
@@ -70,6 +83,7 @@ describe('vig #pager', function () {
   it('should post errors', function (done) {
     request(app)
       .post('/errors')
+      .set('Cookie', ['myApp-token=12345667', 'myApp-other=blah'])
       .expect(200)
       .end(function (err, res) {
         assert(!err);
