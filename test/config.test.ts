@@ -15,15 +15,24 @@ describe('vig #configs', function () {
           page: 100
         }
       },
+      asyncs: {
+        get: async (req, res, scope) => {
+          scope.asyncs = {
+            parsed: true
+          };
+        }
+      },
       routers: {
         get: async (req, res, scope) => {
-          const { configs } = scope;
+          const { configs, asyncs } = scope;
           assert(configs.limitation.page === 100);
+          assert(asyncs.parsed);
           res.send('get');
         },
         post: async (req, res, scope) => {
-          const { configs } = scope;
+          const { configs, asyncs } = scope;
           assert(configs.limitation.page === 100);
+          assert(!asyncs);
           res.send('post');
         }
       }

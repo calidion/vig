@@ -9,23 +9,6 @@ import * as Waterline from "waterline";
 import { promisify } from "bluebird";
 
 export class VModel extends VBase {
-  protected static initialized = false;
-  protected static data = {};
-  protected static models = {};
-  constructor(basePath = "") {
-    super(basePath)
-    this.defaultPath = "models";
-  }
-
-  public isType(item: any): boolean {
-    return item.attributes instanceof Object;
-  }
-
-  public loadOn() {
-    this.set(this.load());
-    VModel.data = _.merge(VModel.data, this.data);
-  }
-
   public static async fetch(config, options) {
     if (VModel.initialized) {
       return VModel.models;
@@ -60,10 +43,28 @@ export class VModel extends VBase {
     return results;
   }
 
+  protected static initialized = false;
+  protected static data = {};
+  protected static models = {};
+
+  constructor(basePath = "") {
+    super(basePath)
+    this.defaultPath = "models";
+  }
+
   public parse(scope) {
     if (VModel.initialized) {
       scope.models = VModel.models;
-    } 
+    }
+  }
+
+  public isType(item: any): boolean {
+    return item.attributes instanceof Object;
+  }
+
+  public loadOn() {
+    this.set(this.load());
+    VModel.data = _.merge(VModel.data, this.data);
   }
 
   // // Deprecated

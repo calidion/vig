@@ -13,9 +13,16 @@ import { VHTTPBase } from "./VHTTPBase";
  * 4. pager => extracting pagination info
  */
 
-export class VMiddleware extends VHTTPBase {
-  constructor(path = "") {
+export class VAsync extends VHTTPBase {
+  constructor(path) {
     super(path)
-    this.defaultPath = "middlewares";
+    this.defaultPath = "asyncs";
+  }
+
+  public async run(req, res, scope) {
+    const handler = this.checkEx(req);
+    if (handler instanceof Function) {
+      await handler(req, res, scope);
+    }
   }
 }

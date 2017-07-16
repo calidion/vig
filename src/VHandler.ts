@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as async from "async";
 import { VEvent } from "./VEvent";
-import { HTTP, VBase, VConfig, VError, VModel, VMiddleware, VRouter, VEventReader } from "./Components";
+import { HTTP, VBase, VConfig, VError, VAsync, VModel, VMiddleware, VRouter, VEventReader } from "./Components";
 import { VFallback, VCondition, VPolicy, VValidator, VPager, VBody, VSession } from "./MiddlewareParsers";
 
 export class VHandler {
@@ -19,6 +19,7 @@ export class VHandler {
   public policy: VPolicy;
   public session: VSession;
   public router: VRouter;
+  public async: VAsync;
   public validator: VValidator;
   public fallback: VFallback;
   public pager: VPager;
@@ -28,7 +29,7 @@ export class VHandler {
   private eventHandler: VEvent = new VEvent();
 
   // Current Scope
-  private scope: object = {};
+  private scope: any = {};
 
   constructor(urls: string[] = null, path: string = "", prefix = "") {
     this.urls = urls || [];
@@ -43,6 +44,7 @@ export class VHandler {
     this.error = new VError(path);
     this.body = new VBody(path);
     this.model = new VModel(path);
+    this.async = new VAsync(path);
     this.session = new VSession(path);
     this.middleware = new VMiddleware(path);
     this.policy = new VPolicy(path);
@@ -55,6 +57,7 @@ export class VHandler {
       "condition",
       "error",
       "body",
+      "async",
       "model",
       "session",
       "event",
@@ -100,6 +103,7 @@ export class VHandler {
       event: "events",
       body: "bodies",
       model: "models",
+      async: "asyncs",
       session: "sessions",
       pager: "pagers",
       policy: "policies",
@@ -157,7 +161,6 @@ export class VHandler {
     this.config.parse(this.scope);
     this.error.parse(this.scope);
     this.model.parse(this.scope);
-    
     this.eventPrepare();
   }
 
@@ -182,25 +185,47 @@ export class VHandler {
 
     // Sharing Info, All shared data info
 
+    // Remove none sharable info
+
+    const scope = {
+    };
+
+    for (const key of Object.keys(this.scope)) {
+      scope[key] = this.scope[key];
+    }
+
     try {
       // Parsers and processors
 
+      // TODO: enabled server protector here, use condition instead now.
+
+      // Input Data prepare
       await this.body.parse(req, res);
+
       await this.session.parse(req, res);
+
+      // Middlewares
+
+      // Callback based middlewares
       await this.middleware.process(req, res);
+
+      // Promised based middlewares
+      await this.async.run(req, res, scope);
+
       if (!await this.condition.process(req, res)) {
         return;
       }
+
       if (!await this.validator.process(req, res)) {
         return;
       }
-      this.pager.parse(req, res, this.scope);
+      this.pager.parse(req, res, scope);
       if (!await this.policy.process(req, res)) {
         return;
       }
 
       // Final request process
-      if (!await this.router.run(req, res, this.scope)) {
+      if (!await this.router.run(req, res, scope)) {
         this.notFound("Not Found!", req, res);
       }
     } catch (e) {
@@ -213,9 +238,7 @@ export class VHandler {
     res.status(404).send("Not Found!");
   }
 
-  // public setStatusHandler(status: Number, handler: Function) {
-  //   this.onStatusHandlers[String(status)] = handler;
-  // }
+  // Deprecated
 
   public toJSON() {
     const json: any = {};

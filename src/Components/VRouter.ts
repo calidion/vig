@@ -5,7 +5,7 @@
 import { VHTTPBase } from "./VHTTPBase";
 
 export class VRouter extends VHTTPBase {
-  constructor(path) {
+  constructor(path = "") {
     super(path);
     this.defaultPath = "routers";
   }

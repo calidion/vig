@@ -1,5 +1,6 @@
 var assert = require("assert");
-module.exports = function (req, res) {
+export = async (req, res, scope) => {
   assert(req.cookies);
+  assert(scope.asyncs.get);
   res.send('get');
 };
