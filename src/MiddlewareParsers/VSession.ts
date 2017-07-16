@@ -37,8 +37,7 @@ export class VSession extends VHTTPBase {
             continue;
         }
       }
-      const cp = promisify(cb);
-      await cp.call(cb, req, res);
+      await this.toAsync(cb, cb)(req, res);
     }
     return true;
   }

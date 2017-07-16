@@ -6,6 +6,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as _ from "lodash";
+import { promisify } from "bluebird";
 
 /**
  * Base class for all Components
@@ -42,6 +43,13 @@ export abstract class VBase {
 
   constructor(path: string) {
     this.basePath = path;
+  }
+
+  public toAsync(cb, self) {
+    const pcb = promisify(cb);
+    return async (...args) => {
+      await pcb.apply(self, args);
+    }
   }
 
   public toMethods() {
