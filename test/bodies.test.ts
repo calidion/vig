@@ -219,6 +219,13 @@ describe("vig #body", function () {
     var handler = new VHandler();
     handler.set({
       urls: ["/file"],
+      asyncs: {
+        post: [async()=> {
+          console.log(1);
+        }, async() => {
+          console.log(2);
+        }]
+      },
       bodies: {
         post: {
           file: true,

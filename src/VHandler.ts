@@ -34,6 +34,7 @@ export class VHandler {
 
   // Current Scope
   private scope: any = {};
+  private startTime: Date;
 
   constructor(urls: string[] = null, path: string = "", prefix = "") {
     this.urls = urls || [];
@@ -160,10 +161,15 @@ export class VHandler {
       let url = prefix + urls[i];
       url = url.replace(/\/+/g, "/");
       app.all(url, (req, res) => {
+        this.startTime = new Date();
         this.run(req, res);
       });
     }
   }
+
+  // public timeTaken() {
+  //   return new Date().getTime() - this.startTime.getTime();
+  // }
 
   public loadStaticScope() {
     this.config.parse(this.scope);

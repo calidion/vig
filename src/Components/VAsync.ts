@@ -19,10 +19,27 @@ export class VAsync extends VHTTPBase {
     this.defaultPath = "asyncs";
   }
 
+  public checkEx(req, scope) {
+    const method = req.method.toLowerCase();
+    const handler = this.data[method] || this.data.all;
+    if (handler instanceof Array) {
+      return handler;
+    }
+    if (handler instanceof Function) {
+      return handler;
+    }
+  }
+
   public async run(req, res, scope) {
     const handler = this.checkEx(req, scope);
     if (handler instanceof Function) {
       await handler(req, res, scope);
+    }
+    if (handler instanceof Array) {
+      for (let i = 0; i < handler.length; i++) {
+        const f = handler[i];
+        await f(req, res, scope);
+      }
     }
   }
 }
