@@ -5,7 +5,6 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import * as _ from "lodash";
 import { promisify } from "bluebird";
 
 /**
@@ -85,12 +84,6 @@ export abstract class VBase {
     this.files = [];
   }
 
-  // Attach to an server
-
-  // public attach(app, extra = null) {
-  //   app.use(this._attachToRequest())
-  // }
-
   public addFile(file: string = "") {
     if (fs.existsSync(file)) {
       this.files.push(file);
@@ -107,7 +100,7 @@ export abstract class VBase {
 
   public extends(name: string, json: object, data: any = {}) {
     if (this.nameless) {
-      data = _.merge(this.data, json);
+      data = Object.assign(this.data, json);
     } else {
       data[name] = json;
     }

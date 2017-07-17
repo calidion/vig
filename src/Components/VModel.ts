@@ -3,7 +3,6 @@
  * Apache 2.0 Licensed
  */
 
-import * as _ from "lodash";
 import { VBase } from "./VBase";
 import * as Waterline from "waterline";
 import { promisify } from "bluebird";
@@ -64,7 +63,7 @@ export class VModel extends VBase {
 
   public loadOn() {
     this.set(this.load());
-    VModel.data = _.merge(VModel.data, this.data);
+    VModel.data = Object.assign(VModel.data, this.data);
   }
 
   // // Deprecated

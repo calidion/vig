@@ -28,7 +28,9 @@ export class VHandler {
   public definition: VDefinition;
 
   protected path: string;
+
   private parent: VHandler;
+  private children: VHandler[];
 
   private eventHandler: VEvent = new VEvent();
 
@@ -136,6 +138,10 @@ export class VHandler {
     this.loadStaticScope();
   }
 
+  public getScope() {
+    this.scope;
+  }
+
   public updateFallbacks() {
     const keys = {
       validation: "validator"
@@ -176,6 +182,10 @@ export class VHandler {
     this.error.parse(this.scope);
     this.model.parse(this.scope);
     this.definition.parse(this.scope);
+    if (this.parent) {
+      const parent = this.parent.getScope();
+      Object.assign(this.scope, parent);
+    }
     this.eventPrepare();
   }
 
@@ -194,13 +204,7 @@ export class VHandler {
   }
 
   public async run(req, res) {
-
-    // Parent Sharing Info
-    // const pi = this.parent.getInfo();
-
-    // Sharing Info, All shared data info
-
-    // Remove none sharable info
+    // Scoped Data
 
     const scope = {
     };

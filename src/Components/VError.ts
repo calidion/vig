@@ -3,7 +3,6 @@
  * Apache 2.0 Licensed
  */
 
-import * as _ from "lodash";
 import { Generator } from "errorable";
 import { VBase } from "./VBase";
 import * as errorize from "errorable-express";
@@ -25,7 +24,7 @@ export class VError extends VBase {
   }
 
   public merge(errors = {}) {
-    this.data = _.merge(this.data, errors);
+    this.data = Object.assign(this.data, errors);
   }
 
   public set(data) {
@@ -43,7 +42,7 @@ export class VError extends VBase {
   public generate(locale: string = "zh-CN", filesOnly = true): object {
     let errors = super.generate();
     if (!filesOnly) {
-      errors = _.merge(errors, this.data);
+      errors = Object.assign(errors, this.data);
     }
     const generator = new Generator(errors, locale);
     return generator.errors;

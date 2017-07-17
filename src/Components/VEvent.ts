@@ -3,7 +3,6 @@
  * Apache 2.0 Licensed
  */
 
-import * as _ from "lodash";
 import { VBase } from "./VBase";
 
 export class VEventReader extends VBase {
