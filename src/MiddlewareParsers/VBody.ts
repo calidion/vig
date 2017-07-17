@@ -54,8 +54,7 @@ export class VBody extends VHTTPBase {
             continue;
         }
       }
-      const cp = this.toAsync(cb, cb);
-      await cp(req, res);
+      await this.toAsync(cb, cb)(req, res);
     }
     return true;
   }

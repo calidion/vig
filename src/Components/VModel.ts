@@ -32,8 +32,6 @@ export class VModel extends VBase {
       }
     }
 
-    
-
     const initialize = promisify(waterline.initialize);
     const ontology = await initialize.call(waterline, config);
     const results = {};

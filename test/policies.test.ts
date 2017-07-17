@@ -11,8 +11,8 @@ import { VHandler, VService, VPolicy, VPolicyDefinition } from '../src';
 var service = new VService();
 var app = express();
 
-var policy = new VPolicyDefinition();
-policy = new VPolicyDefinition(path.resolve(__dirname, './data/'));
+// var policy = new VPolicyDefinition();
+// policy = new VPolicyDefinition(path.resolve(__dirname, './data/'));
 
 describe('vig #policies', function () {
   before(function () {
@@ -139,11 +139,19 @@ describe('vig #policies', function () {
   });
 
   it('should get policies', function (done) {
-    policy.loadOn();
-    policy.attach(app);
     var handler = new VHandler();
     handler.set({
       urls: ['/policies/text'],
+      definitions: {
+        policies: {
+          ok: function (req, res, next) {
+            res.status(200).send('ok');
+          },
+          test: function (req, res, next) {
+            res.status(404).send('test');
+          }
+        }
+      },
       routers: {
         get: function (req, res) {
           res.send('get');
@@ -180,8 +188,6 @@ describe('vig #policies', function () {
   });
 
   it('should get policies', function (done) {
-    policy.loadOn();
-    policy.attach(app);
     var handler = new VHandler(
       ['/policies/text1'],
       path.resolve(__dirname, './data/component.policies')
@@ -194,6 +200,23 @@ describe('vig #policies', function () {
       .end(function (err, res) {
         assert(!err);
         assert(res.text === 'ok');
+        done();
+      });
+  });
+
+  it('should get policies', function (done) {
+    var handler = new VHandler(
+      ['/policies/put'],
+      path.resolve(__dirname, './data/component.policies')
+    );
+    let json = handler.toJSON();
+    handler.attach(app);
+    var req = request(app).put('/policies/put');
+    req
+      .expect(403)
+      .end(function (err, res) {
+        assert(!err);
+        assert(res.text === 'Fail back!');
         done();
       });
   });

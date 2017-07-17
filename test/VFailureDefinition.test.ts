@@ -10,8 +10,8 @@ import { VHandler, VService, VPolicy, VPolicyDefinition, VFallbackDefinition } f
 var vhandler = new VHandler();
 var app = express();
 
-var vfallback = new VFallbackDefinition();
-vfallback = new VFallbackDefinition(path.resolve(__dirname, "./data/"));
+// var vfallback = new VFallbackDefinition();
+// vfallback = new VFallbackDefinition(path.resolve(__dirname, "./data/"));
 
 describe("vig #policies", function () {
   before(function () {
@@ -24,11 +24,26 @@ describe("vig #policies", function () {
         secure: false
       }
     }));
-    vfallback.loadOn();
-    vfallback.attach(app);
+    // vfallback.loadOn();
+    // vfallback.attach(app);
 
     vhandler.set({
       urls: ['/failure'],
+      definitions: {
+        // policies: {
+        //   ok: function (error, req, res) {
+        //     res.status(200).send('ok');
+        //   }
+        // },
+        fallbacks: {
+          ok: function (error, req, res) {
+            res.status(200).send('ok');
+          },
+          test: function (error, req, res) {
+            res.status(404).send('test');
+          }
+        }
+      },
       routers: {
         get: function (req, res) {
           res.send('get');
@@ -56,13 +71,13 @@ describe("vig #policies", function () {
     vhandler.attach(app);
   });
 
-    it("should have  fallbacks", function (done) {
-      var passed = false;
-      app.use((req, res, next) => {
-        passed = true;
-        assert(req.fallbacks);
-        next();
-      });
+  it("should have  fallbacks", function (done) {
+    var passed = false;
+    app.use((req, res, next) => {
+      passed = true;
+      assert(req.fallbacks);
+      next();
+    });
     request(app)
       .get("/")
       .end(function (err, res) {

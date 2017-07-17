@@ -3,9 +3,6 @@
  * Apache 2.0 Licensed
  */
 
-import * as fs from "fs";
-import * as _ from "lodash";
-import { Generator } from "errorable";
 import { VBase } from "../Components/VBase";
 
 export class VPolicyDefinition extends VBase {

@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as async from "async";
 import { VEvent } from "./VEvent";
+import { VDefinition } from "./VDefinition";
 import { HTTP, VBase, VConfig, VError, VAsync, VModel, VMiddleware, VRouter, VEventReader } from "./Components";
 import { VFallback, VCondition, VPolicy, VValidator, VPager, VBody, VSession } from "./MiddlewareParsers";
 
@@ -23,6 +24,9 @@ export class VHandler {
   public validator: VValidator;
   public fallback: VFallback;
   public pager: VPager;
+
+  public definition: VDefinition;
+
   protected path: string;
   private parent: VHandler;
 
@@ -51,6 +55,9 @@ export class VHandler {
     this.router = new VRouter(path);
     this.validator = new VValidator(path);
     this.fallback = new VFallback(path);
+
+    this.definition = new VDefinition(path);
+
     const data = [
       "pager",
       "config",
@@ -106,6 +113,7 @@ export class VHandler {
       async: "asyncs",
       session: "sessions",
       pager: "pagers",
+      definition: "definitions",
       policy: "policies",
       validator: "validations",
       fallback: "failures"
@@ -161,6 +169,7 @@ export class VHandler {
     this.config.parse(this.scope);
     this.error.parse(this.scope);
     this.model.parse(this.scope);
+    this.definition.parse(this.scope);
     this.eventPrepare();
   }
 
@@ -207,20 +216,20 @@ export class VHandler {
       // Middlewares
 
       // Callback based middlewares
-      await this.middleware.process(req, res);
+      await this.middleware.process(req, res, scope);
 
       // Promised based middlewares
       await this.async.run(req, res, scope);
 
-      if (!await this.condition.process(req, res)) {
+      if (!await this.condition.process(req, res, scope)) {
         return;
       }
 
-      if (!await this.validator.process(req, res)) {
+      if (!await this.validator.process(req, res, scope)) {
         return;
       }
       this.pager.parse(req, res, scope);
-      if (!await this.policy.process(req, res)) {
+      if (!await this.policy.process(req, res, scope)) {
         return;
       }
 
@@ -234,7 +243,6 @@ export class VHandler {
   }
 
   public notFound(error, req, res) {
-    // console.warn(error);
     res.status(404).send("Not Found!");
   }
 

@@ -19,7 +19,6 @@ export class VEventReader extends VBase {
 
   public async run(key, args) {
     const handler = this.data[key];
-    console.log(handler instanceof Function);
     if (handler instanceof Function) {
       await handler.apply(this, args);
     }

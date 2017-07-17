@@ -56,13 +56,13 @@ describe('VHTTPBase', () => {
   it('should getFallback with no callbacks', () => {
     base.setFailureHandler('get');
     var handler = base.getFallback({
-    });
+    }, {definitions: {}});
     var handler1 = base.getFallback({
-      fallbacks: {}
-    });
+
+    }, { definitions: { fallbacks: {} } });
     var handler2 = base.getFallback({
-      fallbacks: { get: 'oosodssd' }
-    });
+
+    }, { definitions: { fallbacks: { get: 'oosodssd' } } });
   })
 
   it('should checkEx', () => {
@@ -70,20 +70,20 @@ describe('VHTTPBase', () => {
     v.set({
       get: 'get'
     });
-        v.checkEx({
+    v.checkEx({
       method: 'get'
-    });
+    }, { definitions: { fallbacks: { get: 'oosodssd' } } });
     v.checkEx({
       method: 'get',
       a: {
       }
-    });
+    }, { definitions: { fallbacks: { get: 'oosodssd' } } });
     v.checkEx({
       method: 'get',
       a: {
         get: 'sodff'
       }
-    });
+    }, { definitions: { fallbacks: { get: 'oosodssd' } } });
     new VHTTPBase("");
     new VHTTPBase("sosos");
   })

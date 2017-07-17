@@ -11,7 +11,7 @@ export class VRouter extends VHTTPBase {
   }
 
   public async run(req, res, scope): Promise<boolean> {
-    const handler = this.checkEx(req);
+    const handler = this.checkEx(req, scope);
     if (handler) {
       return await this._run(handler, req, res, scope);
     }

@@ -70,9 +70,6 @@ describe('VBase', () => {
 
   it('should load wrong dir', () => {
     base.parseDir();
-    base.attach({
-      use: function() {}
-    }, 'hello');
     assert(!base.load('sdfsfdsdf'));
     assert(!base.load('sdfsfdsdf', {aaa: 1}));
   })

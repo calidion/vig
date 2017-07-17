@@ -24,7 +24,7 @@ export class VHTTPBase extends VBase {
     return this.data[method] || this.data.all;
   }
 
-  public checkEx(req) {
+  public checkEx(req, scope) {
     const method = req.method.toLowerCase();
     const handler = this.data[method] || this.data.all;
     if (handler instanceof Function) {
@@ -33,17 +33,23 @@ export class VHTTPBase extends VBase {
     if (typeof handler !== "string") {
       return false;
     }
+    return this.getDefinition(handler, this.defaultPath, scope);
+  }
 
-    if (!req[this.defaultPath]) {
+  public getDefinition(handler, name, scope) {
+    const definitions = scope.definitions;
+    const namedHandler = definitions[name];
+    if (!namedHandler) {
       return false;
     }
 
-    if (!req[this.defaultPath][handler]) {
+    const result = namedHandler[handler];
+    if (!result) {
       return false;
     }
 
-    if (req[this.defaultPath][handler] instanceof Function) {
-      return req[this.defaultPath][handler];
+    if (result instanceof Function) {
+      return result;
     }
     return false;
   }
@@ -63,7 +69,7 @@ export class VHTTPBase extends VBase {
     return true;
   }
 
-  public getFallback(req) {
+  public getFallback(req, scope) {
     const handler: any = this.failureHandler;
     if (handler instanceof Function) {
       return handler;
@@ -71,54 +77,44 @@ export class VHTTPBase extends VBase {
     if (typeof handler !== "string") {
       return false;
     }
-    if (!req.fallbacks) {
-      return false;
-    }
-    if (!req.fallbacks[handler]) {
-      return false
-    }
-    if (!(req.fallbacks[handler] instanceof Function)) {
-      return false;
-    }
-    return req.fallbacks[handler];
+    return this.getDefinition(handler, "fallbacks", scope);
   }
 
-  public async process(req, res): Promise<boolean> {
-    const handler = this.checkEx(req);
+  public async process(req, res, scope): Promise<boolean> {
+    const handler = this.checkEx(req, scope);
     if (handler) {
-      const processed: boolean = await this._onProcess(handler, req, res);
+      const processed: boolean = await this._onProcess(handler, req, res, scope);
       return await Promise.resolve(processed);
     }
     return await Promise.resolve(true);
   }
 
-  public onPassed(req, res, cb) {
+  public onPassed(req, res, scope, cb) {
     return (passed, info): boolean => {
       if (cb instanceof Function) {
         return cb(info, req, res);
       } else {
-        return this.onAuthorFailed(info, req, res);
+        return this.onAuthorFailed(info, req, res, scope);
       }
     };
   }
 
-  public onAuthorFailed(message, req, res): boolean {
-    // console.error(message);
+  public onAuthorFailed(message, req, res, scope): boolean {
     res.status(403).end("Access Denied!");
     return false;
   }
 
-  protected _onProcess(func, req, res): Promise<boolean> {
+  protected _onProcess(func, req, res, scope): Promise<boolean> {
     return new Promise((resovle) => {
       func(req, res, (passed, info) => {
         if (!this.failurable || passed) {
           return resovle(true);
         }
-        const falback = this.getFallback(req);
+        const falback = this.getFallback(req, scope);
         if (falback instanceof Function) {
-          falback(info, req, res);
+          falback(info, req, res, scope);
         } else {
-          this.onAuthorFailed(info, req, res);
+          this.onAuthorFailed(info, req, res, scope);
         }
         resovle(false);
       });

@@ -35,22 +35,22 @@ export class VValidator extends VHTTPBase {
     return item instanceof Object || item instanceof Function;
   }
 
-  public async process(req, res): Promise<boolean> {
+  public async process(req, res, scope = null): Promise<boolean> {
     const handler = this.check(req);
     if (handler instanceof Function) {
-      return await Promise.resolve(this._onProcess(handler, req, res));
+      return await Promise.resolve(this._onProcess(handler, req, res, scope));
     }
     if (handler && handler instanceof Object) {
-      const processed: boolean = this.processObject(handler, req, res);
+      const processed: boolean = this.processObject(handler, req, res, scope);
       return await Promise.resolve(processed);
     }
     return await Promise.resolve(true);
   }
 
-  public processObject(handler, req, res): boolean {
+  public processObject(handler, req, res, scope): boolean {
     req.extracted = {};
     const keys = ["query", "params", "body"];
-    const falback = this.getFallback(req);
+    const fallback = this.getFallback(req, scope);
 
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
@@ -69,12 +69,12 @@ export class VValidator extends VHTTPBase {
         if (handler.required.indexOf(key) === -1) {
           continue;
         }
-        return this.onPassed(req, res, falback)(false, new Error(key + " is required"));
+        return this.onPassed(req, res, scope, fallback)(false, new Error(key + " is required"));
       }
       const result = validator.validate(req[key], handler[key]);
       // return error info when validation failed
       if (!result || result.code !== 0) {
-        return this.onPassed(req, res, falback)(false, result);
+        return this.onPassed(req, res, scope, fallback)(false, result);
       }
       // saved validated data
       req.extracted[key] = result.data;

@@ -20,7 +20,7 @@ export class VAsync extends VHTTPBase {
   }
 
   public async run(req, res, scope) {
-    const handler = this.checkEx(req);
+    const handler = this.checkEx(req, scope);
     if (handler instanceof Function) {
       await handler(req, res, scope);
     }
