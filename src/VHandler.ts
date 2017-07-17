@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as fsPath from "path";
 import * as async from "async";
 import { VEvent } from "./VEvent";
 import { VDefinition } from "./VDefinition";
@@ -36,13 +37,23 @@ export class VHandler {
 
   // Current Scope
   private scope: any = {};
+
+  // Request Time
   private startTime: Date;
 
   constructor(urls: string[] = null, path: string = "", prefix = "") {
     this.urls = urls || [];
+
     path = path || "";
     this.path = path;
     this.prefix = prefix;
+
+    if (!urls || !urls.length) {
+      this.requireFile("urls");
+    }
+    if (!prefix) {
+      this.requireFile("prefix");
+    }
 
     this.config = new VConfig(path);
     this.pager = new VPager(path);
@@ -83,6 +94,21 @@ export class VHandler {
     }
     this.updateFallbacks();
     this.loadStaticScope();
+  }
+
+  public requireFile(name) {
+    const allowedExt = [".js", ".ts", ".json"];
+    for (let i = 0; i < allowedExt.length; i++) {
+      const dir = fsPath.resolve(this.path, "./" + name);
+      const resolve = dir + allowedExt[i];
+      if (fs.existsSync(resolve)) {
+        const data = require(resolve);
+        if (data) {
+          this[name] = data;
+          break;
+        }
+      }
+    }
   }
 
   public setUrls(urls) {
@@ -138,9 +164,9 @@ export class VHandler {
     this.loadStaticScope();
   }
 
-  public getScope() {
-    this.scope;
-  }
+  // public getScope() {
+  //   this.scope;
+  // }
 
   public updateFallbacks() {
     const keys = {
@@ -182,10 +208,10 @@ export class VHandler {
     this.error.parse(this.scope);
     this.model.parse(this.scope);
     this.definition.parse(this.scope);
-    if (this.parent) {
-      const parent = this.parent.getScope();
-      Object.assign(this.scope, parent);
-    }
+    // if (this.parent) {
+    //   const parent = this.parent.getScope();
+    //   Object.assign(this.scope, parent);
+    // }
     this.eventPrepare();
   }
 

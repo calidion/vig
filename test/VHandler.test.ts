@@ -17,6 +17,7 @@ const router1 = new VRouter(null);
 var componentPath = path.resolve(__dirname, './data/component/');
 
 var componentPathNoFailure = path.resolve(__dirname, './data/component.nofailure/');
+var componentPathUrls = path.resolve(__dirname, './data/component.urls/');
 
 describe('VHandler', () => {
   it('should new VHandler 1', () => {
@@ -74,6 +75,21 @@ describe('VHandler', () => {
         console.log(err, res.text);
         assert(!err);
         assert(res.text === 'Not Found!');
+        done()
+      });
+  });
+
+  it('should new VHandler urls', (done) => {
+    const handler = new VHandler( undefined,
+      componentPathUrls);
+    var json = handler.toJSON();
+    assert(json);
+    handler.attach(app);
+    request(app).get('/prefix/urls').
+      expect(200, function (err, res) {
+        console.log(err, res.text);
+        assert(!err);
+        assert(res.text === 'get');
         done()
       });
   });

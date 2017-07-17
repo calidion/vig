@@ -20,12 +20,10 @@ export class VValidator extends VHTTPBase {
       for (const k in item) {
         if (typeof k === "string") {
           if (this.paramKeys.indexOf(k) === -1) {
-            // console.error("params error!");
             return false;
           }
           if (k === "required") {
             if (!(item[k] instanceof Array)) {
-              // console.error("required MUST be an array!");
               return false;
             }
           }
