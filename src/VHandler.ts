@@ -118,12 +118,7 @@ export class VHandler {
   }
 
   public setParent(p: VHandler) {
-    // console.log("inside set parent");
     this.parent = p;
-    // const parent = this.parent.getScope();
-    // console.log(this.scope);
-    // this.scope = _.merge(this.scope, parent);
-    // console.log(this.scope);
     this.loadStaticScope();
   }
 
@@ -166,7 +161,6 @@ export class VHandler {
       this.prefix = config.prefix;
     }
     for (const key of Object.keys(keys)) {
-      console.log(key, config[keys[key]]);
       if (config[keys[key]]) {
         this[key].set(config[keys[key]]);
       } else {
@@ -212,7 +206,6 @@ export class VHandler {
       });
     }
     for (let i = 0; i < this.children.length; i++) {
-      console.log("inside child attaching");
       this.children[i].attach(app);
     }
   }
@@ -222,10 +215,7 @@ export class VHandler {
   // }
 
   public loadStaticScope() {
-    console.log("load scope");
     this.config.parse(this.scope);
-    console.log(this.config.get());
-    console.log("after config", this.scope);
     this.error.parse(this.scope);
     this.model.parse(this.scope);
     this.definition.parse(this.scope);
@@ -255,8 +245,6 @@ export class VHandler {
 
     const scope = {
     };
-
-    console.log(this.scope);
 
     for (const key of Object.keys(this.scope)) {
       scope[key] = this.scope[key];
@@ -336,19 +324,15 @@ export class VHandler {
   }
 
   private loadDirectory(dir: string) {
-    console.log('load dir');
     const files = fs.readdirSync(dir);
     files.forEach((file) => {
       const absPath = fsPath.resolve(dir, file);
       const stat = fs.statSync(absPath);
       let handler;
       // ignore directories
-      console.log(absPath);
       if (stat && stat.isDirectory()) {
-        console.log('dir');
         handler = new VHandler(null, absPath);
       } else {
-        console.log('file');
         const data = require(absPath);
         handler = new VHandler();
         handler.set(data);
