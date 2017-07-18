@@ -80,12 +80,39 @@ describe('VHandler', () => {
   });
 
   it('should new VHandler urls', (done) => {
-    const handler = new VHandler( undefined,
+    const handler = new VHandler(undefined,
       componentPathUrls);
     var json = handler.toJSON();
     assert(json);
     handler.attach(app);
     request(app).get('/prefix/urls').
+      expect(200, function (err, res) {
+        console.log(err, res.text);
+        assert(!err);
+        assert(res.text === 'get');
+        done()
+      });
+  });
+
+  it('should new VHandler sendurl', (done) => {
+    const handler = new VHandler(undefined,
+      componentPathUrls);
+    handler.attach(app);
+    request(app).get('/sendurl').
+      expect(200, function (err, res) {
+        console.log(err, res.text);
+        assert(!err);
+        assert(res.text === 'get');
+        done()
+      });
+  });
+
+
+  it('should new VHandler sendurl', (done) => {
+    const handler = new VHandler(undefined,
+      componentPathUrls);
+    handler.attach(app);
+    request(app).get('/a/urls').
       expect(200, function (err, res) {
         console.log(err, res.text);
         assert(!err);

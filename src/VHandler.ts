@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as fsPath from "path";
 import * as async from "async";
+import * as _ from "lodash";
 import { VEvent } from "./VEvent";
 import { VDefinition } from "./VDefinition";
 import { HTTP, VBase, VConfig, VError, VAsync, VModel, VMiddleware, VRouter, VEventReader } from "./Components";
@@ -30,8 +31,8 @@ export class VHandler {
 
   protected path: string;
 
-  private parent: VHandler;
-  private children: VHandler[];
+  private parent: VHandler = null;
+  private children: VHandler[] = [];
 
   private eventHandler: VEvent = new VEvent();
 
@@ -94,9 +95,10 @@ export class VHandler {
     }
     this.updateFallbacks();
     this.loadStaticScope();
+    this.initChildren();
   }
 
-  public requireFile(name) {
+  public requireFile(name: string) {
     const allowedExt = [".js", ".ts", ".json"];
     for (let i = 0; i < allowedExt.length; i++) {
       const dir = fsPath.resolve(this.path, "./" + name);
@@ -111,15 +113,25 @@ export class VHandler {
     }
   }
 
-  public setUrls(urls) {
+  public setUrls(urls: string[]) {
     this.urls = urls;
+  }
+
+  public setParent(p: VHandler) {
+    // console.log("inside set parent");
+    this.parent = p;
+    // const parent = this.parent.getScope();
+    // console.log(this.scope);
+    // this.scope = _.merge(this.scope, parent);
+    // console.log(this.scope);
+    this.loadStaticScope();
   }
 
   public setPrefix(prefix) {
     this.prefix = prefix;
   }
 
-  public update(k, v) {
+  public update(k: string, v) {
     if (this[k]) {
       this[k].set(v);
     }
@@ -153,7 +165,8 @@ export class VHandler {
     if (config.prefix) {
       this.prefix = config.prefix;
     }
-    for (const key in keys) {
+    for (const key of Object.keys(keys)) {
+      console.log(key, config[keys[key]]);
       if (config[keys[key]]) {
         this[key].set(config[keys[key]]);
       } else {
@@ -162,11 +175,12 @@ export class VHandler {
     }
     this.updateFallbacks();
     this.loadStaticScope();
+    this.children = [];
   }
 
-  // public getScope() {
-  //   this.scope;
-  // }
+  public getScope() {
+    return this.scope;
+  }
 
   public updateFallbacks() {
     const keys = {
@@ -197,6 +211,10 @@ export class VHandler {
         this.run(req, res);
       });
     }
+    for (let i = 0; i < this.children.length; i++) {
+      console.log("inside child attaching");
+      this.children[i].attach(app);
+    }
   }
 
   // public timeTaken() {
@@ -204,14 +222,17 @@ export class VHandler {
   // }
 
   public loadStaticScope() {
+    console.log("load scope");
     this.config.parse(this.scope);
+    console.log(this.config.get());
+    console.log("after config", this.scope);
     this.error.parse(this.scope);
     this.model.parse(this.scope);
     this.definition.parse(this.scope);
-    // if (this.parent) {
-    //   const parent = this.parent.getScope();
-    //   Object.assign(this.scope, parent);
-    // }
+    if (this.parent) {
+      const parent = this.parent.getScope();
+      this.scope = _.merge(this.scope, parent);
+    }
     this.eventPrepare();
   }
 
@@ -234,6 +255,8 @@ export class VHandler {
 
     const scope = {
     };
+
+    console.log(this.scope);
 
     for (const key of Object.keys(this.scope)) {
       scope[key] = this.scope[key];
@@ -295,5 +318,43 @@ export class VHandler {
     json.conditions = this.condition.get();
     json.failures = this.fallback.get();
     return json;
+  }
+
+
+  private initChildren() {
+    const subDir = "handlers"
+    const resolve = fsPath.resolve(this.path, subDir);
+    if (!fs.existsSync(resolve)) {
+      return;
+    }
+    const stat = fs.statSync(resolve);
+    // ignore directories
+    if (!stat || !stat.isDirectory()) {
+      return false;
+    }
+    this.loadDirectory(resolve);
+  }
+
+  private loadDirectory(dir: string) {
+    console.log('load dir');
+    const files = fs.readdirSync(dir);
+    files.forEach((file) => {
+      const absPath = fsPath.resolve(dir, file);
+      const stat = fs.statSync(absPath);
+      let handler;
+      // ignore directories
+      console.log(absPath);
+      if (stat && stat.isDirectory()) {
+        console.log('dir');
+        handler = new VHandler(null, absPath);
+      } else {
+        console.log('file');
+        const data = require(absPath);
+        handler = new VHandler();
+        handler.set(data);
+      }
+      this.children.push(handler);
+      handler.setParent(this);
+    });
   }
 }
