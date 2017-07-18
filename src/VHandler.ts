@@ -221,7 +221,7 @@ export class VHandler {
     this.definition.parse(this.scope);
     if (this.parent) {
       const parent = this.parent.getScope();
-      this.scope = _.merge(this.scope, parent);
+      this.scope = _.merge(parent, this.scope);
     }
     this.eventPrepare();
   }
