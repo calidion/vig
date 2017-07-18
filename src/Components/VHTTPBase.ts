@@ -92,7 +92,7 @@ export class VHTTPBase extends VBase {
   public onPassed(req, res, scope, cb) {
     return (passed, info): boolean => {
       if (cb instanceof Function) {
-        return cb(info, req, res);
+        return cb(info, req, res, scope);
       } else {
         return this.onAuthorFailed(info, req, res, scope);
       }
@@ -117,7 +117,7 @@ export class VHTTPBase extends VBase {
           this.onAuthorFailed(info, req, res, scope);
         }
         resovle(false);
-      });
+      }, scope);
     });
   }
 }

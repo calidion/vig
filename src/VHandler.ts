@@ -308,7 +308,6 @@ export class VHandler {
     return json;
   }
 
-
   private initChildren() {
     const subDir = "handlers"
     const resolve = fsPath.resolve(this.path, subDir);
