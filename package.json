@@ -33,6 +33,7 @@
     "body-parser": "^1.17.1",
     "cookie-parser": "^1.4.3",
     "errorable": "^0.4.0",
+    "errorable-common": "^0.1.0",
     "errorable-express": "0.0.4",
     "file-cloud-uploader": "0.0.5",
     "lodash": "^4.17.4",
