@@ -6,6 +6,8 @@
 import { Generator } from "errorable";
 import { VBase } from "./VBase";
 import * as errorize from "errorable-express";
+import * as common from "errorable-common";
+import * as _ from "lodash";
 
 export class VError extends VBase {
   protected locale = "zh-CN"
@@ -42,8 +44,11 @@ export class VError extends VBase {
   public generate(locale: string = "zh-CN", filesOnly = true): object {
     let errors = super.generate();
     if (!filesOnly) {
-      errors = Object.assign(errors, this.data);
+      errors = _.merge(errors, this.data);
     }
+
+    errors = _.merge(errors, common);
+
     const generator = new Generator(errors, locale);
     return generator.errors;
   }

@@ -44,6 +44,8 @@ describe('vig #pager', function () {
         send1: async (scope, cb) => {
           const { errors } = scope;
           assert(errors.ILoveYou);
+          assert(errors.Failure);
+          assert(errors.Success);
           cb('send1');
         },
         send2: async (scope, cb) => {
