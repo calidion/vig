@@ -61,39 +61,11 @@ export class VModel extends VBase {
     return item.attributes instanceof Object;
   }
 
-  public loadOn() {
-    this.set(this.load());
-    VModel.data = Object.assign(VModel.data, this.data);
+  public loadOn(data = null) {
+    if (!data) {
+      this.set(this.load());
+      data = this.data;
+    }
+    VModel.data = Object.assign(VModel.data, data);
   }
-
-  // // Deprecated
-  // public init(config, options, next) {
-  //   const waterline = new Waterline();
-  //   const data: any = this.load();
-  //   for (const key in data) {
-  //     if (typeof key === "string") {
-  //       const model = data[key];
-  //       for (const k in options) {
-  //         if (typeof k === "string") {
-  //           model[k] = options[k];
-  //         }
-  //       }
-  //       const connection = Waterline.Collection.extend(model);
-  //       waterline.loadCollection(connection);
-  //     }
-  //   }
-
-  //   waterline.initialize(config, (error, ontology) => {
-  //     if (error) {
-  //       return next(true, null);
-  //     }
-  //     const results = {};
-  //     for (const key in data) {
-  //       if (typeof key === "string") {
-  //         results[key] = ontology.collections[data[key].identity];
-  //       }
-  //     }
-  //     return next(false, results);
-  //   });
-  // }
 }
