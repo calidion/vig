@@ -46,7 +46,7 @@ export class VValidator extends VHTTPBase {
   }
 
   public processObject(handler, req, res, scope): boolean {
-    req.extracted = {};
+    scope.extracted = {};
     const keys = ["query", "params", "body"];
     const fallback = this.getFallback(req, scope);
 
@@ -75,10 +75,10 @@ export class VValidator extends VHTTPBase {
         return this.onPassed(req, res, scope, fallback)(false, result);
       }
       // saved validated data
-      req.extracted[key] = result.data;
+      scope.extracted[key] = result.data;
     }
-    if (Object.keys(req.extracted).length <= 0) {
-      delete req.extracted;
+    if (Object.keys(scope.extracted).length <= 0) {
+      delete scope.extracted;
     }
     return true;
   }

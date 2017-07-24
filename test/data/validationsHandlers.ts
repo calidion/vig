@@ -29,9 +29,9 @@ export = [{
     get: function (req, res) {
       res.send('get');
     },
-    post: function (req, res) {
-      if (req.extracted) {
-        res.json(req.extracted);
+    post: function (req, res, scope) {
+      if (scope.extracted) {
+        res.json(scope.extracted);
       } else {
         res.send('post');
       }
