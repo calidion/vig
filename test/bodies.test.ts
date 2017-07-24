@@ -22,7 +22,6 @@ describe("vig #body", function () {
       },
       routers: {
         post: async (req, res) => {
-          console.log(req.body);
           res.send(req.body);
         }
       }
@@ -38,7 +37,6 @@ describe("vig #body", function () {
       .expect(200)
       .end(function (err, res) {
         assert(!err);
-        console.log(res.body);
         assert(res.body.key === "value");
         assert(res.body.key1 === "value1");
         done();
@@ -56,7 +54,6 @@ describe("vig #body", function () {
       },
       routers: {
         post: async (req, res) => {
-          console.log(req.body);
           res.send(req.body);
         }
       }
@@ -72,7 +69,6 @@ describe("vig #body", function () {
       .expect(200)
       .end(function (err, res) {
         assert(!err);
-        console.log(res.body);
         assert(res.body.key === "value");
         assert(res.body.key1 === "value1");
         done();
@@ -90,7 +86,6 @@ describe("vig #body", function () {
       },
       routers: {
         post: async (req, res) => {
-          console.log(req.body);
           res.send(req.body);
         }
       }
@@ -106,7 +101,6 @@ describe("vig #body", function () {
       .expect(200)
       .end(function (err, res) {
         assert(!err);
-        console.log(res.body);
         assert(res.body.key === "value");
         assert(res.body.key1 === "value1");
         done();
@@ -129,7 +123,6 @@ describe("vig #body", function () {
       },
       routers: {
         post: async (req, res) => {
-          console.log(String(req.body));
           res.send(String(req.body));
         }
       }
@@ -165,7 +158,6 @@ describe("vig #body", function () {
       },
       routers: {
         post: async (req, res) => {
-          console.log(String(req.body));
           res.send(String(req.body));
         }
       }
@@ -192,7 +184,6 @@ describe("vig #body", function () {
       componentPath,
       "/"
     );
-    console.log(handler.toJSON());
     handler.attach(app1);
 
     request(app1)
@@ -205,9 +196,7 @@ describe("vig #body", function () {
       })
       .expect(200)
       .end(function (err, res) {
-        console.log(err, res.text);
         assert(!err);
-        console.log(res.body);
         assert(res.body.key === "value");
         assert(res.body.key1 === "value1");
         done();
@@ -241,7 +230,6 @@ describe("vig #body", function () {
           const files = await req.storage("txt");
           const file = files[0];
           const content = fs.readFileSync(file.fd);
-          console.log(files);
           res.send(String(content));
         }
       }
@@ -253,7 +241,6 @@ describe("vig #body", function () {
       .attach("txt", path.resolve(__dirname, "./data/uploader/a.txt"))
       .expect(200)
       .end(function (err, res) {
-        console.log(err, res.text);
         assert(!err);
         assert(res.text === "hello world!")
         done();

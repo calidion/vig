@@ -39,9 +39,6 @@ export class VHandler {
   // Current Scope
   private scope: any = {};
 
-  // Request Time
-  private startTime: Date;
-
   constructor(urls: string[] = null, path: string = "", prefix = "") {
     this.urls = urls || [];
 
@@ -120,6 +117,9 @@ export class VHandler {
   public setParent(p: VHandler) {
     this.parent = p;
     this.loadStaticScope();
+    for(let i = 0; i < this.children.length; i++) {
+      this.children[i].loadStaticScope();
+    }
   }
 
   public setPrefix(prefix) {
@@ -201,7 +201,6 @@ export class VHandler {
       let url = prefix + urls[i];
       url = url.replace(/\/+/g, "/");
       app.all(url, (req, res) => {
-        this.startTime = new Date();
         this.run(req, res);
       });
     }
@@ -210,16 +209,13 @@ export class VHandler {
     }
   }
 
-  // public timeTaken() {
-  //   return new Date().getTime() - this.startTime.getTime();
-  // }
-
   public loadStaticScope() {
     this.config.parse(this.scope);
     this.error.parse(this.scope);
     this.model.parse(this.scope);
     this.definition.parse(this.scope);
     if (this.parent) {
+      this.parent.loadStaticScope();
       const parent = this.parent.getScope();
       this.scope = _.merge(parent, this.scope);
     }
@@ -244,6 +240,9 @@ export class VHandler {
     // Scoped Data
 
     const scope = {
+      time: {
+        start: new Date()
+      }
     };
 
     for (const key of Object.keys(this.scope)) {

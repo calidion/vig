@@ -54,7 +54,6 @@ describe('VHandler', () => {
     handler.attach(app);
     request(app).get('/send/xxx').
       expect(200, function (err, res) {
-        console.log(err, res.text);
         assert(res.text === 'get');
         done()
       });
@@ -72,7 +71,6 @@ describe('VHandler', () => {
     handler.attach(app);
     request(app).put('/send/xxx').
       expect(404, function (err, res) {
-        console.log(err, res.text);
         assert(!err);
         assert(res.text === 'Not Found!');
         done()
@@ -87,7 +85,6 @@ describe('VHandler', () => {
     handler.attach(app);
     request(app).get('/prefix/urls').
       expect(200, function (err, res) {
-        console.log(err, res.text);
         assert(!err);
         assert(res.text === 'get');
         done()
@@ -100,7 +97,18 @@ describe('VHandler', () => {
     handler.attach(app);
     request(app).get('/sendurl').
       expect(200, function (err, res) {
-        console.log(err, res.text);
+        assert(!err);
+        assert(res.text === 'get');
+        done()
+      });
+  });
+
+  it('should new VHandler sendurl', (done) => {
+    // const handler = new VHandler(undefined,
+    //   componentPathUrls);
+    // handler.attach(app);
+    request(app).get('/sendurl1').
+      expect(200, function (err, res) {
         assert(!err);
         assert(res.text === 'get');
         done()
@@ -114,7 +122,6 @@ describe('VHandler', () => {
     handler.attach(app);
     request(app).get('/a/urls').
       expect(200, function (err, res) {
-        console.log(err, res.text);
         assert(!err);
         assert(res.text === 'get');
         done()
