@@ -264,6 +264,9 @@ export class VHandler {
       await this.body.parse(req, res);
       await this.session.parse(req, res);
 
+      res.vRender = (data, template, ext = "html") => {
+        res.send(this.template.render(data, template, ext));
+      };
       // Middlewares
       await this.middleware.process(req, res, scope);
 
@@ -279,9 +282,6 @@ export class VHandler {
         return;
       }
       // Final request process
-      res.vRender = (data, template, ext = "html") => {
-        res.send(this.template.render(data, template, ext));
-      };
       if (!await this.router.run(req, res, scope)) {
         this.notFound("Not Found!", req, res);
       }
