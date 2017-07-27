@@ -15,11 +15,19 @@ export class VDefinition {
   }
 
   public parse(scope) {
-    const definitions = {
-      fallbacks: this.fallback.get(),
-      policies: this.policy.get()
+    const definitions: any = {
     };
-    scope.definitions = definitions;
+    const fallbacks = this.fallback.get();
+    const policies = this.policy.get();
+    if (Object.keys(fallbacks).length > 0) {
+      definitions.fallbacks = fallbacks;
+    }
+    if (Object.keys(policies).length > 0) {
+      definitions.policies = policies;
+    }
+    if (Object.keys(definitions).length > 0) {
+      scope.definitions = definitions;
+    }
   }
 
   public set(data) {
