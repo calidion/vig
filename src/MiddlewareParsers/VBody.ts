@@ -42,7 +42,6 @@ export class VBody extends VHTTPBase {
             cb = this.toAsync(cb, cb)
             break;
           case "xml":
-            console.log('inside xml');
             cb = parser.raw({ type: "*/xml" });
             cb = this.toAsync(cb, cb)
             break;

@@ -6,4 +6,3 @@ export * from "./VError";
 export * from "./VMiddleware";
 export * from "./VRouter";
 export * from "./VModel";
-export * from "./VAsync";

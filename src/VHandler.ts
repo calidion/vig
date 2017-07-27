@@ -4,7 +4,7 @@ import * as async from "async";
 import * as _ from "lodash";
 import { VEvent } from "./VEvent";
 import { VDefinition } from "./VDefinition";
-import { HTTP, VBase, VConfig, VError, VAsync, VModel, VMiddleware, VRouter, VEventReader } from "./Components";
+import { HTTP, VBase, VConfig, VError, VModel, VMiddleware, VRouter, VEventReader } from "./Components";
 import { VFallback, VCondition, VPolicy, VValidator, VPager, VBody, VSession } from "./MiddlewareParsers";
 
 import { VTemplate } from "./Templates/VTemplate";
@@ -27,7 +27,6 @@ export class VHandler {
   public policy: VPolicy;
   public session: VSession;
   public router: VRouter;
-  public async: VAsync;
   public validator: VValidator;
   public fallback: VFallback;
 
@@ -69,7 +68,6 @@ export class VHandler {
     this.error = new VError(path);
     this.body = new VBody(path);
     this.model = new VModel(path);
-    this.async = new VAsync(path);
     this.session = new VSession(path);
     this.middleware = new VMiddleware(path);
     this.policy = new VPolicy(path);
@@ -86,7 +84,6 @@ export class VHandler {
       "condition",
       "error",
       "body",
-      "async",
       "model",
       "session",
       "event",
@@ -157,7 +154,6 @@ export class VHandler {
       event: "events",
       body: "bodies",
       model: "models",
-      async: "asyncs",
       session: "sessions",
       pager: "pagers",
       definition: "definitions",
@@ -249,7 +245,6 @@ export class VHandler {
 
   public async run(req, res) {
     // Scoped Data
-
     const scope: any = {
       time: {
         start: new Date()
@@ -269,40 +264,22 @@ export class VHandler {
 
       // Input Data prepare
       await this.body.parse(req, res);
-      console.log('inside condition1');
-
       await this.session.parse(req, res);
-      console.log('inside condition12');
 
       // Middlewares
-
-      // Callback based middlewares
       await this.middleware.process(req, res, scope);
-      console.log('inside condition13');
-
-      // Promised based middlewares
-      await this.async.run(req, res, scope);
-      console.log('inside condition14');
 
       if (!await this.condition.process(req, res, scope)) {
-        console.log('inside condition');
         return;
       }
-
-      console.log('inside condition1');
-
 
       if (!await this.validator.process(req, res, scope)) {
         return;
       }
-      console.log('inside condition1');
-
       this.pager.parse(req, res, scope);
       if (!await this.policy.process(req, res, scope)) {
         return;
       }
-      console.log('inside condition1');
-
       // Final request process
       if (!await this.router.run(req, res, scope)) {
         this.notFound("Not Found!", req, res);
