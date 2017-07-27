@@ -138,6 +138,7 @@ export abstract class VBase {
 
   public parseFile(dir, file) {
     const absPath = path.resolve(dir, file);
+    console.log(absPath);
     const stat = fs.statSync(absPath);
     // ignore directories
     if (stat && stat.isDirectory()) {
@@ -150,7 +151,11 @@ export abstract class VBase {
     if (this.filterEnabled && !this._filter(absPath)) {
       return false;
     }
+    console.log("before require");
+
     const loaded = require(absPath);
+
+    console.log("after require")
     if (!this.isType(loaded)) {
       return false;
     }
