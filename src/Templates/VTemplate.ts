@@ -21,6 +21,7 @@ export class VTemplate extends VBase {
   protected views = [];
   protected parent: VTemplate;
   protected env;
+
   constructor(dir) {
     super(dir);
     this.defaultPath = "templates";
@@ -51,7 +52,7 @@ export class VTemplate extends VBase {
     return env;
   }
 
-  public render(data, template, ext = "html") {
+  public render(data, template, ext) {
     return this.getEnv().render(template + "." + ext, data);
   }
 

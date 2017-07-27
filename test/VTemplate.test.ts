@@ -19,6 +19,7 @@ describe('VTemplate', () => {
     request(app).get('/h2').
       expect(200, function (err, res) {
         assert(!err);
+        console.log(err, res.text);
         assert(res.text.indexOf("color: black;") !== -1);
         assert(res.text.indexOf("Hello, VIG, Good Morning") !== -1);
         done();

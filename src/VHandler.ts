@@ -255,8 +255,6 @@ export class VHandler {
       scope[key] = this.scope[key];
     }
 
-    scope.template = this.template;
-
     try {
       // Parsers and processors
 
@@ -281,6 +279,9 @@ export class VHandler {
         return;
       }
       // Final request process
+      res.vRender = (data, template, ext = "html") => {
+        res.send(this.template.render(data, template, ext));
+      };
       if (!await this.router.run(req, res, scope)) {
         this.notFound("Not Found!", req, res);
       }
