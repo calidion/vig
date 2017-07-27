@@ -28,11 +28,11 @@ export = [{
   },
   policies: {
     methods: ['get', 'post'],
-    get: function (req, res, next) {
-      next(true);
+    get: async (req, res, scope) => {
+      return (true);
     },
-    post: function (req, res, next) {
-      next(true);
+    post: async (req, res, scope) => {
+      return (true);
     }
   }
 }, {
@@ -63,11 +63,11 @@ export = [{
   },
   policies: {
     methods: ['get'],
-    get: function (req, res, next) {
+    get: async (req, res, scope) => {
       if (!req.session || !req.session.user) {
-        next(false);
+        return (false);
       } else {
-        next(true);
+        return (true);
       }
     }
   }

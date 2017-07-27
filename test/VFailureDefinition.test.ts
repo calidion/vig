@@ -54,13 +54,13 @@ describe("vig #policies", function () {
       },
       policies: {
         methods: ['get'],
-        get: function (req, res, next) {
-          next(false);
+        get: async (req, res, scope) => {
+          return(false);
         }
       },
       validations: {
-        post: function (req, res, next) {
-          next(false);
+        post: async (req, res, scope) => {
+          return(false);
         }
       },
       failures: {

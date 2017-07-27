@@ -10,16 +10,16 @@ export = [{
     }
   },
   conditions: {
-    get: function (req, res, next) {
-      next(true);
+    get: async (req, res, scope) => {
+      return(true);
     }
   },
   validations: {
-    get: function (req, res, next) {
-      next(true);
+    get: async (req, res, scope) => {
+      return(true);
     },
-    post: function (req, res, next) {
-      next(false);
+    post: async (req, res, scope) => {
+      return(false);
     }
   }
 }, {
@@ -38,11 +38,11 @@ export = [{
     }
   },
   conditions: {
-    get: function (req, res, next) {
-      next(false);
+    get: async (req, res, scope) => {
+      return(false);
     },
-    post: function (req, res, next) {
-      next(true);
+    post: async (req, res, scope) => {
+      return(true);
     }
   },
   failures: {
@@ -60,8 +60,8 @@ export = [{
     }
   },
   validations: {
-    get: function (req, res, next) {
-      next(false);
+    get: async (req, res, scope) => {
+      return(false);
     },
     post: {
       required: ['body'],
@@ -105,8 +105,8 @@ export = [{
     }
   },
   validations: {
-    get: function (req, res, next) {
-      next(false);
+    get: async (req, res, scope) => {
+      return(false);
     },
     post: {
       params: {
@@ -129,8 +129,8 @@ export = [{
     }
   },
   validations: {
-    get: function (req, res, next) {
-      next(false);
+    get: async (req, res, scope) => {
+      return(false);
     },
     post: {
       required: ['body'],
@@ -154,8 +154,8 @@ export = [{
     }
   },
   validations: {
-    get: function (req, res, next) {
-      next(false);
+    get: async (req, res, scope) => {
+      return(false);
     },
     post: {
       required: {},
@@ -179,8 +179,8 @@ export = [{
     }
   },
   validations: {
-    get: function (req, res, next) {
-      next(false);
+    get: async (req, res, scope) => {
+      return(false);
     },
     post: {
       required: [],

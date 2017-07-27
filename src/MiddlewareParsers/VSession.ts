@@ -32,12 +32,13 @@ export class VSession extends VHTTPBase {
           case "cookie":
           case "cookies":
             cb = parser();
+            cb = this.toAsync(cb, cb)
             break;
           default:
             continue;
         }
       }
-      await this.toAsync(cb, cb)(req, res);
+      await cb(req, res);
     }
     return true;
   }

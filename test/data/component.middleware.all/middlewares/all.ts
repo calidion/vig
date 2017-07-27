@@ -1,5 +1,4 @@
-module.exports = function (req, res, next) {
+export = async (req, res, scope) => {
   console.log('inside middle all');
   req.mid = 'all';
-  next();
 };

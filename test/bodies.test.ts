@@ -116,8 +116,7 @@ describe("vig #body", function () {
           xml: true,
           lot: true,
           good: null,
-          send: function (req, res, next) {
-            next();
+          send: async (req, res, scope) => {
           }
         }
       },
@@ -151,8 +150,7 @@ describe("vig #body", function () {
           xml: true,
           lot: true,
           good: null,
-          send: function (req, res, next) {
-            next();
+          send: async (req, res, scope) => {
           }
         }
       },
@@ -220,8 +218,7 @@ describe("vig #body", function () {
           file: true,
           lot: true,
           good: null,
-          send: function (req, res, next) {
-            next();
+          send: async (req, res, scope) => {
           }
         }
       },

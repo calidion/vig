@@ -144,10 +144,10 @@ describe('vig #policies', function () {
       urls: ['/policies/text'],
       definitions: {
         policies: {
-          ok: function (req, res, next) {
+          ok: async (req, res, scope) => {
             res.status(200).send('ok');
           },
-          test: function (req, res, next) {
+          test: async (req, res, scope) => {
             res.status(404).send('test');
           }
         }

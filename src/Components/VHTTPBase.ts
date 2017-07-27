@@ -103,14 +103,12 @@ export class VHTTPBase extends VBase {
     return true;
   }
 
-  public onPassed(req, res, scope, cb) {
-    return (passed, info): boolean => {
-      if (cb instanceof Function) {
-        return cb(info, req, res, scope);
-      } else {
-        return this.onAuthorFailed(info, req, res, scope);
-      }
-    };
+  public async onPassed(req, res, scope, info, cb) {
+    if (cb instanceof Function) {
+      return await cb(info, req, res, scope);
+    } else {
+      return this.onAuthorFailed(info, req, res, scope);
+    }
   }
 
   public onAuthorFailed(message, req, res, scope): boolean {
@@ -118,20 +116,36 @@ export class VHTTPBase extends VBase {
     return false;
   }
 
-  protected _onProcess(func, req, res, scope): Promise<boolean> {
-    return new Promise((resovle) => {
-      func(req, res, (passed, info) => {
-        if (!this.failurable || passed) {
-          return resovle(true);
-        }
-        const falback = this.getFallback(req, scope);
-        if (falback instanceof Function) {
-          falback(info, req, res, scope);
-        } else {
-          this.onAuthorFailed(info, req, res, scope);
-        }
-        resovle(false);
-      }, scope);
-    });
+  protected async _onProcess(func, req, res, scope): Promise<boolean> {
+
+    // try {
+    const passed = await func(req, res, scope);
+    if (!this.failurable || passed) {
+      return true;
+    }
+    const falback = this.getFallback(req, scope);
+    if (falback instanceof Function) {
+      falback(true, req, res, scope);
+    } else {
+      this.onAuthorFailed(true, req, res, scope);
+    }
+    return false;
+    // } catch(e) {
+
+    // }
+    // return new Promise((resovle) => {
+    //   func(req, res, (passed, info) => {
+    //     if (!this.failurable || passed) {
+    //       return resovle(true);
+    //     }
+    //     const falback = this.getFallback(req, scope);
+    //     if (falback instanceof Function) {
+    //       falback(info, req, res, scope);
+    //     } else {
+    //       this.onAuthorFailed(info, req, res, scope);
+    //     }
+    //     resovle(false);
+    //   }, scope);
+    // });
   }
 }

@@ -21,8 +21,7 @@ describe('vig #pager', function () {
           cookie: true,
           sdosof: null,
           sosd: true,
-          nosd: function(req, res, next) {
-            next();
+          nosd: async (req, res, scope) => {
           }
         }
       },

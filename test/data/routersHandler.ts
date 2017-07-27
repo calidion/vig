@@ -13,8 +13,8 @@ export = [{
   },
   validations: {
     methods: ['all'],
-    all: function (req, res, next) {
-      next(true);
+    all: async (req, res, scope) => {
+      return(true);
     }
   },
   events: {

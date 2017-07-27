@@ -36,16 +36,16 @@ export class VValidator extends VHTTPBase {
   public async process(req, res, scope = null): Promise<boolean> {
     const handler = this.check(req);
     if (handler instanceof Function) {
-      return await Promise.resolve(this._onProcess(handler, req, res, scope));
+      return await this._onProcess(handler, req, res, scope);
     }
     if (handler && handler instanceof Object) {
-      const processed: boolean = this.processObject(handler, req, res, scope);
-      return await Promise.resolve(processed);
+      const processed: boolean = await this.processObject(handler, req, res, scope);
+      return processed;
     }
-    return await Promise.resolve(true);
+    return true;
   }
 
-  public processObject(handler, req, res, scope): boolean {
+  public async processObject(handler, req, res, scope): Promise<boolean> {
     scope.extracted = {};
     req.extracted = {};
 
@@ -69,12 +69,12 @@ export class VValidator extends VHTTPBase {
         if (handler.required.indexOf(key) === -1) {
           continue;
         }
-        return this.onPassed(req, res, scope, fallback)(false, new Error(key + " is required"));
+        return await this.onPassed(req, res, scope, new Error(key + " is required"), fallback);
       }
       const result = validator.validate(req[key], handler[key]);
       // return error info when validation failed
       if (!result || result.code !== 0) {
-        return this.onPassed(req, res, scope, fallback)(false, result);
+        return await this.onPassed(req, res, scope, result, fallback);
       }
       // saved validated data
       scope.extracted[key] = result.data;

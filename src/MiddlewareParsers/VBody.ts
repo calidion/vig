@@ -39,22 +39,28 @@ export class VBody extends VHTTPBase {
           case "formdata":
           case "form":
             cb = parser.urlencoded({ extended: false });
+            cb = this.toAsync(cb, cb)
             break;
           case "xml":
+            console.log('inside xml');
             cb = parser.raw({ type: "*/xml" });
+            cb = this.toAsync(cb, cb)
             break;
           case "json":
             cb = parser.json();
+            cb = this.toAsync(cb, cb)
+
             break;
           case "file":
             cb = skipper();
             req.storage = this.file(req);
+            cb = this.toAsync(cb, cb)
             break;
           default:
             continue;
         }
       }
-      await this.toAsync(cb, cb)(req, res);
+      await cb(req, res);
     }
     return true;
   }
