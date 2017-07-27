@@ -7,6 +7,8 @@ import { VDefinition } from "./VDefinition";
 import { HTTP, VBase, VConfig, VError, VAsync, VModel, VMiddleware, VRouter, VEventReader } from "./Components";
 import { VFallback, VCondition, VPolicy, VValidator, VPager, VBody, VSession } from "./MiddlewareParsers";
 
+import { VTemplate } from "./Templates/VTemplate";
+
 export class VHandler {
 
   public urls: string[] = [];
@@ -14,9 +16,12 @@ export class VHandler {
 
   public config: VConfig;
   public condition: VCondition;
+
   public error: VError;
   public body: VBody;
   public event: VEventReader;
+
+  // Expressjs Traditional Middle
   public middleware: VMiddleware;
   public model: VModel;
   public policy: VPolicy;
@@ -25,7 +30,11 @@ export class VHandler {
   public async: VAsync;
   public validator: VValidator;
   public fallback: VFallback;
+
+  // Pagination Parser
   public pager: VPager;
+
+  public template: VTemplate;
 
   public definition: VDefinition;
 
@@ -67,6 +76,7 @@ export class VHandler {
     this.router = new VRouter(path);
     this.validator = new VValidator(path);
     this.fallback = new VFallback(path);
+    this.template = new VTemplate(path);
 
     this.definition = new VDefinition(path);
 
@@ -116,8 +126,9 @@ export class VHandler {
 
   public setParent(p: VHandler) {
     this.parent = p;
+    this.template.setParent(p.template);
     this.loadStaticScope();
-    for(let i = 0; i < this.children.length; i++) {
+    for (let i = 0; i < this.children.length; i++) {
       this.children[i].loadStaticScope();
     }
   }
@@ -239,7 +250,7 @@ export class VHandler {
   public async run(req, res) {
     // Scoped Data
 
-    const scope = {
+    const scope: any = {
       time: {
         start: new Date()
       }
@@ -248,6 +259,8 @@ export class VHandler {
     for (const key of Object.keys(this.scope)) {
       scope[key] = this.scope[key];
     }
+
+    scope.template = this.template;
 
     try {
       // Parsers and processors

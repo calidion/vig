@@ -103,6 +103,17 @@ describe('VHandler', () => {
       });
   });
 
+  it('should new VHandler urls', (done) => {
+    request(app).delete('/prefix/urls').
+      expect(200, function (err, res) {
+        assert(!err);
+        console.log(err, res.text);
+        console.log(res.text.indexOf("Hello, VIG, Good Morning"));
+        assert(res.text.indexOf("Hello, VIG, Good Morning") !== -1);
+        done()
+      });
+  });
+
   it('should new VHandler sendurl', (done) => {
     // const handler = new VHandler(undefined,
     //   componentPathUrls);

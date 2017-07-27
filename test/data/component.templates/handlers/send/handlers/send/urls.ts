@@ -1,0 +1,1 @@
+export = ['/send1', '/sendurl1'];

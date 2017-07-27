@@ -1,6 +1,6 @@
 {
   "name": "vig",
-  "version": "0.9.5",
+  "version": "0.9.7",
   "description": "a component based web framework, focus on web basic logics",
   "license": "MIT",
   "repository": "calidion/vig",
@@ -38,6 +38,7 @@
     "file-cloud-uploader": "0.0.5",
     "lodash": "^4.17.4",
     "node-form-validator": "^1.5.1",
+    "nunjucks": "^3.0.1",
     "skipper": "^0.8.2",
     "waterline": "^0.11.11"
   },
@@ -53,6 +54,7 @@
     "express-session": "^1.15.2",
     "mocha": "^3.3.0",
     "nyc": "^10.3.0",
+    "restify": "^5.0.1",
     "rimraf": "^2.6.1",
     "sails-memory": "^0.10.7",
     "supertest": "^3.0.0",

@@ -11,7 +11,7 @@ export class VPolicy extends VHTTPBase {
     this.defaultPath = "policies";
   }
   public isType(item: any): boolean {
-    return item instanceof Function
+    return super.isType(item)
     || typeof item === "string";
   }
 }

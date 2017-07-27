@@ -16,7 +16,7 @@ export class VHTTPBase extends VBase {
   }
 
   public isType(item: any): boolean {
-    return item instanceof Function;
+    return item instanceof Function || item instanceof Array;
   }
 
   public check(req) {
@@ -30,6 +30,11 @@ export class VHTTPBase extends VBase {
     if (handler instanceof Function) {
       return handler;
     }
+
+    if (handler instanceof Array) {
+      return handler;
+    }
+
     if (typeof handler !== "string") {
       return false;
     }
@@ -82,11 +87,20 @@ export class VHTTPBase extends VBase {
 
   public async process(req, res, scope): Promise<boolean> {
     const handler = this.checkEx(req, scope);
-    if (handler) {
+    if (handler instanceof Function) {
       const processed: boolean = await this._onProcess(handler, req, res, scope);
-      return await Promise.resolve(processed);
+      return processed;
     }
-    return await Promise.resolve(true);
+    if (handler instanceof Array) {
+      for (let i = 0; i < handler.length; i++) {
+        const f = handler[i];
+        const processed: boolean = await this._onProcess(f, req, res, scope);
+        if (!processed) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   public onPassed(req, res, scope, cb) {
