@@ -219,7 +219,6 @@ export class VHandler {
   public loadStaticScope() {
     this.config.parse(this.scope);
     this.error.parse(this.scope);
-    this.model.parse(this.scope);
     this.definition.parse(this.scope);
     if (this.parent) {
       this.parent.loadStaticScope();
@@ -255,6 +254,8 @@ export class VHandler {
       scope[key] = this.scope[key];
     }
 
+    this.model.parse(scope);
+
     try {
       // Parsers and processors
 
@@ -264,8 +265,30 @@ export class VHandler {
       await this.body.parse(req, res);
       await this.session.parse(req, res);
 
+
+
+      // Utilities
+
+
       res.vRender = (data, template, ext = "html") => {
         res.send(this.template.render(data, template, ext));
+      };
+      
+      res.errorize = res.restify = function errorize(error, data) {
+        if (!error) {
+          return res.json(scope.errors.UnknownError.restify());
+        }
+        if (error.restify && error.restify instanceof Function) {
+          error = error.restify();
+        }
+        if (!data) {
+          return res.json(
+            _.extend(error)
+          );
+        }
+        return res.json(
+          _.extend(error, { data: data })
+        );
       };
       // Middlewares
       await this.middleware.process(req, res, scope);

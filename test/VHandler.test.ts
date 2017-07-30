@@ -232,4 +232,63 @@ describe('VHandler', () => {
     let handler = new VHandler();
     handler.run(null, null);
   });
+
+  it('should handler errors', (done) => {
+    let visited = false;
+    let visited1 = false;
+    let handler = new VHandler();
+    handler.set({
+      urls: ['/errors'],
+      routers: {
+        get: async (req, res, scope) => {
+          res.errorize(scope.errors.Success);
+        }
+      }
+    });
+    handler.attach(app);
+    request(app).get("/errors").end((error, res) => {
+      assert(res.body.code === 0);
+      done();
+    });
+  });
+
+  it('should handler errors', (done) => {
+    let visited = false;
+    let visited1 = false;
+    let handler = new VHandler();
+    handler.set({
+      urls: ['/errors1'],
+      routers: {
+        get: async (req, res, scope) => {
+          res.errorize(scope.errors.Success, { hello: 'world1' });
+        }
+      }
+    });
+    handler.attach(app);
+    request(app).get("/errors1").end((error, res) => {
+      console.log(res.body);
+      assert(res.body.code === 0);
+      assert(res.body.data.hello === "world1");
+      done();
+    });
+  });
+
+  it('should handler errors', (done) => {
+    let visited = false;
+    let visited1 = false;
+    let handler = new VHandler();
+    handler.set({
+      urls: ['/errors2'],
+      routers: {
+        get: async (req, res, scope) => {
+          res.errorize();
+        }
+      }
+    });
+    handler.attach(app);
+    request(app).get("/errors2").end((error, res) => {
+      assert(res.body.name === "UnknownError");
+      done();
+    });
+  });
 });
