@@ -126,6 +126,7 @@ export class VHandler {
     this.template.setParent(p.template);
     this.loadStaticScope();
     for (let i = 0; i < this.children.length; i++) {
+      this.children[i].setParent(this);
       this.children[i].loadStaticScope();
     }
   }
