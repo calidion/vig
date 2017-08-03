@@ -71,4 +71,52 @@ describe('#middlewares', function () {
       done();
     }, 100);
   });
+
+  it('should send middlewares return false', function (done) {
+    const handler = new VHandler();
+    handler.set({
+      urls: ["/mid4"],
+      middlewares: {
+        get: async (req, res, scope) => {
+          res.send("middleware");
+          return false;
+        },
+        post: [async (req, res, scope) => {
+          scope.body = "middle";
+        }, async (req, res, scope) => {
+          res.send("middleware2");
+          return false;
+        }, async (req, res, scope) => {
+          res.send("middleware3");
+        }]
+      },
+      routers: {
+        get: async (req, res, scope) => {
+          res.send("mid router");
+        }
+      }
+    });
+
+    handler.attach(app);
+    request(app)
+      .get('/mid4')
+      .expect(200)
+      .end(function (err, res) {
+        assert(!err);
+        assert(res.text === 'middleware');
+        done();
+      });
+  });
+
+  it('should send middlewares return false', function (done) {
+    request(app)
+      .post('/mid4')
+      .expect(200)
+      .end(function (err, res) {
+        console.log(err, res.text);
+        assert(!err);
+        assert(res.text === 'middleware2');
+        done();
+      });
+  });
 });

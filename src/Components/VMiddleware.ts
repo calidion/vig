@@ -18,4 +18,22 @@ export class VMiddleware extends VHTTPBase {
     super(path)
     this.defaultPath = "middlewares";
   }
+
+  public async process(req, res, scope): Promise<boolean> {
+    const handler = this.checkEx(req, scope);
+    if (handler instanceof Function) {
+      const processed: boolean = await handler(req, res, scope);
+      return processed;
+    }
+    if (handler instanceof Array) {
+      for (let i = 0; i < handler.length; i++) {
+        const f = handler[i];
+        const processed: boolean = await f(req, res, scope);
+        if (processed === false) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
 }

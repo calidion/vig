@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as fsPath from "path";
 import * as async from "async";
+import * as debug from "debug";
 import * as _ from "lodash";
 import { VEvent } from "./VEvent";
 import { VDefinition } from "./VDefinition";
@@ -8,6 +9,8 @@ import { HTTP, VBase, VConfig, VError, VModel, VMiddleware, VRouter, VEventReade
 import { VFallback, VCondition, VPolicy, VValidator, VPager, VBody, VSession } from "./MiddlewareParsers";
 
 import { VTemplate } from "./Templates/VTemplate";
+
+const print = debug("vig:vhandler");
 
 export class VHandler {
 
@@ -265,16 +268,11 @@ export class VHandler {
       // Input Data prepare
       await this.body.parse(req, res);
       await this.session.parse(req, res);
-
-
-
       // Utilities
-
-
       res.vRender = (data, template, ext = "html") => {
         res.send(this.template.render(data, template, ext));
       };
-      
+
       res.errorize = res.restify = function errorize(error, data) {
         if (!error) {
           return res.json(scope.errors.UnknownError.restify());
@@ -288,11 +286,13 @@ export class VHandler {
           );
         }
         return res.json(
-          _.extend(error, { data: data })
+          _.extend(error, { data })
         );
       };
       // Middlewares
-      await this.middleware.process(req, res, scope);
+      if (await this.middleware.process(req, res, scope) === false) {
+        return;
+      }
 
       if (!await this.condition.process(req, res, scope)) {
         return;
@@ -310,7 +310,7 @@ export class VHandler {
         this.notFound("Not Found!", req, res);
       }
     } catch (e) {
-      console.error(e);
+      print(e);
     }
   }
 

@@ -117,8 +117,6 @@ export class VHTTPBase extends VBase {
   }
 
   protected async _onProcess(func, req, res, scope): Promise<boolean> {
-
-    // try {
     const passed = await func(req, res, scope);
     if (!this.failurable || passed) {
       return true;
@@ -130,22 +128,5 @@ export class VHTTPBase extends VBase {
       this.onAuthorFailed(true, req, res, scope);
     }
     return false;
-    // } catch(e) {
-
-    // }
-    // return new Promise((resovle) => {
-    //   func(req, res, (passed, info) => {
-    //     if (!this.failurable || passed) {
-    //       return resovle(true);
-    //     }
-    //     const falback = this.getFallback(req, scope);
-    //     if (falback instanceof Function) {
-    //       falback(info, req, res, scope);
-    //     } else {
-    //       this.onAuthorFailed(info, req, res, scope);
-    //     }
-    //     resovle(false);
-    //   }, scope);
-    // });
   }
 }
