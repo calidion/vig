@@ -1,0 +1,3 @@
+export = {
+  hello: "world"
+};

@@ -260,6 +260,8 @@ export class VHandler {
 
     this.model.parse(scope);
 
+    scope.template = this.template;
+
     try {
       // Parsers and processors
 
@@ -270,6 +272,14 @@ export class VHandler {
       await this.session.parse(req, res);
       // Utilities
       res.vRender = (data, template, ext = "html") => {
+
+        // add user session as current User
+        console.log(req.session);
+        if (req.session && req.session.user) {
+          data.currentUser = req.session.user;
+        }
+        // add config to template defaultly
+        data.config = scope.configs;
         res.send(this.template.render(data, template, ext));
       };
 

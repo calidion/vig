@@ -4,6 +4,12 @@
 
 <body>
   {% block main %} Hello, {{ username | name }} {% endblock %}
+
+  {% if currentUser %}
+  user = {{currentUser}}
+  {% endif %}
+
+  {{ config.test.hello }}
 </body>
 
 </html>
