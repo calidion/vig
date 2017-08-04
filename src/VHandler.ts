@@ -273,12 +273,11 @@ export class VHandler {
       // Utilities
       res.vRender = (data, template, ext = "html") => {
 
-        // add user session as current User
-        console.log(req.session);
+        // Add user session to current User
         if (req.session && req.session.user) {
           data.currentUser = req.session.user;
         }
-        // add config to template defaultly
+        // Add configs to template defaultly
         data.config = scope.configs;
         res.send(this.template.render(data, template, ext));
       };

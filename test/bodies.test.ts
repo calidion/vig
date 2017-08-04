@@ -175,6 +175,37 @@ describe("vig #body", function () {
       });
   });
 
+  it("should get body51", function (done) {
+    var handler = new VHandler();
+    handler.set({
+      urls: ["/body511"],
+      routers: {
+        post: async (req, res) => {
+          console.log(req.body);
+          res.json(req.body);
+        }
+      }
+    });
+    handler.attach(app);
+    request(app)
+      .post("/body511")
+      .type("form")
+      .send({
+        key: "value",
+        key1: "value1"
+      })
+      .expect(200)
+      .end(function (err, res) {
+        console.log("out")
+        console.log(err, res.text);
+        console.log(err, res.body);
+        assert(!err);
+        assert(res.body.key === "value");
+        assert(res.body.key1 === "value1");
+        done();
+      });
+  });
+
   it("should post /body6", function (done) {
     const app1 = express();
     var handler = new VHandler(
@@ -207,9 +238,9 @@ describe("vig #body", function () {
     handler.set({
       urls: ["/file"],
       asyncs: {
-        post: [async()=> {
+        post: [async () => {
           console.log(1);
-        }, async() => {
+        }, async () => {
           console.log(2);
         }]
       },

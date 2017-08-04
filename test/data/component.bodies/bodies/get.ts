@@ -1,0 +1,3 @@
+export = {
+  formdata: true
+};

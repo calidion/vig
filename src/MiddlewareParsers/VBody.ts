@@ -25,9 +25,17 @@ export class VBody extends VHTTPBase {
   }
 
   public async parse(req, res): Promise<boolean> {
-    const data = this.check(req);
+    let data = this.check(req);
     if (!data) {
-      return false;
+      const method = req.method.toLowerCase();
+      // Enable form for post request 
+      if (method === 'post') {
+        data = {
+          form: true
+        };
+      } else {
+        return false;
+      }
     }
     for (const k of Object.keys(data)) {
       let cb = data[k];
