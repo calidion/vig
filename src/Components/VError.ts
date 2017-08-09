@@ -25,10 +25,6 @@ export class VError extends VBase {
     return item instanceof Object;
   }
 
-  public merge(errors = {}) {
-    this.data = Object.assign(this.data, errors);
-  }
-
   public set(data) {
     super.set(data);
     this.cache = null;
@@ -52,10 +48,4 @@ export class VError extends VBase {
     const generator = new Generator(errors, locale);
     return generator.errors;
   }
-
-  public attach(app) {
-    const errors = this.generate(this.locale, false);
-    app.use(errorize(errors));
-  }
-
 }

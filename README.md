@@ -1,4 +1,10 @@
-# vig [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+# vig 
+
+[![NPM version][npm-image]][npm-url] 
+[![Downloads][downloads-image]][npm-url]
+[![Build Status][travis-image]][travis-url]
+[![Dependency Status][daviddm-image]][daviddm-url]
+[![Coverage percentage][coveralls-image]][coveralls-url]
 
 ## 简介
 
@@ -21,7 +27,10 @@
 
 ## vig与其它框架单机性能测试对照
 
-详细见文章 [  一个支持async的超高性能的基于node.js的Web业务框架](https://t1bao.com/thread/visit/11)
+详细见文章:
+
+ [  一个支持async的超高性能的基于node.js的Web业务框架](https://t1bao.com/thread/visit/11)
+
 
 ![](http://res.cloudinary.com/dawjytvkn/image/upload/v1494714446/sosos_ubpueo.png)
 
@@ -86,11 +95,12 @@ handler.set({
   prefix: '/demo',
   urls: ['/', '/hello'],
   routers: {
-    get: function (req, res) {
+    get: async (req, res, scope) => {
       res.send('Hello world!');
     }
   }
 });
+
 handler.attach(app);
 
 app.listen(10000, function () {
@@ -98,12 +108,11 @@ app.listen(10000, function () {
 });
 ```
 
-3、执行
+3、安装包
 
 ```sh
 
-npm install --save vig
-npm install --save express
+yarn install
 
 ```
 
@@ -138,6 +147,16 @@ $ npm install --save vig
 $ yarn add vig
 ```
 
+## 版本说明
+
+Semver不但引起了版本爆炸，也让版本失去了意义。
+
+所以vig采用 · [Effective Versioning](https://github.com/calidion/effective-versioning) · 的版本管理方式。
+
+1. 尽量保持小版本的一致性，但是不保证小版本升级一定是接口不变的
+2. 不推荐动不动升级，只有你当前的版本不能满足你的需要时再升级
+
+
 ## 项目地址
 
 https://github.com/calidion/vig
@@ -148,7 +167,8 @@ https://github.com/calidion/vig
 Apache-2.0 © [calidion](https://github.com/calidion)
 
 
-[npm-image]: https://badge.fury.io/js/vig.svg
+[downloads-image]: http://img.shields.io/npm/dm/vig.svg
+[npm-image]: https://img.shields.io/npm/v/npm.svg
 [npm-url]: https://npmjs.org/package/vig
 [travis-image]: https://travis-ci.org/calidion/vig.svg?branch=master
 [travis-url]: https://travis-ci.org/calidion/vig
@@ -156,3 +176,4 @@ Apache-2.0 © [calidion](https://github.com/calidion)
 [daviddm-url]: https://david-dm.org/calidion/vig
 [coveralls-image]: https://coveralls.io/repos/calidion/vig/badge.svg
 [coveralls-url]: https://coveralls.io/r/calidion/vig
+

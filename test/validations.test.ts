@@ -9,11 +9,16 @@ var request = require('supertest');
 var express = require('express');
 
 var path = require('path');
-import { VHandler, VService } from '../src';
-var service = new VService();
+import { VHandler } from '../src';
 var app = express();
-service.attach(app);
-service.include(app, path.resolve(__dirname, './data/validationsHandlers'));
+
+
+var handlers = require(path.resolve(__dirname, './data/validationsHandlers'));
+for (var i = 0; i < handlers.length; i++) {
+  var handler = new VHandler();
+  handler.set(handlers[i]);
+  handler.attach(app);
+}
 
 describe('vig #validations', function () {
   it('should get /validations', function (done) {
@@ -74,6 +79,7 @@ describe('vig #validations', function () {
   it('should post /validations/2 4', function (done) {
     request(app)
       .post('/validations/2')
+      .type("form")
       .send({
         value: '100'
       })
@@ -104,6 +110,7 @@ describe('vig #validations', function () {
   it('should post /validations/2 with query', function (done) {
     request(app)
       .post('/validations/2?username=sdfsf&password=32323123')
+      .type("form")
       .expect(200)
       .send({
         value: 100

@@ -13,7 +13,6 @@ var componentPath1 = path.resolve(__dirname, './data/component.middleware.all/')
 import { VEvent, VService, VHandler } from '../src';
 
 var app;
-var service = new VService();
 
 describe('#middlewares', function () {
   before(function () {
@@ -53,24 +52,24 @@ describe('#middlewares', function () {
       });
   });
 
-  it('should send event', function (done) {
-    const event = new VEvent();
-    event.send("send");
-    event.send("hello", (data, errors) => {
-      assert(data === "hello");
-      assert(errors);
-      assert(errors.VigTestError);
-      done();
-    });
-  });
+  // it('should send event', function (done) {
+  //   const event = new VEvent();
+  //   event.send("send");
+  //   event.send("hello", (data, errors) => {
+  //     assert(data === "hello");
+  //     assert(errors);
+  //     assert(errors.VigTestError);
+  //     done();
+  //   });
+  // });
 
-  it('should send event', function (done) {
-    const event = new VEvent();
-    event.send("send");
-    setTimeout(() => {
-      done();
-    }, 100);
-  });
+  // it('should send event', function (done) {
+  //   const event = new VEvent();
+  //   event.send("send");
+  //   setTimeout(() => {
+  //     done();
+  //   }, 100);
+  // });
 
   it('should send middlewares return false', function (done) {
     const handler = new VHandler();

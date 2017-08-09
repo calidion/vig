@@ -7,12 +7,9 @@ var session = require('express-session');
 var cookies;
 
 var path = require('path');
-import { VHandler, VService, VPolicy, VPolicyDefinition } from '../src';
+import { VHandler, VService, VPolicy } from '../src';
 var service = new VService();
 var app = express();
-
-// var policy = new VPolicyDefinition();
-// policy = new VPolicyDefinition(path.resolve(__dirname, './data/'));
 
 describe('vig #policies', function () {
   before(function () {
@@ -25,8 +22,14 @@ describe('vig #policies', function () {
         secure: false
       }
     }));
-    service.include(app, path.resolve(__dirname, './data/policiesHandler'));
+    var handlers = require(path.resolve(__dirname, './data/policiesHandler'));
+    for (var i = 0; i < handlers.length; i++) {
+      var handler = new VHandler();
+      handler.set(handlers[i]);
+      handler.attach(app);
+    }
   });
+
   it('should get prevent all', function (done) {
     request(app)
       .get('/prevent/all')

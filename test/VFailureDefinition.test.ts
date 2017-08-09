@@ -6,12 +6,9 @@ var session = require("express-session");
 var cookies;
 
 var path = require("path");
-import { VHandler, VService, VPolicy, VPolicyDefinition, VFallbackDefinition } from "../src";
+import { VHandler, VService, VPolicy } from "../src";
 var vhandler = new VHandler();
 var app = express();
-
-// var vfallback = new VFallbackDefinition();
-// vfallback = new VFallbackDefinition(path.resolve(__dirname, "./data/"));
 
 describe("vig #policies", function () {
   before(function () {
@@ -24,17 +21,10 @@ describe("vig #policies", function () {
         secure: false
       }
     }));
-    // vfallback.loadOn();
-    // vfallback.attach(app);
 
     vhandler.set({
       urls: ['/failure'],
       definitions: {
-        // policies: {
-        //   ok: function (error, req, res) {
-        //     res.status(200).send('ok');
-        //   }
-        // },
         fallbacks: {
           ok: function (error, req, res) {
             res.status(200).send('ok');
@@ -55,12 +45,12 @@ describe("vig #policies", function () {
       policies: {
         methods: ['get'],
         get: async (req, res, scope) => {
-          return(false);
+          return (false);
         }
       },
       validations: {
         post: async (req, res, scope) => {
-          return(false);
+          return (false);
         }
       },
       failures: {

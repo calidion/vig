@@ -40,7 +40,8 @@
     "node-form-validator": "^1.5.1",
     "nunjucks": "^3.0.1",
     "skipper": "^0.8.2",
-    "waterline": "^0.11.11"
+    "waterline": "^0.11.11",
+    "ws": "^3.1.0"
   },
   "devDependencies": {
     "@types/chai": "^3.5.2",

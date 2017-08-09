@@ -9,12 +9,16 @@ var request = require('supertest');
 var express = require('express');
 var path = require('path');
 import { VHandler, VService } from '../src';
-var service = new VService();
 var app = express();
 
 describe('vig #prefix', function () {
   before(function () {
-    service.include(app, path.resolve(__dirname, './data/prefixHandlers'));
+    var handlers = require(path.resolve(__dirname, './data/prefixHandlers'));
+    for (var i = 0; i < handlers.length; i++) {
+      var handler = new VHandler();
+      handler.set(handlers[i]);
+      handler.attach(app);
+    }
   });
   it('should get /prefix/:id', function (done) {
     request(app)

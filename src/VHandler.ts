@@ -5,10 +5,12 @@ import * as debug from "debug";
 import * as _ from "lodash";
 import { VEvent } from "./VEvent";
 import { VDefinition } from "./VDefinition";
-import { HTTP, VBase, VConfig, VError, VModel, VMiddleware, VRouter, VEventReader } from "./Components";
+import { HTTP, VBase, VConfig, VError, VModel, VMiddleware, VRouter, VEventReader, VWebSocket } from "./Components";
 import { VFallback, VCondition, VPolicy, VValidator, VPager, VBody, VSession } from "./MiddlewareParsers";
 
 import { VTemplate } from "./Templates/VTemplate";
+
+import { VWSServer } from "./VWSServer";
 
 const print = debug("vig:vhandler");
 
@@ -32,6 +34,9 @@ export class VHandler {
   public router: VRouter;
   public validator: VValidator;
   public fallback: VFallback;
+
+  // VWebSocket
+  public websocket: VWebSocket;
 
   // Pagination Parser
   public pager: VPager;
@@ -78,6 +83,7 @@ export class VHandler {
     this.validator = new VValidator(path);
     this.fallback = new VFallback(path);
     this.template = new VTemplate(path);
+    this.websocket = new VWebSocket(path);
 
     this.definition = new VDefinition(path);
 
@@ -95,6 +101,7 @@ export class VHandler {
       "event",
       "router",
       "validator",
+      "websocket",
       "fallback"];
     for (let i = 0; i < data.length; i++) {
       const key = data[i];
@@ -162,6 +169,7 @@ export class VHandler {
       pager: "pagers",
       definition: "definitions",
       policy: "policies",
+      websocket: "websockets",
       validator: "validations",
       fallback: "failures"
     };
