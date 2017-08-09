@@ -28,8 +28,8 @@ export class VBody extends VHTTPBase {
     let data = this.check(req);
     if (!data) {
       const method = req.method.toLowerCase();
-      // Enable form for post request 
-      if (method === 'post') {
+      // Enable form for post request
+      if (method === "post") {
         data = {
           form: true
         };

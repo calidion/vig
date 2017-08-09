@@ -246,8 +246,7 @@ export class VHandler {
     }
   }
 
-  public async run(req, res) {
-    // Scoped Data
+  public getFixedScope() {
     const scope: any = {
       time: {
         start: new Date()
@@ -261,6 +260,12 @@ export class VHandler {
     this.model.parse(scope);
 
     scope.template = this.template;
+    return scope;
+  }
+
+  public async run(req, res) {
+    // Scoped Data
+    const scope: any = this.getFixedScope();
 
     try {
       // Parsers and processors
@@ -299,6 +304,7 @@ export class VHandler {
         );
       };
       // Middlewares
+      // Exit when middleware return false
       if (await this.middleware.process(req, res, scope) === false) {
         return;
       }
@@ -315,8 +321,9 @@ export class VHandler {
         return;
       }
       // Final request process
-      if (!await this.router.run(req, res, scope)) {
-        this.notFound("Not Found!", req, res);
+      const result = await this.router.run(req, res, scope);
+      if (false === result) {
+        return this.notFound("Not Found!", req, res);
       }
     } catch (e) {
       print(e);
