@@ -116,14 +116,14 @@ export abstract class VBase {
     return data;
   }
 
-  public filter() {
-    if (!this.filterEnabled) {
-      return;
-    }
-    this.files = this.files.map((file) => {
-      return this._filter(file);
-    });
-  }
+  // public filter() {
+  //   if (!this.filterEnabled) {
+  //     return;
+  //   }
+  //   this.files = this.files.map((file) => {
+  //     return this._filter(file);
+  //   });
+  // }
 
   public loadOn() {
     this.set(this.load());
@@ -171,15 +171,15 @@ export abstract class VBase {
     return dir;
   }
 
-  public addDir(dir) {
-    this.dirReader(dir, (realDir, file) => {
-      const parsed = this.parseFile(realDir, file);
-      if (!parsed) {
-        return;
-      }
-      this.files.push(parsed.path);
-    });
-  }
+  // public addDir(dir) {
+  //   this.dirReader(dir, (realDir, file) => {
+  //     const parsed = this.parseFile(realDir, file);
+  //     if (!parsed) {
+  //       return;
+  //     }
+  //     // this.files.push(parsed.path);
+  //   });
+  // }
 
   public load(dir: any = "", data = {}) {
     if (!dir) {

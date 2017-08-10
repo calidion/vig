@@ -7,11 +7,11 @@ export class VWSServer {
   public static ENTER = "enter";
   public static LEAVE = "leave";
 
-  public static getInstance(server: Server) {
+  public static getInstance() {
     if (VWSServer.instance) {
       return VWSServer.instance;
     }
-    VWSServer.instance = new VWSServer(server);
+    VWSServer.instance = new VWSServer();
   }
 
   private static instance;
@@ -19,31 +19,9 @@ export class VWSServer {
   public server;
   public eventsAndListeners: object = {};
 
-  private constructor(server) {
-    const wss = new WebSocket.Server({ server });
-    wss.on("connection", (ws, req) => {
-      const enterListeners = this.eventsAndListeners[VWSServer.ENTER];
-      if (enterListeners && enterListeners.length) {
-        for (let i = 0; i < enterListeners.length; i++) {
-          const handler = enterListeners[i];
-          handler.enterWS(ws, req);
-        }
-      }
-      for (const k of Object.keys(this.eventsAndListeners)) {
-        if (k === VWSServer.ENTER) {
-          continue;
-        }
-        ws.on(k, (data) => {
-          const eventListeners = this.eventsAndListeners[k];
-          for (let i = 0; i < eventListeners.length; i++) {
-            const handler = eventListeners[i];
-            handler.onWS(ws, req);
-          }
-        });
-      }
-    });
-    this.server = wss;
-  }
+  // private constructor(server) {
+
+  // }
 
   public addEventListener(event: string, handler: VHandler) {
     let handlers = this.eventsAndListeners[event];
@@ -78,6 +56,40 @@ export class VWSServer {
           client.send(data);
         }
       }
+    });
+  }
+
+  public onEnter(ws, req) {
+    const enterListeners = this.eventsAndListeners[VWSServer.ENTER];
+    if (enterListeners && enterListeners.length) {
+      for (let i = 0; i < enterListeners.length; i++) {
+        const handler = enterListeners[i];
+        handler.wsEnter(ws, req);
+      }
+    }
+  }
+
+  public onEvents(ws, req) {
+    for (const k of Object.keys(this.eventsAndListeners)) {
+      if (k === VWSServer.ENTER) {
+        continue;
+      }
+      ws.on(k, (data) => {
+        const eventListeners = this.eventsAndListeners[k];
+        for (let i = 0; i < eventListeners.length; i++) {
+          const handler = eventListeners[i];
+          handler.wsEvent(k, ws, req);
+        }
+      });
+    }
+  }
+
+  public start(server: Server) {
+    const wss = new WebSocket.Server({ server });
+    this.server = wss;
+    wss.on("connection", (ws, req) => {
+      this.onEnter(ws, req);
+      this.onEvents(ws, req);
     });
   }
 }

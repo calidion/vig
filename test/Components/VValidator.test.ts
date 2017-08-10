@@ -24,9 +24,4 @@ describe('VValidator', () => {
     var data: any = route.load();
     assert(data && data.get && data.post && data.put);
   })
-
-  it('should addDir', () => {
-    var route = new VValidator(componentPath);
-    route.addDir(componentPath);
-  })
 });

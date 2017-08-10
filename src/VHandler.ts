@@ -342,6 +342,15 @@ export class VHandler {
     res.status(404).send("Not Found!");
   }
 
+  // Web sockets
+  public wsEnter(ws, req) {
+    this.websocket.run("enter", null, ws, this.scope);
+  }
+
+  public wsEvent(event, ws, req) {
+    this.websocket.run(event, null, ws, this.scope);
+  }
+
   // Deprecated
 
   public toJSON() {

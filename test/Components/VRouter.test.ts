@@ -23,6 +23,6 @@ describe('VRouter', () => {
     var router = new VRouter(componentPath);
     var data: any = router.load();
     assert(data && data.get && data.post && !data.fuck);
-    router.filter();
+    // router.filter();
   })
 });
