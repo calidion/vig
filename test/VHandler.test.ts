@@ -107,8 +107,6 @@ describe('VHandler', () => {
     request(app).delete('/prefix/urls').
       expect(200, function (err, res) {
         assert(!err);
-        console.log(err, res.text);
-        console.log(res.text.indexOf("Hello, VIG, Good Morning"));
         assert(res.text.indexOf("Hello, VIG, Good Morning") !== -1);
         done()
       });
@@ -266,7 +264,6 @@ describe('VHandler', () => {
     });
     handler.attach(app);
     request(app).get("/errors1").end((error, res) => {
-      console.log(res.body);
       assert(res.body.code === 0);
       assert(res.body.data.hello === "world1");
       done();

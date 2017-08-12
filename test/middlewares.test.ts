@@ -112,7 +112,6 @@ describe('#middlewares', function () {
       .post('/mid4')
       .expect(200)
       .end(function (err, res) {
-        console.log(err, res.text);
         assert(!err);
         assert(res.text === 'middleware2');
         done();

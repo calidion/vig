@@ -59,7 +59,6 @@ describe('VService', () => {
           return;
         }
         data = JSON.parse(data);
-        console.log(data);
         expect(data.event).to.be.eq("post");
         expect(data.message).to.be.eq("echo message");
         ws.close();
@@ -74,13 +73,9 @@ describe('VService', () => {
     let count = 0;
 
     const f = (data) => {
-      console.log("inside message f");
-      console.log(data);
       if ("hello" === data) {
         return;
       }
-      console.log("f");
-      console.log(data);
       expect(data).to.be.eq("message");
       count++;
       if (count > 1) {
@@ -109,13 +104,9 @@ describe('VService', () => {
     let count = 0;
 
     const f = (data) => {
-      console.log("inside message f");
-      console.log(data);
       if ("hello" === data) {
         return;
       }
-      console.log("f");
-      console.log(data);
       expect(data).to.be.eq("message");
       count++;
       if (count > 1) {

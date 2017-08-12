@@ -181,7 +181,6 @@ describe("vig #body", function () {
       urls: ["/body511"],
       routers: {
         post: async (req, res) => {
-          console.log(req.body);
           res.json(req.body);
         }
       }
@@ -196,9 +195,6 @@ describe("vig #body", function () {
       })
       .expect(200)
       .end(function (err, res) {
-        console.log("out")
-        console.log(err, res.text);
-        console.log(err, res.body);
         assert(!err);
         assert(res.body.key === "value");
         assert(res.body.key1 === "value1");
@@ -239,9 +235,7 @@ describe("vig #body", function () {
       urls: ["/file"],
       asyncs: {
         post: [async () => {
-          console.log(1);
         }, async () => {
-          console.log(2);
         }]
       },
       bodies: {

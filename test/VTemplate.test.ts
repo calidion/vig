@@ -19,7 +19,6 @@ describe('VTemplate', () => {
     request(app).get('/h2').
       expect(200, function (err, res) {
         assert(!err);
-        console.log(err, res.text);
         assert(res.text.indexOf("color: black;") !== -1);
         assert(res.text.indexOf("Hello, VIG, Good Morning") !== -1);
         done();
@@ -51,7 +50,6 @@ describe('VTemplate', () => {
     assert(handler.template.isType(""));
     request(app).post('/h1').
       expect(403, function (err, res) {
-        console.log(err, res.text);
         assert(!err);
         assert(res.text === "Access Denied!");
         done();
