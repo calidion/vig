@@ -55,9 +55,7 @@ export abstract class VBase {
     const json = {
       methods: []
     };
-    const keys = Object.keys(this.data);
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
+    for (const key of Object.keys(this.data)) {
       json.methods.push(key);
       json[key] = this.data[key];
     }

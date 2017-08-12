@@ -21,9 +21,10 @@ export class VService {
   public start(app, cb) {
     const server = http.createServer(app);
     const vwss = VWSServer.getInstance();
-    vwss.start();
+    vwss.start(server);
     server.listen(this.options.port, this.options.ip, () => {
       this.defaultRun();
+      cb && cb(server, this.options, vwss);
     });
   }
 }

@@ -1,7 +1,6 @@
 import * as fs from "fs";
 import * as fsPath from "path";
 import * as async from "async";
-import * as debug from "debug";
 import * as _ from "lodash";
 import { VEvent } from "./VEvent";
 import { VDefinition } from "./VDefinition";
@@ -11,6 +10,8 @@ import { VFallback, VCondition, VPolicy, VValidator, VPager, VBody, VSession } f
 import { VTemplate } from "./Templates/VTemplate";
 
 import { VWSServer } from "./VWSServer";
+
+import * as debug from "debug";
 
 const print = debug("vig:vhandler");
 
@@ -238,6 +239,7 @@ export class VHandler {
       this.scope = _.merge(parent, this.scope);
     }
     this.eventPrepare();
+    this.websocketPrepare();
   }
 
   public eventPrepare() {
@@ -250,6 +252,16 @@ export class VHandler {
             await this.event.run(iK, args);
           }
         })(key));
+      }
+    }
+  }
+
+  public websocketPrepare() {
+    const wss = VWSServer.getInstance();
+    const websocketHandlers = this.websocket.get();
+    for (const key in websocketHandlers) {
+      if (key && websocketHandlers[key] instanceof Function) {
+        wss.addEventListener(key, this);
       }
     }
   }
@@ -285,7 +297,6 @@ export class VHandler {
       await this.session.parse(req, res);
       // Utilities
       res.vRender = (data, template, ext = "html") => {
-
         // Add user session to current User
         if (req.session && req.session.user) {
           data.currentUser = req.session.user;
@@ -343,12 +354,8 @@ export class VHandler {
   }
 
   // Web sockets
-  public wsEnter(ws, req) {
-    this.websocket.run("enter", null, ws, this.scope);
-  }
-
-  public wsEvent(event, ws, req) {
-    this.websocket.run(event, null, ws, this.scope);
+  public async wsEvent(event, message, ws, req) {
+    await this.websocket.run(event, message, ws, this.scope);
   }
 
   // Deprecated
