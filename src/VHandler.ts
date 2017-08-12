@@ -56,6 +56,10 @@ export class VHandler {
   // Current Scope
   private scope: any = {};
 
+  private unmuted: any = {
+
+  };
+
   constructor(urls: string[] = null, path: string = "", prefix = "") {
     this.urls = urls || [];
 
@@ -238,6 +242,9 @@ export class VHandler {
     }
     this.eventPrepare();
     this.websocketPrepare();
+
+    // Accelerate speed by ignoring unnecessary processes
+    this.processMuted();
   }
 
   public eventPrepare() {
@@ -281,6 +288,17 @@ export class VHandler {
     return scope;
   }
 
+  public checkMutable(module) {
+    return Object.keys(this[module].get()).length > 0;
+  }
+
+  public processMuted() {
+    const mutables = ["body", "session", "condition", "middleware", "condition", "validator", "pager"];
+    for (const key of mutables) {
+      this.unmuted[key] = this.checkMutable(key);
+    }
+  }
+
   public async run(req, res) {
     // Scoped Data
     const scope: any = this.getFixedScope();
@@ -291,8 +309,8 @@ export class VHandler {
       // TODO: enabled server protector here, use condition instead now.
 
       // Input Data prepare
-      await this.body.parse(req, res);
-      await this.session.parse(req, res);
+      (req.method === "POST" || this.unmuted.body) && await this.body.parse(req, res);
+      (this.unmuted.session) && await this.session.parse(req, res);
       // Utilities
       res.vRender = (data, template, ext = "html") => {
         // Add user session to current User
@@ -322,18 +340,18 @@ export class VHandler {
       };
       // Middlewares
       // Exit when middleware return false
-      if (await this.middleware.process(req, res, scope) === false) {
+
+      if (this.unmuted.middleware && await this.middleware.process(req, res, scope) === false) {
+        return;
+      }
+      if (this.unmuted.condition && !await this.condition.process(req, res, scope)) {
         return;
       }
 
-      if (!await this.condition.process(req, res, scope)) {
+      if (this.unmuted.validator && !await this.validator.process(req, res, scope)) {
         return;
       }
-
-      if (!await this.validator.process(req, res, scope)) {
-        return;
-      }
-      this.pager.parse(req, res, scope);
+      this.unmuted.pager && this.pager.parse(req, res, scope);
       if (!await this.policy.process(req, res, scope)) {
         return;
       }

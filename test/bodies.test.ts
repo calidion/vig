@@ -37,6 +37,7 @@ describe("vig #body", function () {
       .expect(200)
       .end(function (err, res) {
         assert(!err);
+        console.log(err, res.text);
         assert(res.body.key === "value");
         assert(res.body.key1 === "value1");
         done();
