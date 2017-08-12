@@ -26,8 +26,7 @@ export class VMiddleware extends VHTTPBase {
       return processed;
     }
     if (handler instanceof Array) {
-      for (let i = 0; i < handler.length; i++) {
-        const f = handler[i];
+      for (const f of handler) {
         const processed: boolean = await f(req, res, scope);
         if (processed === false) {
           return false;

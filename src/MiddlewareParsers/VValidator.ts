@@ -52,9 +52,7 @@ export class VValidator extends VHTTPBase {
     const keys = ["query", "params", "body"];
     const fallback = this.getFallback(req, scope);
 
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-
+    for (const key of keys) {
       // continue when no validation specified
       if (!handler[key]) {
         continue;

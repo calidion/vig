@@ -92,7 +92,7 @@ export class VHTTPBase extends VBase {
       return processed;
     }
     if (handler instanceof Array) {
-      for (let f of handler) {
+      for (const f of handler) {
         const processed: boolean = await this._onProcess(f, req, res, scope);
         if (!processed) {
           return false;

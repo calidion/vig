@@ -24,7 +24,6 @@ export class VWSServer {
   public eventsAndListeners: object = {};
 
   public addEventListener(event: string, handler: VHandler) {
-    console.log(event);
     let handlers = this.eventsAndListeners[event];
     if (!(handlers instanceof Array)) {
       handlers = [];
@@ -35,18 +34,13 @@ export class VWSServer {
     this.eventsAndListeners[event] = handlers;
   }
 
-  public broadcast(data, filter: Function) {
-    console.log("inside broadcast");
+  public broadcast(data, filter) {
     const wss = this.server;
     wss.clients.forEach(async (client) => {
-      console.log("inside for each");
       if (filter && !filter(client)) {
         return;
       }
-      console.log(client.readyState);
       if (client.readyState === WebSocket.OPEN) {
-        console.log("sending messag ");
-        console.log(data);
         client.send(data);
       }
     });
@@ -54,28 +48,22 @@ export class VWSServer {
 
   public async onEnter(ws, req) {
     const enterListeners = this.eventsAndListeners[VWSServer.ENTER];
-    for (let handler of enterListeners) {
+    for (const handler of enterListeners) {
       await handler.wsEvent("enter", null, ws, req);
     }
   }
 
   public onEvents(ws, req) {
     ws.on("message", async (data) => {
-      print("on event");
-      print(data);
       try {
         const json = JSON.parse(data);
         const event = json.event;
         const message = json.message;
-        print(event);
-        print(message);
         const eventListeners = this.eventsAndListeners[event];
         if (!eventListeners) {
           return;
         }
-        print("found listeners");
-        for (let i = 0; i < eventListeners.length; i++) {
-          const handler = eventListeners[i];
+        for (const handler of eventListeners) {
           await handler.wsEvent(event, message, ws, req);
         }
       } catch (e) {

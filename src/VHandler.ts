@@ -104,8 +104,7 @@ export class VHandler {
       "validator",
       "websocket",
       "fallback"];
-    for (let i = 0; i < data.length; i++) {
-      const key = data[i];
+    for (const key of data) {
       this[key].loadOn();
     }
     this.updateFallbacks();
@@ -115,9 +114,9 @@ export class VHandler {
 
   public requireFile(name: string) {
     const allowedExt = [".js", ".ts", ".json"];
-    for (let i = 0; i < allowedExt.length; i++) {
+    for (const ext of allowedExt) {
       const dir = fsPath.resolve(this.path, "./" + name);
-      const resolve = dir + allowedExt[i];
+      const resolve = dir + ext;
       if (fs.existsSync(resolve)) {
         const data = require(resolve);
         if (data) {
@@ -136,9 +135,9 @@ export class VHandler {
     this.parent = p;
     this.template.setParent(p.template);
     this.loadStaticScope();
-    for (let i = 0; i < this.children.length; i++) {
-      this.children[i].setParent(this);
-      this.children[i].loadStaticScope();
+    for (const child of this.children) {
+      child.setParent(this);
+      child.loadStaticScope();
     }
   }
 
@@ -202,8 +201,7 @@ export class VHandler {
     };
     const fallbacks = this.fallback.get();
     const items = Object.keys(fallbacks);
-    for (let i = 0; i < items.length; i++) {
-      const key = items[i];
+    for (const key of items) {
       const keyOne = this[keys[key]] || this[key];
       if (keyOne) {
         keyOne.setFailureHandler(fallbacks[key]);
@@ -217,15 +215,15 @@ export class VHandler {
     if (this.urls instanceof Array) {
       urls = this.urls;
     }
-    for (let i = 0; i < urls.length; i++) {
-      let url = prefix + urls[i];
+    for (const item of urls) {
+      let url = prefix + item;
       url = url.replace(/\/+/g, "/");
       app.all(url, (req, res) => {
         this.run(req, res);
       });
     }
-    for (let i = 0; i < this.children.length; i++) {
-      this.children[i].attach(app);
+    for (const child of this.children) {
+      child.attach(app);
     }
   }
 

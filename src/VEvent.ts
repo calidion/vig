@@ -20,8 +20,7 @@ export class VEvent {
     if (!events.handlers) {
       return;
     }
-    for (let i = 0; i < events.names.length; i++) {
-      const name = events.names[i];
+    for (const name of events.names) {
       const handler = events.handlers[name];
       if (!handler) {
         continue;
