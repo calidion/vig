@@ -293,7 +293,7 @@ export class VHandler {
   }
 
   public processMuted() {
-    const mutables = ["body", "session", "condition", "middleware", "condition", "validator", "pager"];
+    const mutables = ["body", "session", "condition", "policy", "middleware", "condition", "validator", "pager"];
     for (const key of mutables) {
       this.unmuted[key] = this.checkMutable(key);
     }
@@ -309,8 +309,12 @@ export class VHandler {
       // TODO: enabled server protector here, use condition instead now.
 
       // Input Data prepare
-      (req.method === "POST" || this.unmuted.body) && await this.body.parse(req, res);
-      (this.unmuted.session) && await this.session.parse(req, res);
+      if (req.method === "POST" || this.unmuted.body) {
+        await this.body.parse(req, res);
+      }
+      if (this.unmuted.session) {
+        await this.session.parse(req, res);
+      }
       // Utilities
       res.vRender = (data, template, ext = "html") => {
         // Add user session to current User
@@ -351,8 +355,10 @@ export class VHandler {
       if (this.unmuted.validator && !await this.validator.process(req, res, scope)) {
         return;
       }
-      this.unmuted.pager && this.pager.parse(req, res, scope);
-      if (!await this.policy.process(req, res, scope)) {
+      if (this.unmuted.pager) {
+        await this.pager.parse(req, res, scope);
+      }
+      if (this.unmuted.policy && !await this.policy.process(req, res, scope)) {
         return;
       }
       // Final request process
