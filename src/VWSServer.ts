@@ -46,11 +46,19 @@ export class VWSServer {
     });
   }
 
-  public async onEnter(ws, req) {
-    const enterListeners = this.eventsAndListeners[VWSServer.ENTER];
+  public async onEvent(event, ws, req) {
+    const enterListeners = this.eventsAndListeners[event];
     for (const handler of enterListeners) {
-      await handler.wsEvent("enter", null, ws, req);
+      await handler.wsEvent(event, null, ws, req);
     }
+  }
+
+  public async onEnter(ws, req) {
+    await this.onEvent(VWSServer.ENTER, ws, req);
+  }
+
+  public async onLeave(ws, req) {
+    await this.onEvent(VWSServer.LEAVE, ws, req);
   }
 
   public onEvents(ws, req) {
@@ -79,6 +87,9 @@ export class VWSServer {
     wss.on("connection", async (ws, req) => {
       await this.onEnter(ws, req);
       this.onEvents(ws, req);
+      ws.on("close", async () => {
+        await this.onLeave(ws, req);
+      })
     });
   }
 }
