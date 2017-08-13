@@ -15,9 +15,9 @@ export class VWebSocket extends VBase {
     return item instanceof Function;
   }
 
-  public async run(event, message, ws, scope) {
+  public async run(event, message, ws, req, scope) {
     const eh = this.get();
     const handler = eh[event];
-    await handler(message, ws, scope);
+    await handler(message, ws, req, scope);
   }
 }

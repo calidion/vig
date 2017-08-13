@@ -1,6 +1,6 @@
 {
   "name": "vig",
-  "version": "1.0.0-alpha-4",
+  "version": "1.0.0-alpha-5",
   "description": "a component based web framework, focus on web basic logics",
   "license": "MIT",
   "repository": "calidion/vig",

@@ -377,7 +377,7 @@ export class VHandler {
 
   // Web sockets
   public async wsEvent(event, message, ws, req) {
-    await this.websocket.run(event, message, ws, this.scope);
+    await this.websocket.run(event, message, ws, req, this.scope);
   }
 
   // Deprecated
