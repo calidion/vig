@@ -1,6 +1,4 @@
-export = async (message, ws, scope) => {
-
-
+export = async (ws, req, scope) => {
   ws.send("hello");
 
 };

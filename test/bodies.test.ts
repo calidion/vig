@@ -44,6 +44,32 @@ describe("vig #body", function () {
       });
   });
 
+  it("should get body1", function (done) {
+    var handler = new VHandler();
+    handler.set({
+      urls: ["/body110"],
+      bodies: {
+        post: {
+          form: true
+        }
+      },
+      routers: {
+        get: async (req, res) => {
+          res.send(req.body);
+        }
+      }
+    });
+    handler.attach(app);
+    request(app)
+      .get("/body110")
+      .expect(200)
+      .end(function (err, res) {
+        assert(!err);
+        console.log(err, res.text);
+        done();
+      });
+  });
+
   it("should get body2", function (done) {
     var handler = new VHandler();
     handler.set({

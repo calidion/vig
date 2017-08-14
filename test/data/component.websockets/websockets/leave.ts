@@ -1,3 +1,3 @@
-export = async (message, ws, scope) => {
+export = async (ws, req, scope) => {
   console.log("leave");
 };

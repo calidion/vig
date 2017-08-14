@@ -168,7 +168,7 @@ Apache-2.0 © [calidion](https://github.com/calidion)
 
 
 [downloads-image]: http://img.shields.io/npm/dm/vig.svg
-[npm-image]: https://img.shields.io/npm/v/npm.svg
+[npm-image]: https://img.shields.io/npm/v/vig.svg
 [npm-url]: https://npmjs.org/package/vig
 [travis-image]: https://travis-ci.org/calidion/vig.svg?branch=master
 [travis-url]: https://travis-ci.org/calidion/vig

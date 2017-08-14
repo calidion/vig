@@ -1,6 +1,5 @@
 import {VWSServer} from "../../../../src/VWSServer";
-export = async (message, ws, scope) => {
-
+export = async () => {
   const vws = VWSServer.getInstance()
   vws.broadcast("message", null);
 };

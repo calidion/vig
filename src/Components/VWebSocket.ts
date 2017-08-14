@@ -4,6 +4,7 @@
  */
 
 import { VBase } from "./VBase";
+import { VWSServer } from "../VWSServer";
 
 export class VWebSocket extends VBase {
   constructor(path) {
@@ -18,6 +19,6 @@ export class VWebSocket extends VBase {
   public async run(event, message, ws, req, scope) {
     const eh = this.get();
     const handler = eh[event];
-    await handler(message, ws, req, scope);
+    await handler(ws, req, scope, message);
   }
 }
