@@ -6,6 +6,7 @@ import { VHTTPBase } from "../Components/VHTTPBase";
 import { promisify } from "bluebird";
 import * as parser from "cookie-parser";
 import * as skipper from "skipper";
+import * as _ from "lodash";
 
 export class VSession extends VHTTPBase {
   constructor(path) {
@@ -17,7 +18,7 @@ export class VSession extends VHTTPBase {
     return item instanceof Object;
   }
 
-  public async parse(req, res): Promise<boolean> {
+  public async parse(req, res, scope): Promise<boolean> {
     const data = this.check(req);
     if (!data) {
       return false;
@@ -27,11 +28,16 @@ export class VSession extends VHTTPBase {
       if (!cb) {
         continue;
       }
+
       if (!(cb instanceof Function)) {
         switch (k) {
           case "cookie":
           case "cookies":
             cb = parser();
+            cb = this.toAsync(cb, cb)
+            break;
+          case "session":
+            cb = _.get(scope, ["configs", "session", "middleware"]);
             cb = this.toAsync(cb, cb)
             break;
           default:

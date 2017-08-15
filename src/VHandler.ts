@@ -11,7 +11,11 @@ import { VTemplate } from "./Templates/VTemplate";
 
 import { VWSServer } from "./VWSServer";
 
+import { promisify } from "bluebird";
+
 import * as debug from "debug";
+
+import * as url from "url";
 
 const print = debug("vig:vhandler");
 
@@ -313,7 +317,7 @@ export class VHandler {
         await this.body.parse(req, res);
       }
       if (this.unmuted.session) {
-        await this.session.parse(req, res);
+        await this.session.parse(req, res, scope);
       }
       // Utilities
       res.vRender = (data, template, ext = "html") => {
@@ -377,6 +381,18 @@ export class VHandler {
 
   // Web sockets
   public async wsEvent(event, message, ws, req) {
+    let cookies = req.headers.cookie;
+    let store = _.get(this.scope, ["configs", "session", "store"]);
+
+    if (this.unmuted.session && cookies && store) {
+      let id = cookies.split("=");
+      id = id[1];
+      id = decodeURIComponent(id);
+      id = id.split(".")[0].split(":")[1];
+      let getSession = promisify(store.get);
+      let session = await getSession.call(store, id);
+      req.session = session;
+    }
     await this.websocket.run(event, message, ws, req, this.scope);
   }
 

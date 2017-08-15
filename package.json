@@ -49,6 +49,7 @@
     "@types/node": "^7.0.14",
     "chai": "^3.5.0",
     "codecov": "^2.1.0",
+    "connect": "^3.6.3",
     "coveralls": "^2.13.1",
     "errorable-common": "^0.1.0",
     "express": "^4.15.2",
