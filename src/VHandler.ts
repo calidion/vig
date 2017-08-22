@@ -55,7 +55,7 @@ export class VHandler {
   private parent: VHandler = null;
   private children: VHandler[] = [];
 
-  private eventHandler: VEvent = new VEvent();
+  private eventHandler: VEvent = VEvent.getInstance();
 
   // Current Scope
   private scope: any = {};

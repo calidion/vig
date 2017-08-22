@@ -2,6 +2,27 @@ import * as EventEmitter from "events";
 export class VEvent {
   protected static emitter: EventEmitter = new EventEmitter();
 
+  protected static listeners = {};
+  protected static onceListeners = {};
+
+  protected static instance;
+
+  protected static VIG_EVENT = "__vig_event";
+
+  public static getInstance() {
+    if (!VEvent.instance) {
+      VEvent.instance = new VEvent();
+    }
+    return VEvent.instance;
+  }
+
+  private constructor() {
+    const self = this;
+    VEvent.emitter.on(VEvent.VIG_EVENT, async function onEvent(...args) {
+      await self._onEvent.apply(self, args[0]);
+    });
+  }
+
   /**
    * Add an Event Object, which may contain many events and handlers.
    * @param {Object} events - Having to keys:
@@ -25,7 +46,12 @@ export class VEvent {
       if (!handler) {
         continue;
       }
-      VEvent.emitter[once](name, handler);
+      if (isOnce) {
+        this._on(name, handler, VEvent.onceListeners);
+      } else {
+        this._on(name, handler, VEvent.listeners);
+      }
+      // VEvent.emitter[once](name, handler);
     }
   }
 
@@ -33,7 +59,8 @@ export class VEvent {
    * Send an event to its listeners
    */
   public send(...args) {
-    VEvent.emitter.emit.apply(VEvent.emitter, args);
+    VEvent.emitter.emit(VEvent.VIG_EVENT, args);
+    // VEvent.emitter.emit.apply(VEvent.emitter, args);
   }
 
   /**
@@ -42,7 +69,8 @@ export class VEvent {
    * @param {Function} handler - Function to handler the event.
    */
   public on(event, handler) {
-    VEvent.emitter.on(event, handler);
+    this._on(event, handler, VEvent.listeners);
+    // VEvent.emitter.on(event, handler);
   }
 
   /**
@@ -51,6 +79,47 @@ export class VEvent {
    * @param {Function} handler - Function to handler the event.
    */
   public once(event, handler) {
-    VEvent.emitter.once(event, handler);
+    this._on(event, handler, VEvent.onceListeners);
+    // VEvent.emitter.once(event, handler);
+  }
+
+  private _on(event, handler, listeners) {
+    if (!handler) {
+      return;
+    }
+
+    let handlers = listeners[event];
+
+    if (!handlers) {
+      handlers = [];
+    }
+    if (handlers.indexOf(handler) !== -1) {
+      return;
+    }
+    if (handler instanceof Function) {
+      handlers.push(handler);
+      listeners[event] = handlers;
+    }
+  }
+
+  private async _processEvent(handlers, params) {
+    console.log(handlers, params);
+    if (handlers instanceof Array) {
+      for (let i = 0; i < handlers.length; i++) {
+        const handler = handlers[i];
+        await handler.apply(handler, params);
+      }
+    }
+
+  }
+
+  private async _onEvent(...args) {
+    const event = args[0];
+    const params = args.splice(1);
+    const handlers = VEvent.listeners[event];
+    const onceHandlers = VEvent.onceListeners[event];
+    VEvent.onceListeners[event] = null;
+    await this._processEvent(handlers, params);
+    await this._processEvent(onceHandlers, params);
   }
 }

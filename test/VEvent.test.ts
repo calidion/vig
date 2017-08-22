@@ -7,7 +7,7 @@ import * as fs from 'fs';
 
 const config = require('./data/fixtures/events');
 
-const event = new VEvent();
+const event = VEvent.getInstance();
 event.add(config);
 
 const once = require('./data/fixtures/events.once');
@@ -16,13 +16,14 @@ event.add(once, false);
 event.add(null, false);
 event.add({}, false);
 event.add({ names: [] }, false);
-event.add({ names: [], handlers: {
-  
-} }, false);
+event.add({
+  names: [], handlers: {
+
+  }
+}, false);
 
 describe('VEvent', () => {
   it('should new VEvent', () => {
-    const event = new VEvent();
     assert(event);
   });
 
@@ -83,11 +84,21 @@ describe('VEvent', () => {
     var res;
     event.once('hello1', function (data) {
       assert(data === 'world');
-      var res1 = event.send('hello1', 'world');
-      assert(!res1);
+      event.send('hello1', 'world');
       done();
     });
-    res = event.send('hello1', 'world');
-    assert(res);
+    event.send('hello1', 'world');
+  });
+
+  it('should fill the gap', function () {
+    var res;
+    event.once('hello12323');
+    function aaa() {
+
+    };
+    event.once('more', aaa);
+    event.once('more', aaa);
+    event.on('more', aaa);
+    event.on('more', aaa);
   });
 });

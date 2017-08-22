@@ -95,7 +95,7 @@ describe('vig #pager', function () {
   });
 
   it('should send events', function (done) {
-    var event = new VEvent();
+    var event = VEvent.getInstance();
     event.send("send3");
     event.send('send1', function (data) {
       assert(data === 'send1');
@@ -104,7 +104,7 @@ describe('vig #pager', function () {
   });
 
   it('should send events', function (done) {
-    var event = new VEvent();
+    var event = VEvent.getInstance();
     event.send('send2', function (data) {
       assert(data === 'send2');
       done();
