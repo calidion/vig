@@ -142,10 +142,12 @@ export class VHandler {
   public setParent(p: VHandler) {
     this.parent = p;
     this.template.setParent(p.template);
-    this.loadStaticScope();
+    let parent = this.parent.getScope();
+    const clone = _.merge({}, parent);;
+    const scope = _.merge({}, this.scope);;
+    this.scope = _.merge(clone, scope);
     for (const child of this.children) {
       child.setParent(this);
-      child.loadStaticScope();
     }
   }
 
@@ -239,11 +241,6 @@ export class VHandler {
     this.config.parse(this.scope);
     this.error.parse(this.scope);
     this.definition.parse(this.scope);
-    if (this.parent) {
-      this.parent.loadStaticScope();
-      const parent = this.parent.getScope();
-      this.scope = _.merge(parent, this.scope);
-    }
     this.eventPrepare();
     this.websocketPrepare();
 

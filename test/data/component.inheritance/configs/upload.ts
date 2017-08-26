@@ -1,0 +1,3 @@
+export = {
+  file: 1
+}

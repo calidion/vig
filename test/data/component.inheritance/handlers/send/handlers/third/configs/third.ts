@@ -1,0 +1,3 @@
+export = {
+  third: true
+};
