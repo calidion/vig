@@ -103,14 +103,11 @@ export class VEvent {
   }
 
   private async _processEvent(handlers, params) {
-    console.log(handlers, params);
     if (handlers instanceof Array) {
-      for (let i = 0; i < handlers.length; i++) {
-        const handler = handlers[i];
-        await handler.apply(handler, params);
+      for(const handler of handlers) {
+        await handler.apply(handler, params);        
       }
     }
-
   }
 
   private async _onEvent(...args) {

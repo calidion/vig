@@ -142,9 +142,9 @@ export class VHandler {
   public setParent(p: VHandler) {
     this.parent = p;
     this.template.setParent(p.template);
-    let parent = this.parent.getScope();
-    const clone = _.merge({}, parent);;
-    const scope = _.merge({}, this.scope);;
+    const parent = this.parent.getScope();
+    const clone = _.merge({}, parent);
+    const scope = _.merge({}, this.scope);
     this.scope = _.merge(clone, scope);
     for (const child of this.children) {
       child.setParent(this);
@@ -378,16 +378,16 @@ export class VHandler {
 
   // Web sockets
   public async wsEvent(event, message, ws, req) {
-    let cookies = req.headers.cookie;
-    let store = _.get(this.scope, ["configs", "session", "store"]);
+    const cookies = req.headers.cookie;
+    const store = _.get(this.scope, ["configs", "session", "store"]);
 
     if (this.unmuted.session && cookies && store) {
       let id = cookies.split("=");
       id = id[1];
       id = decodeURIComponent(id);
       id = id.split(".")[0].split(":")[1];
-      let getSession = promisify(store.get);
-      let session = await getSession.call(store, id);
+      const getSession = promisify(store.get);
+      const session = await getSession.call(store, id);
       req.session = session;
     }
     await this.websocket.run(event, message, ws, req, this.scope);

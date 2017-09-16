@@ -8,6 +8,10 @@ import * as parser from "cookie-parser";
 import * as skipper from "skipper";
 import * as _ from "lodash";
 
+import * as debug from "debug";
+
+const print = debug("vig:session");
+
 export class VSession extends VHTTPBase {
   constructor(path) {
     super(path);
@@ -38,6 +42,13 @@ export class VSession extends VHTTPBase {
             break;
           case "session":
             cb = _.get(scope, ["configs", "session", "middleware"]);
+            if (!cb) {
+              print("Session Middleware Not Found!");
+              print(`Please make sure your session.ts/js file is placed inside configs folder, ` +
+                `and with an expressjs compatible session middleware inside this configuration file.`
+              );
+              return false;
+            }
             cb = this.toAsync(cb, cb)
             break;
           default:
