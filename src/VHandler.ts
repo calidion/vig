@@ -226,9 +226,9 @@ export class VHandler {
       urls = this.urls;
     }
     for (const item of urls) {
-      let url = prefix + item;
-      url = url.replace(/\/+/g, "/");
-      app.all(url, (req, res) => {
+      let urlTemp = prefix + item;
+      urlTemp = urlTemp.replace(/\/+/g, "/");
+      app.all(urlTemp, (req, res) => {
         this.run(req, res);
       });
     }
