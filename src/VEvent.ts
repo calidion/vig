@@ -70,7 +70,6 @@ export class VEvent {
    */
   public on(event, handler) {
     this._on(event, handler, VEvent.listeners);
-    // VEvent.emitter.on(event, handler);
   }
 
   /**
@@ -80,7 +79,6 @@ export class VEvent {
    */
   public once(event, handler) {
     this._on(event, handler, VEvent.onceListeners);
-    // VEvent.emitter.once(event, handler);
   }
 
   private _on(event, handler, listeners) {

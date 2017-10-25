@@ -40,8 +40,8 @@ export abstract class VBase {
 
   protected allowedExt = [".js", ".ts", ".json"];
 
-  constructor(path: string) {
-    this.basePath = path;
+  constructor(basePath: string) {
+    this.basePath = basePath;
   }
 
   public toAsync(cb, self) {

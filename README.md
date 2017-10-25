@@ -142,9 +142,16 @@ vig对async/await的支持依赖于用户的开发环境本身，与vig框架无
 
 ## 安装
 
+
+
 ```sh
 $ npm install --save vig
 $ yarn add vig
+
+# 推荐使用1.0版本
+$ npm install --save vig@next
+$ yarn add vig@next
+
 ```
 
 ## 版本说明
