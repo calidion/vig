@@ -1,5 +1,12 @@
 import * as EventEmitter from "events";
 export class VEvent {
+  public static getInstance() {
+    if (!VEvent.instance) {
+      VEvent.instance = new VEvent();
+    }
+    return VEvent.instance;
+  }
+
   protected static emitter: EventEmitter = new EventEmitter();
 
   protected static listeners = {};
@@ -8,13 +15,6 @@ export class VEvent {
   protected static instance;
 
   protected static VIG_EVENT = "__vig_event";
-
-  public static getInstance() {
-    if (!VEvent.instance) {
-      VEvent.instance = new VEvent();
-    }
-    return VEvent.instance;
-  }
 
   private constructor() {
     const self = this;
@@ -103,14 +103,11 @@ export class VEvent {
   }
 
   private async _processEvent(handlers, params) {
-    console.log(handlers, params);
     if (handlers instanceof Array) {
-      for (let i = 0; i < handlers.length; i++) {
-        const handler = handlers[i];
+      for (const handler of handlers) {
         await handler.apply(handler, params);
       }
     }
-
   }
 
   private async _onEvent(...args) {

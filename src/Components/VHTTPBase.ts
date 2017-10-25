@@ -6,6 +6,9 @@ import { VBase } from "./VBase";
 
 import { HTTP } from "./HTTP";
 
+import * as debug from "debug";
+const print = debug("vig:httpbase");
+
 export class VHTTPBase extends VBase {
   protected failurable = false;
   protected failureHandler: () => void;
@@ -111,6 +114,10 @@ export class VHTTPBase extends VBase {
   }
 
   public onAuthorFailed(message, req, res, scope): boolean {
+    print(message)
+    print(req.body);
+    print(req.params);
+    print(req.query);
     res.status(403).end("Access Denied!");
     return false;
   }

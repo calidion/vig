@@ -15,6 +15,8 @@ export class VConfig extends VBase {
   }
 
   public parse(scope) {
-    scope.configs = this.data;
+    if (Object.keys(this.data).length) {
+      scope.configs = this.data;
+    }
   }
 }
