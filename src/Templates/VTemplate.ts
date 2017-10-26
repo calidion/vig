@@ -39,7 +39,9 @@ export class VTemplate extends VBase {
       return this.env;
     }
     const views = this.getViews();
-    const loader = new nunjucks.FileSystemLoader(views);
+    const loader = new nunjucks.FileSystemLoader(views, {
+      watch: true
+    });
     const env = new nunjucks.Environment(loader, {
       autoescape: false
     });

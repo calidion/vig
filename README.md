@@ -2,6 +2,7 @@
 
 [![NPM version][npm-image]][npm-url] 
 [![Downloads][downloads-image]][npm-url]
+[![Downloads][downloads-image-month]][npm-url]
 [![Build Status][travis-image]][travis-url]
 [![Dependency Status][daviddm-image]][daviddm-url]
 [![Coverage percentage][coveralls-image]][coveralls-url]
@@ -180,7 +181,8 @@ https://github.com/calidion/vig
 Apache-2.0 © [calidion](https://github.com/calidion)
 
 
-[downloads-image]: http://img.shields.io/npm/dm/vig.svg
+[downloads-image]: http://img.shields.io/npm/dt/vig.svg
+[downloads-image-month]: http://img.shields.io/npm/dm/vig.svg
 [npm-image]: https://img.shields.io/npm/v/vig.svg
 [npm-url]: https://npmjs.org/package/vig
 [travis-image]: https://travis-ci.org/calidion/vig.svg?branch=master
