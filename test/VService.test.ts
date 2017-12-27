@@ -55,6 +55,13 @@ describe('VService', () => {
     });
   });
 
+  after(function (done) {
+    app = express();
+    service = new VService({});
+    service.start(app);
+    setTimeout(() => done(), 300);
+  });
+
   it("should open a web socket", (done) => {
     const ws = new WebSocket(wsUrl);
     ws.on("message", (data) => {
