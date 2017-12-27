@@ -59,6 +59,18 @@ describe('VEvent', () => {
     });
   });
 
+  it('should not handle nonefuc', function (done) {
+    let notEntered = true;
+    event.on('nonefuc', 'hello');
+    event.send('nonefuc', function (data) {
+      notEntered = false;
+    });
+    setTimeout(() => {
+      assert(notEntered);
+      done();
+    }, 500)
+  });
+
   it('should get /events', function (done) {
     event.send('@event2', function (data) {
       assert(data === '@event2');

@@ -188,6 +188,29 @@ describe('VHandler', () => {
       });
   });
 
+  it('should errorize none errorable', (done) => {
+    let visited = false;
+    let handler = new VHandler();
+    handler.setUrls(['/send/xxx2333'])
+    handler.setPrefix('/prefix');
+    handler.extend('sooo', () => {
+    });
+    handler.extend('post', null);
+    handler.extend('post', null);
+    handler.extend('get', function (req, res) {
+      visited = true;
+      res.errorize({}, { ok: 1 })
+    });
+    handler.attach(app);
+    request(app).get('/prefix/send/xxx2333').
+      end(function (err, res) {
+        assert(!err);
+        assert(visited);
+        assert(res.body.data.ok === 1);
+        done()
+      });
+  });
+
   it('should extend VHandler after attach', (done) => {
     let visited = false;
     let visited1 = false;
@@ -267,6 +290,36 @@ describe('VHandler', () => {
       assert(res.body.code === 0);
       assert(res.body.data.hello === "world1");
       done();
+    });
+  });
+
+  it('should handler errors', (done) => {
+    let visited = false;
+    let visited1 = false;
+    let handler = new VHandler();
+    handler.set({
+      urls: ['/errors2'],
+      routers: {
+        get: async (req, res, scope) => {
+          res.errorize();
+        }
+      }
+    });
+    handler.attach(app);
+    request(app).get("/errors2").end((error, res) => {
+      assert(res.body.name === "UnknownError");
+      done();
+    });
+  });
+
+  it('should set handler without urls', () => {
+    let handler = new VHandler();
+    handler.set({
+      routers: {
+        get: async (req, res, scope) => {
+          res.errorize();
+        }
+      }
     });
   });
 

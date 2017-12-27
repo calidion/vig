@@ -17,9 +17,8 @@ export class VEvent {
   protected static VIG_EVENT = "__vig_event";
 
   private constructor() {
-    const self = this;
-    VEvent.emitter.on(VEvent.VIG_EVENT, async function onEvent(...args) {
-      await self._onEvent.apply(self, args[0]);
+    VEvent.emitter.on(VEvent.VIG_EVENT, async (...args) => {
+      await this._onEvent(...args[0]);
     });
   }
 
@@ -43,13 +42,12 @@ export class VEvent {
     }
     for (const name of events.names) {
       const handler = events.handlers[name];
-      if (!handler) {
-        continue;
-      }
-      if (isOnce) {
-        this._on(name, handler, VEvent.onceListeners);
-      } else {
-        this._on(name, handler, VEvent.listeners);
+      if (handler) {
+        if (isOnce) {
+          this._on(name, handler, VEvent.onceListeners);
+        } else {
+          this._on(name, handler, VEvent.listeners);
+        }
       }
       // VEvent.emitter[once](name, handler);
     }

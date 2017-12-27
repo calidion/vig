@@ -24,4 +24,8 @@ describe("VCondition", () => {
     var data: any = r.load();
     assert(data && data.get && data.post && !data.fuck);
   })
+
+  it("should new undefined", () => {
+    let r = new VCondition(undefined);
+  })
 });

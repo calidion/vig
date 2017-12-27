@@ -5,7 +5,7 @@
 import { VBase } from "../Components/VBase";
 
 export class VFallbackDefinition extends VBase {
-  constructor(path = "") {
+  constructor(path) {
     super(path)
     this.defaultPath = "fallbacks";
   }

@@ -1,3 +1,3 @@
 export = async (req, res, scope) => {
-  res.vRender({ username: "VIG" }, "layout");
+  res.vRender({ username: "VIG" }, "layout", 'html');
 };

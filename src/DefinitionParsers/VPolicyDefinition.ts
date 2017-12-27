@@ -6,7 +6,7 @@
 import { VBase } from "../Components/VBase";
 
 export class VPolicyDefinition extends VBase {
-  constructor(path = "") {
+  constructor(path) {
     super(path)
     this.defaultPath = "policies";
   }
