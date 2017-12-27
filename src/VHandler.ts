@@ -273,6 +273,7 @@ export class VHandler {
 
     public getFixedScope() {
         const scope: any = {
+            debug,
             time: {
                 start: new Date()
             }
