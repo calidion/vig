@@ -15,7 +15,7 @@ import { expect } from "chai";
 const componentPath = path.resolve(__dirname, './data/component.websockets/');
 let app, handler, service, cookies;
 
-let server, options, wsUrl;
+let server, options, wsUrl, wsserver;
 
 // let req = request.defaults({ jar: true })
 
@@ -47,9 +47,10 @@ describe('VService', () => {
     h1.attach(app);
     h1.setParent(handler);
     service = new VService();
-    service.start(app, (s, o) => {
+    service.start(app, (s, o, ws) => {
       server = s;
       options = o;
+      wsserver = ws;
       wsUrl = `ws://${options.ip}:${options.port}`;
       done();
     });
@@ -214,8 +215,39 @@ describe('VService', () => {
     });
   })
 
+  it("should should get session info again", (done) => {
+    const ws = new WebSocket(wsUrl,
+      [],
+      {
+        'headers': {
+          'Cookie': cookies
+        }
+      });
+    ws.on("open", () => {
+      ws.send(JSON.stringify({
+        event: 'user',
+        message: ""
+      }));
+      ws.on("message", (data) => {
+        if ("hello" === data) {
+          return;
+        }
+        data = JSON.parse(String(data));
+        expect(data.id).to.be.eq(100);
+        ws.close();
+        done();
+      });
+    });
+  })
+
   it("should shut down", (done) => {
     server.close();
+    done();
+  })
+
+  it("should add event to wsserver", (done) => {
+    wsserver.addEventListener('aaa', app);
+    wsserver.addEventListener('aaa', app);
     done();
   })
 });

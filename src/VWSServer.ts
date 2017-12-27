@@ -23,6 +23,8 @@ export class VWSServer {
   public server;
   public eventsAndListeners: object = {};
 
+  private constructor() {
+  }
   public addEventListener(event: string, handler: VHandler) {
     let handlers = this.eventsAndListeners[event];
     if (!(handlers instanceof Array)) {
