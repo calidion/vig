@@ -5,7 +5,7 @@ import * as assert from 'assert';
 import * as path from 'path';
 import * as fs from 'fs';
 
-const router = new VFallback();
+const router = new VFallback("");
 var componentPath = path.resolve(__dirname, '../data/component');
 var objPath = path.resolve(__dirname, '../data/component/fallbacks');
 
