@@ -41,7 +41,7 @@
     "nunjucks": "^3.0.1",
     "skipper": "^0.8.2",
     "waterline": "^0.11.11",
-    "ws": "^3.2.0"
+    "ws": "3.3.3"
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",
