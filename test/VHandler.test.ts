@@ -331,6 +331,7 @@ describe('VHandler', () => {
       urls: ['/errors2'],
       routers: {
         get: async (req, res, scope) => {
+          assert(scope.event);
           res.errorize();
         }
       }
