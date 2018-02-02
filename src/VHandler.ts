@@ -303,7 +303,7 @@ export class VHandler {
     public async run(req, res) {
         // Scoped Data
         const scope: any = this.getFixedScope();
-        scope.event = this.event;
+        scope.event = this.eventHandler;
 
         try {
             // Parsers and processors

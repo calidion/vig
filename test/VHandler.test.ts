@@ -1,5 +1,5 @@
 import 'mocha';
-import { VHandler, VRouter } from '../src';
+import { VHandler, VRouter, VEvent} from '../src';
 
 import * as assert from 'assert';
 import * as path from 'path';
@@ -332,6 +332,7 @@ describe('VHandler', () => {
       routers: {
         get: async (req, res, scope) => {
           assert(scope.event);
+          assert(scope.event === VEvent.getInstance());
           res.errorize();
         }
       }
