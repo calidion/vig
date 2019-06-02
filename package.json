@@ -26,7 +26,8 @@
     "test": "npm run build && nyc --reporter=text --reporter=html --reporter=lcov mocha --bail --compilers ts:ts-node/register --recursive 'test/**/*.test.ts'",
     "coverage": "nyc --include='src/**/*.ts' --reporter=text --reporter=html --reporter=lcov mocha --bail --compilers ts:ts-node/register --recursive 'test/**/*.test.ts'",
     "watch": "npm run build -- --watch",
-    "watch:test": "npm run test -- --watch"
+    "watch:test": "npm run test -- --watch",
+    "postinstall": "opencollective-postinstall"
   },
   "dependencies": {
     "async": "^2.5.0",
@@ -39,9 +40,11 @@
     "lodash": "^4.17.4",
     "node-form-validator": "^1.5.2",
     "nunjucks": "^3.0.1",
+    "opencollective-postinstall": "^2.0.2",
     "skipper": "^0.8.2",
     "waterline": "^0.11.11",
-    "ws": "3.3.3"
+    "ws": "3.3.3",
+    "opencollective": "^1.0.3"
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",
@@ -82,5 +85,9 @@
     ],
     "reporter": [],
     "all": true
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/vig"
   }
 }
