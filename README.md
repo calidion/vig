@@ -6,6 +6,8 @@
 [![Build Status][travis-image]][travis-url]
 [![Dependency Status][daviddm-image]][daviddm-url]
 [![Coverage percentage][coveralls-image]][coveralls-url]
+[![Backers][backers-image]](#backers)
+[![Sponsors][sponsors-image]](#sponsors)
 
 ## 简介
 
@@ -176,6 +178,36 @@ Semver不但引起了版本爆炸，也让版本失去了意义。
 https://github.com/calidion/vig
 
 
+## Contributors
+
+This project exists thanks to all the people who contribute. 
+<a href="https://github.com/calidion/vig/graphs/contributors"><img src="https://opencollective.com/vig/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/vig#backer)]
+
+<a href="https://opencollective.com/vig#backers" target="_blank"><img src="https://opencollective.com/vig/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/vig#sponsor)]
+
+<a href="https://opencollective.com/vig/sponsor/0/website" target="_blank"><img src="https://opencollective.com/vig/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/vig/sponsor/1/website" target="_blank"><img src="https://opencollective.com/vig/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/vig/sponsor/2/website" target="_blank"><img src="https://opencollective.com/vig/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/vig/sponsor/3/website" target="_blank"><img src="https://opencollective.com/vig/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/vig/sponsor/4/website" target="_blank"><img src="https://opencollective.com/vig/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/vig/sponsor/5/website" target="_blank"><img src="https://opencollective.com/vig/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/vig/sponsor/6/website" target="_blank"><img src="https://opencollective.com/vig/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/vig/sponsor/7/website" target="_blank"><img src="https://opencollective.com/vig/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/vig/sponsor/8/website" target="_blank"><img src="https://opencollective.com/vig/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/vig/sponsor/9/website" target="_blank"><img src="https://opencollective.com/vig/sponsor/9/avatar.svg"></a>
+
+
+
 ## License
 
 Apache-2.0 © [calidion](https://github.com/calidion)
@@ -191,4 +223,5 @@ Apache-2.0 © [calidion](https://github.com/calidion)
 [daviddm-url]: https://david-dm.org/calidion/vig
 [coveralls-image]: https://coveralls.io/repos/calidion/vig/badge.svg
 [coveralls-url]: https://coveralls.io/r/calidion/vig
-
+[backers-image]: https://opencollective.com/vig/backers/badge.svg
+[sponsors-image]: https://opencollective.com/vig/sponsors/badge.svg
