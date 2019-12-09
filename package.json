@@ -31,7 +31,7 @@
     "postinstall": "opencollective-postinstall"
   },
   "dependencies": {
-    "async": "^2.5.0",
+    "async": "^3.1.0",
     "body-parser": "^1.18.1",
     "cookie-parser": "^1.4.3",
     "errorable": "^0.4.0",
