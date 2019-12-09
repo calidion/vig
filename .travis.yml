@@ -6,8 +6,6 @@ node_js:
   - '10'
   - '9'
   - '8'
-  - '7'
-  - '6'
 script:
   - npm run build  # build
   - npm run coverage  # run mocha unit tests with coverage
