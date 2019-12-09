@@ -22,6 +22,7 @@
   "scripts": {
     "clean": "rimraf lib",
     "lint": "tslint --force --format verbose \"src/**/*.ts\"",
+    "prebuild": "rimraf node_modules && yarn install",
     "build": "npm run clean && npm run lint && echo Using TypeScript && tsc --version && tsc --pretty",
     "test": "npm run build && nyc --reporter=text --reporter=html --reporter=lcov mocha --bail --compilers ts:ts-node/register --recursive 'test/**/*.test.ts'",
     "coverage": "nyc --include='src/**/*.ts' --reporter=text --reporter=html --reporter=lcov mocha --bail --compilers ts:ts-node/register --recursive 'test/**/*.test.ts'",
@@ -36,15 +37,15 @@
     "errorable": "^0.4.0",
     "errorable-common": "^0.1.0",
     "errorable-express": "0.0.4",
-    "file-cloud-uploader": "0.0.5",
+    "file-cloud-uploader": "^0.0.6",
     "lodash": "^4.17.4",
     "node-form-validator": "^1.5.2",
     "nunjucks": "^3.0.1",
+    "opencollective": "^1.0.3",
     "opencollective-postinstall": "^2.0.2",
     "skipper": "^0.8.2",
     "waterline": "^0.11.11",
-    "ws": "3.3.3",
-    "opencollective": "^1.0.3"
+    "ws": "3.3.3"
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",
@@ -65,7 +66,8 @@
     "supertest": "^3.0.0",
     "ts-node": "^3.3.0",
     "tslint": "^5.7.0",
-    "typescript": "^2.5.2"
+    "typescript": "^2.5.2",
+    "yarn": "^1.21.0"
   },
   "engines": {
     "node": ">=4.0.0"
