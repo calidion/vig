@@ -50,7 +50,7 @@
     "@types/mocha": "^2.2.43",
     "@types/node": "^8.0.28",
     "chai": "^4.1.2",
-    "codecov": "^2.3.0",
+    "codecov": "^3.7.1",
     "connect": "^3.6.4",
     "coveralls": "^2.13.1",
     "errorable-common": "^0.1.0",
