@@ -1,3 +1,5 @@
+# (this project is deprecated in favor of the new fast, simple, async web framework for nodejs: [aex](https://github.com/calidion/aex/))
+
 # vig 
 
 [![NPM version][npm-image]][npm-url] 
